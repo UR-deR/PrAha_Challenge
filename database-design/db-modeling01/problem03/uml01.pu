@@ -1,0 +1,58 @@
+@startuml
+
+
+!define METAL #F2F2F2-D9D9D9
+
+skinparam class {
+    BackgroundColor METAL
+    BorderColor Black
+    ArrowColor Black
+}
+
+package "Yamaguchiさんの追加仕様" as problem01 {
+    entity "Customer" as customer {
+        + id [PK]
+        --
+          name [名前]
+          tel [電話番号]
+          is_loyal [お得意様フラグ]
+    }
+
+    entity "Order" as order {
+        + id [PK]
+        --
+         customer_id [顧客id]
+         is_paid [支払い済みフラグ]
+         ordered_at [注文日時]      
+    }
+
+    entity "OrderDetail" as order_detail {
+        + id [PK]
+        --
+          order_id [注文id]
+          dish_id [商品のid]
+          has_wasabi [わさび有無]
+          amount [注文数] 
+    }
+
+    entity "Dish" as dish {
+        + id [PK]
+        --
+        name [商品名]
+        price [価格]
+        dish_category_id [カテゴリid]
+    }
+
+    entity "DishCategory" as dish_category {
+        + id [PK]
+        --
+        category [カテゴリ名]
+    }
+}
+
+order }|..|| customer
+order ||-le-|{ order_detail
+order_detail ||..|| dish
+dish ||..||dish_category
+
+@enduml
