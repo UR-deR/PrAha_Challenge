@@ -15,7 +15,6 @@ package "課題1" as problem01 {
         --
           name [名前]
           tel [電話番号]
-          order_id [注文id]
     }
 
     entity "Order" as order {
@@ -50,9 +49,9 @@ package "課題1" as problem01 {
     }
 }
 
-order }|--|| customer
+order }|..|| customer
 order ||-le-|{ order_detail
-order_detail ||--|| dish
+order_detail ||..|| dish
 dish ||--||dish_category
 
 @enduml
