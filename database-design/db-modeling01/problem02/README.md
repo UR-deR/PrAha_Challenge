@@ -1,5 +1,8 @@
 ## 課題 2
 
+<img width="379" alt="スクリーンショット 2022-08-18 22 42 30" src="https://user-images.githubusercontent.com/76472239/185409867-ea24de04-99db-48d7-9bd5-288ace0739b4.png">
+
+
 Q1  
 わさび有無や皿数と同様に、商品ごとにシャリの大きさを変更させれば良いと考え、`OrderDetail` テーブルに`shari_size`というカラムを追加して対応しました。
 
