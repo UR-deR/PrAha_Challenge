@@ -39,7 +39,7 @@ package "私の追加仕様" as problem01 {
         --
         name
         price
-        dish_count
+        stock
         dish_category_id
     }
 
