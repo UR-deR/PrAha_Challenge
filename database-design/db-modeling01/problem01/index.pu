@@ -14,7 +14,7 @@ package "課題1" as problem01 {
         + id [PK]
         --
           name 
-          tel
+          tel [UQ][NN]
     }
 
     entity "Order" as order {

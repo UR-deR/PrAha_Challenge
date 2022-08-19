@@ -14,7 +14,7 @@ package "Yamaguchiさんの追加仕様" as problem01 {
         + id [PK]
         --
           name
-          tel
+          tel [UQ][NN]
           is_loyal
     }
 
