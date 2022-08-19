@@ -2,15 +2,16 @@
 
 ### Yamaguchi さんの追加仕様
 
-<img width="387" alt="スクリーンショット 2022-08-18 23 11 46" src="https://user-images.githubusercontent.com/76472239/185416509-22f55b17-379a-460e-ad69-00e2fb8f08c2.png">
+<img width="252" alt="スクリーンショット 2022-08-19 23 47 12" src="https://user-images.githubusercontent.com/76472239/185645132-c19eaaeb-3744-440c-be56-715ffe16facf.png">
+
 
 
 `Customer` テーブルに新たなカラムとして`is_loyal`(boolean)を用意しました。
 このフラグがあることによって、注文代金を計算するときに割引を行うべきかの判定ができると考えました。
 
 ### 私の追加仕様
+<img width="253" alt="スクリーンショット 2022-08-19 23 51 13" src="https://user-images.githubusercontent.com/76472239/185645956-baf1eac3-72d8-4525-ae84-f3ffdef19707.png">
 
-<img width="367" alt="スクリーンショット 2022-08-18 23 12 24" src="https://user-images.githubusercontent.com/76472239/185416654-63b16091-124e-4be0-b810-17c389826edc.png">
 
 
 
