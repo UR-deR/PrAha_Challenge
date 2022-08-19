@@ -1,6 +1,6 @@
 ## 課題 2
 
-<img width="379" alt="スクリーンショット 2022-08-18 22 42 30" src="https://user-images.githubusercontent.com/76472239/185409867-ea24de04-99db-48d7-9bd5-288ace0739b4.png">
+<img width="250" alt="スクリーンショット 2022-08-19 23 45 19" src="https://user-images.githubusercontent.com/76472239/185644724-3a52e0ac-c50b-4d22-a525-4eb5fd919e83.png">
 
 
 Q1  
