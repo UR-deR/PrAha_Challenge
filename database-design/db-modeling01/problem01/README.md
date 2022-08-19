@@ -1,6 +1,7 @@
 ## 課題 1
 
-<img width="362" alt="スクリーンショット 2022-08-18 22 10 54" src="https://user-images.githubusercontent.com/76472239/185403191-d98f624a-528f-41c4-a5cc-fea14db84969.png">
+<img width="256" alt="スクリーンショット 2022-08-19 23 43 23" src="https://user-images.githubusercontent.com/76472239/185644398-c4f907a4-6a43-4db4-89b3-04d1a885b681.png">
+
 
 ### Customer テーブル
 
