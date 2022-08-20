@@ -52,6 +52,6 @@ package "課題1" as problem01 {
 order }|..|| customer
 order ||-le-|{ order_detail
 order_detail ||..|| dish
-dish ||..||dish_category
+dish }|..||dish_category
 
 @enduml
