@@ -47,7 +47,7 @@ package "課題2" as problem01 {
     entity "DishCategory" as dish_category {
         + id [PK]
         --
-        category
+        name
     }
 
     entity "DishType" as dish_type {

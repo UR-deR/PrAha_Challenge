@@ -46,7 +46,7 @@ package "Yamaguchiさんの追加仕様" as problem01 {
     entity "DishCategory" as dish_category {
         + id [PK]
         --
-        category
+        name
     }
 }
 
