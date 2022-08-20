@@ -1,15 +1,16 @@
 ## 課題 3
 
 ### Yamaguchi さんの追加仕様
+<img width="255" alt="スクリーンショット 2022-08-20 12 06 18" src="https://user-images.githubusercontent.com/76472239/185726643-ed79051f-27f2-4564-a57b-7a290d575450.png">
 
-<img width="248" alt="スクリーンショット 2022-08-20 10 18 58" src="https://user-images.githubusercontent.com/76472239/185723805-def822ef-87d7-4e0f-84fa-69740052f847.png">
 
 `Customer` テーブルに新たなカラムとして`is_loyal`(boolean)を用意しました。
 このフラグがあることによって、注文代金を計算するときに割引を行うべきかの判定ができると考えました。
 
 ### 私の追加仕様
 
-<img width="253" alt="スクリーンショット 2022-08-20 10 19 44" src="https://user-images.githubusercontent.com/76472239/185723829-7b0a3c4d-f4a6-44f7-bb06-ef40254a8353.png">
+<img width="251" alt="スクリーンショット 2022-08-20 12 06 55" src="https://user-images.githubusercontent.com/76472239/185726658-43dd7ac9-cafc-419d-96f3-9dec26a9a227.png">
+
 
 `Dish`テーブルに`stock`カラム(int)を用意しました。  
 `stock`がゼロの商品は注文できないようにすれば仕様を満たせると考えました。
