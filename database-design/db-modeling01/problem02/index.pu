@@ -53,7 +53,7 @@ package "課題2" as problem01 {
     entity "DishType" as dish_type {
         + id [PK]
         --
-        商品種別名
+        name
     }
 }
 
