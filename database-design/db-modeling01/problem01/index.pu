@@ -1,0 +1,57 @@
+@startuml
+
+
+!define METAL #F2F2F2-D9D9D9
+
+skinparam class {
+    BackgroundColor METAL
+    BorderColor Black
+    ArrowColor Black
+}
+
+package "課題1" as problem01 {
+    entity "Customer" as customer {
+        + id [PK]
+        --
+          name 
+          tel [UQ][NN]
+    }
+
+    entity "Order" as order {
+        + id [PK]
+        --
+         customer_id
+         is_paid
+         ordered_at 
+    }
+
+    entity "OrderDetail" as order_detail {
+        + id [PK]
+        --
+          order_id
+          dish_id
+          has_wasabi
+          amount
+    }
+
+    entity "Dish" as dish {
+        + id [PK]
+        --
+        name
+        price
+        dish_category_id
+    }
+
+    entity "DishCategory" as dish_category {
+        + id [PK]
+        --
+        name
+    }
+}
+
+order }|..|| customer
+order ||-le-|{ order_detail
+order_detail ||..|| dish
+dish }|..||dish_category
+
+@enduml
