@@ -1,6 +1,7 @@
 ## 回答
 
-![Chat (4)](https://user-images.githubusercontent.com/76472239/187015930-e5006d53-31ad-4d91-b00c-a983b1348b3a.png)
+![Chat (5)](https://user-images.githubusercontent.com/76472239/187054430-0ff5b637-201c-4583-83b9-8420600a7f96.png)
+
 
 
 テーブル間の関係性については添付画像の通りなので、以下に考えたことなどについてまとめます。
