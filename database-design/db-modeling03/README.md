@@ -93,8 +93,7 @@ timestamp は除く
 
 ### CREATE の例
 
-`dir_a/dir_b/hoge`と同階層に`piyo`を作成する場合、
-`directory_tree`テーブルには以下のようにレコードを追加する。
+`dir_a/dir_b/hoge`と同階層に`piyo`を作成する場合、`document`テーブルに新たなレコードを追加し、`directory_tree`テーブルには以下のようにレコードを追加する。
 
 - dir_a
 
@@ -111,7 +110,7 @@ timestamp は除く
 
 ### DELETE の例
 
-`directory_tree`テーブル の仕組み上、物理削除を行わざるを得ない。上記で CREATE した piyo を削除する場合は、以下レコードを削除する。
+`directory_tree`テーブル の仕組み上、物理削除を行わざるを得ない。上記で CREATE した piyo を削除する場合は、`document`テーブルの piyo のレコードを削除し、`directory_tree`テーブルから以下レコードを削除する。
 
 - dir_a
 
