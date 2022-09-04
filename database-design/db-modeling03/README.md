@@ -22,39 +22,51 @@
 
 ### directory_tree テーブルのレコード例
 
-| parent_id | child_id |
-| --------- | -------- |
-| dir_a_id  | dir_a_id |
-| dir_a_id  | dir_b_id |
-| dir_a_id  | hoge_id  |
-| dir_a_id  | dir_c_id |
-| dir_a_id  | dir_d_id |
-| dir_a_id  | bar_id   |
-| dir_a_id  | dir_e_id |
-| dir_b_id  | dir_b_id |
-| dir_b_id  | hoge_id  |
-| hoge_id   | hoge_id  |
-| dir_c_id  | dir_c_id |
-| dir_c_id  | dir_d_id |
-| dir_c_id  | bar_id   |
-| dir_d_id  | dir_d_id |
-| dir_d_id  | bar_id   |
-| bar_id    | bar_id   |
-| dir_e_id  | dir_e_id |
-| foo_id    | foo_id   |
+| parent_id | child_id | depth |
+| --------- | -------- | ----- |
+| dir_a_id  | dir_a_id | 0     |
+| dir_a_id  | dir_b_id | 1     |
+| dir_a_id  | hoge_id  | 2     |
+| dir_a_id  | dir_c_id | 1     |
+| dir_a_id  | dir_d_id | 2     |
+| dir_a_id  | bar_id   | 3     |
+| dir_a_id  | dir_e_id | 1     |
+| dir_b_id  | dir_b_id | 0     |
+| dir_b_id  | hoge_id  | 1     |
+| hoge_id   | hoge_id  | 0     |
+| dir_c_id  | dir_c_id | 0     |
+| dir_c_id  | dir_d_id | 1     |
+| dir_c_id  | bar_id   | 2     |
+| dir_d_id  | dir_d_id | 0     |
+| dir_d_id  | bar_id   | 1     |
+| bar_id    | bar_id   | 0     |
+| dir_e_id  | dir_e_id | 0     |
+| foo_id    | foo_id   | 0     |
 
-ドキュメント`bar`の階層構造を取得したい場合は以下のクエリを実行し、`parent_id` と `depth` を元に算出できる。
+dir_a 直下のディレクトリとドキュメントの取得方法は以下の通りである。
 
 ```sql
-SELECT * FROM directory_tree where child_id='bar_id';
+SELECT + FROM directory_tree WHERE parent_id='dir_a_id' AND depth=1;
 ```
 
 | parent_id | child_id | depth |
 | --------- | -------- | ----- |
-| dir_a_id  | bar_id   | 1     |
+| dir_a_id  | dir_b_id | 1     |
+| dir_a_id  | dir_c_id | 1     |
+| dir_a_id  | dir_e_id | 1     |
+
+ドキュメント`bar`の階層構造を取得したい場合は以下のクエリを実行し、`parent_id` と `depth` を元に算出できる。
+
+```sql
+SELECT * FROM directory_tree WHERE child_id='bar_id';
+```
+
+| parent_id | child_id | depth |
+| --------- | -------- | ----- |
+| dir_a_id  | bar_id   | 3     |
 | dir_c_id  | bar_id   | 2     |
-| dir_d_id  | bar_id   | 3     |
-| bar_id    | bar_id   | 4     |
+| dir_d_id  | bar_id   | 1     |
+| bar_id    | bar_id   | 0     |
 
 ### directory のレコード例
 
