@@ -1,5 +1,8 @@
 回答
 
+![document_management](https://user-images.githubusercontent.com/76472239/188297270-4300ecf6-62ca-4f99-a086-44e595fc4df7.png)
+
+
 ## 課題 1 と 2
 
 ### ディレクトリ構造の一例
