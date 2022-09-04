@@ -43,6 +43,19 @@
 | dir_e_id  | dir_e_id |
 | foo_id    | foo_id   |
 
+ドキュメント`bar`の階層構造を取得したい場合は以下のクエリを実行し、parent_id と depth を元に算出できる。
+
+```sql
+SELECT * FROM directory_tree where child_id='bar_id';
+```
+
+| parent_id | child_id | depth |
+| --------- | -------- | ----- |
+| dir_a_id  | bar_id   | 1     |
+| dir_c_id  | bar_id   | 2     |
+| dir_d_id  | bar_id   | 3     |
+| bar_id    | bar_id   | 4     |
+
 ### directory のレコード例
 
 timestamp は除く
