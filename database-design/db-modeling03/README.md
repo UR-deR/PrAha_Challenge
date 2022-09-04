@@ -2,7 +2,6 @@
 
 ![document_management (1)](https://user-images.githubusercontent.com/76472239/188297594-cc76b38d-e07f-4ecd-8b1a-8121938e07cc.png)
 
-
 ## 課題 1 と 2
 
 ### ディレクトリ構造の一例
@@ -44,7 +43,7 @@
 | dir_e_id  | dir_e_id |
 | foo_id    | foo_id   |
 
-ドキュメント`bar`の階層構造を取得したい場合は以下のクエリを実行し、parent_id と depth を元に算出できる。
+ドキュメント`bar`の階層構造を取得したい場合は以下のクエリを実行し、`parent_id` と `depth` を元に算出できる。
 
 ```sql
 SELECT * FROM directory_tree where child_id='bar_id';
@@ -100,7 +99,7 @@ timestamp は除く
 
 ### DELETE の例
 
-directory_tree の仕組み上、物理削除を行わざるを得ない。上記で CREATE した piyo を削除する場合は、以下レコードを削除する。
+`directory_tree`テーブル の仕組み上、物理削除を行わざるを得ない。上記で CREATE した piyo を削除する場合は、以下レコードを削除する。
 
 - dir_a
 
@@ -117,7 +116,7 @@ directory_tree の仕組み上、物理削除を行わざるを得ない。上�
 
 ### いつ誰がどんな情報を〜
 
-`document_history` テーブルを用いてを実現させる。履歴表示で content の差分を表示するような場合は、クライアント側のライブラリで対応する(文字列の差分の検出。
+`document_history` テーブルを用いてを実現させる。履歴表示で `content` の差分を表示するような場合は、クライアント側のライブラリで対応する(文字列の差分の検出。
 
 ### 課題 2 表示順番の制御
 
