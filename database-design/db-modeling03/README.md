@@ -1,6 +1,7 @@
 回答
 
-![document_management](https://user-images.githubusercontent.com/76472239/188297270-4300ecf6-62ca-4f99-a086-44e595fc4df7.png)
+![document_management (1)](https://user-images.githubusercontent.com/76472239/188297594-cc76b38d-e07f-4ecd-8b1a-8121938e07cc.png)
+
 
 ## 課題 1 と 2
 
