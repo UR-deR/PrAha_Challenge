@@ -2,7 +2,6 @@
 
 ![document_management](https://user-images.githubusercontent.com/76472239/188297270-4300ecf6-62ca-4f99-a086-44e595fc4df7.png)
 
-
 ## 課題 1 と 2
 
 ### ディレクトリ構造の一例
@@ -105,3 +104,7 @@ directory_tree の仕組み上、物理削除を行わざるを得ない。上�
 ### いつ誰がどんな情報を〜
 
 `document_history` テーブルを用いてを実現させる。履歴表示で content の差分を表示するような場合は、クライアント側のライブラリで対応する(文字列の差分の検出。
+
+### 課題 2 表示順番の制御
+
+`document`テーブルに order カラムを持たせて対応。
