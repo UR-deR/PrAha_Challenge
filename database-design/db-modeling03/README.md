@@ -46,7 +46,7 @@
 dir_a 直下のディレクトリとドキュメントの取得方法は以下の通りである。
 
 ```sql
-SELECT + FROM directory_tree WHERE parent_id='dir_a_id' AND depth=1;
+SELECT * FROM directory_tree WHERE parent_id='dir_a_id' AND depth=1;
 ```
 
 | parent_id | child_id | depth |
