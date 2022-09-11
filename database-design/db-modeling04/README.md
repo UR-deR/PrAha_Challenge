@@ -5,10 +5,10 @@
 ### reminders テーブル
 
 **frequency_type**  
-`"DAILY", "WEEKLY", "MONTHLY"`のいづれかが入る。
+`"DAILY", "WEEKLY", "MONTHLY"`のいづれか
 
 **frequency_interval**  
-`frequency_type` が
+`frequency_type` が  
 `DAILY`: 0 ~ 6  
 `WEEKLY`: 1 ~ 7(1:月, 2:火,...7:日)  
 `MONTHLY` : 1 ~ 31
