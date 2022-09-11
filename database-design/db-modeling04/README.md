@@ -2,8 +2,10 @@
 
 ![penpen (1)](https://user-images.githubusercontent.com/76472239/189515428-9df6d485-813b-4559-95f3-9f5d39ec70c7.png)
 
-
 ### reminders テーブル
+
+**start_datetime**
+初回のリマインド実行日時。"X 日おき"などの基準として必要
 
 **frequency_type**  
 `"DAILY", "WEEKLY", "MONTHLY"`のいづれか
