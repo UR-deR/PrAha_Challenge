@@ -1,6 +1,7 @@
 # 解答
 
-![penpen](https://user-images.githubusercontent.com/76472239/189506890-57390d99-4285-43a2-8889-c63229b0934c.png)
+![penpen (1)](https://user-images.githubusercontent.com/76472239/189515428-9df6d485-813b-4559-95f3-9f5d39ec70c7.png)
+
 
 ### reminders テーブル
 
