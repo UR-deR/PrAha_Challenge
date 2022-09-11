@@ -5,6 +5,7 @@
 ### reminders テーブル
 
 **start_datetime**
+
 初回のリマインド実行日時。"X 日おき"などの基準として必要
 
 **frequency_type**  
