@@ -2,6 +2,9 @@
 
 ## 課題 1
 
+![article (2)](https://user-images.githubusercontent.com/76472239/190883209-404dfe02-284b-4d68-a510-fa5d950a015b.png)
+
+
 ### articles テーブル
 
 記事に関してのデータを持つ。記事の本文は 1000 文字程度なので、記事を更新した際は全文を保存する。
