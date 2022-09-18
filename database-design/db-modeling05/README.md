@@ -26,3 +26,9 @@
 | 1          | 1                 |
 | 1          | 2                 |
 | 3          | 3                 |
+
+## 課題 2
+
+![article' (2)](https://user-images.githubusercontent.com/76472239/190884408-5d665772-ef4c-4dad-8271-1534d0ccbb3f.png)
+
+
