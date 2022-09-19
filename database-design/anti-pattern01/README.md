@@ -16,3 +16,8 @@
 [SQL：カンマ区切りのカラムはアカン](https://shiro-secret-base.com/?p=890)
 
 [【DB 設計アンチパターン】カンマ区切りリストの項目を定義する](https://bbh.bz/2020/07/05/dont-define-camma-splitted-list-in-db/)
+
+## 課題2
+
+
+![tags](https://user-images.githubusercontent.com/76472239/190936647-ea501dc6-493e-496a-831a-16d77011bc0f.png)
