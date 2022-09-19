@@ -31,6 +31,9 @@
 
 ## 課題 3
 
+<img width="789" alt="スクリーンショット 2022-09-19 11 02 02" src="https://user-images.githubusercontent.com/76472239/190939221-a951ab5a-331e-4347-9fb3-cb93bdf7e271.png">
+
+
 Github の Pull requests を考える。
 
 添付画像の通り、それぞれの PR に対して Label を複数個つけたり、Label を一個もつけないこともできる。したがって、pull_requests と label は互いに非依存な関係なので、課題 2 と同様に交差テーブルを用いて関係性を表現するのが良いと思う。
