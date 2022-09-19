@@ -17,7 +17,12 @@
 
 [【DB 設計アンチパターン】カンマ区切りリストの項目を定義する](https://bbh.bz/2020/07/05/dont-define-camma-splitted-list-in-db/)
 
-## 課題2
-
+## 課題 2
 
 ![tags](https://user-images.githubusercontent.com/76472239/190936647-ea501dc6-493e-496a-831a-16d77011bc0f.png)
+
+`Post`と`Tag`は互いに非依存な関係なので交差テーブルで関係性を表現する。そうすることによって、
+
+- Post テーブルの tag カラムに NULL が生まれない
+- Post に対しての Tag の更新、削除が容易
+- 特定のタグを持つレコードの検索が容易(文字列検索・正規表現が不要)
