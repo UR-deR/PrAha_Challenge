@@ -45,7 +45,8 @@
 
 ### 別パターンでの履歴データの表現
 
-![article' (2)](https://user-images.githubusercontent.com/76472239/190884408-5d665772-ef4c-4dad-8271-1534d0ccbb3f.png)
+![article' (3)](https://user-images.githubusercontent.com/76472239/190885114-9b2fe8a1-1cf4-4827-923c-6258e409633c.png)
+
 
 `articles`テーブルの`latest_article_id`は最新の履歴 id をもつ。すなわち記事を更新するたびに`latest_article_id`を更新する。
 
