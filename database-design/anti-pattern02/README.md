@@ -25,3 +25,10 @@ SELECT * FROM Post WHERE tag1id=タグTのid OR tag2id=タグTのid OR tag3id=�
 
 を事前に確認する必要がある。
 1Post に 50 個、100 個のタグを付けられるような仕様になった場合大変。
+
+## 課題2
+
+
+![tags (1)](https://user-images.githubusercontent.com/76472239/190937254-b215b431-da0a-43da-9c88-bbf0e27ff3b1.png)
+
+`Post`と`Tag`は互いに非依存な関係なので交差テーブルで関係性を表現する。そうすることによって課題1で提示した問題点が解決できそう。
