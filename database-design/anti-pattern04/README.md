@@ -3,7 +3,6 @@
 ## 課題1
 
 ### 親か子かを判別する責務がDBからアプリケーション側に委ねられることになる。
-
 親メッセージのレコードの`parent_id`カラムの値がNULLになるため、親メッセージを取得する時には以下のようなWHERE句をアプリケーション側で書かなくてはいけない。
 ```sql
 SELECT * FROM Message WHERE parent_id IS NULL;
@@ -43,3 +42,8 @@ LEFT JOIN Message m3 ON m3.parent_id=m2.id;
 
 
 ## 課題3
+SNSなどのチャットツールやメール機能の開発の際に発生しうる。
+
+## 参考
+[閉包テーブル（closure table）でツリー構造を表現する](https://www.ritolab.com/entry/235)
+
