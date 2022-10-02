@@ -47,3 +47,5 @@ SNSなどのチャットツールやメール機能の開発の際に発生し�
 ## 参考
 [閉包テーブル（closure table）でツリー構造を表現する](https://www.ritolab.com/entry/235)
 
+[SQLアンチパターン　ナイーブツリー](https://qiita.com/fktnkit/items/57033c10b41b5747dbea)
+
