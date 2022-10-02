@@ -14,6 +14,21 @@
 
 ![tags (11)](https://user-images.githubusercontent.com/76472239/193437594-5100de2f-1aba-47a1-b6d8-16a0b45c15a1.png)
 
+## 課題3
+
+ペットを預かってくれるペット用ホテルの予約サービスを仮定する。当該ペットホテルの創業機は犬だけを扱っていたため当初は以下のようなテーブル設計になっていた。
+
+![tags (13)](https://user-images.githubusercontent.com/76472239/193438834-7e762c86-b2fa-46d9-8168-635aa0f21a23.png)
+
+更なる顧客を確保するために猫の預かりもするようになったとする。アンチパターン　に陥ってしまうと以下のようなテーブル設計をおこなってしまう。
 
 
 
+![tags (12)](https://user-images.githubusercontent.com/76472239/193438550-93f209aa-61b6-4e85-b909-5bf77fdb0526.png)
+
+```
+animal_id: dogs.id or cats.id
+animal_name: DOG or CAT
+```
+
+アンチパターンを回避するためには、課題２と同様に、親テーブル`animals`を用意し、その子テーブルとして`dogs`テーブルと`cats`テーブルを用意してあげれば良い。
