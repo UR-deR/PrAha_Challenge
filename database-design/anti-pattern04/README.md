@@ -37,6 +37,9 @@ LEFT JOIN Message m3 ON m3.parent_id=m2.id;
 
 ## 課題2
 
+以下のように閉包テーブルを用いてメッセージ間の親子関係を表現することによって、上記であげた問題点が解消できると思われる。
+
+![tags (14)](https://user-images.githubusercontent.com/76472239/193441118-c9246957-5e7c-4419-a4b7-8a0029717b35.png)
 
 
 ## 課題3
