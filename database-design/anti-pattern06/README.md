@@ -36,3 +36,13 @@ check制約に値を追加・変更・削除したりする構文が無いため
 
 ![students](https://user-images.githubusercontent.com/76472239/194746311-d841db1f-7c4b-4d08-8584-e8cafb2f57b2.png)
 
+## 課題3
+
+ペット預かりサービスの予約システムを開発しているとする。当初は犬と猫しか取り扱っていなかったので、`animal_type`にCHECK制約を付与して`DOG`or`CAT`しか入らない想定だった。しかし、事業が成長しその他の動物を扱えるようになったとする。以下のようにテーブル設計を組んでしまっていると課題１のような問題点にぶつかる。
+
+![document_management (2)](https://user-images.githubusercontent.com/76472239/194746975-c2a321ab-ec87-4c05-a3be-72699f419496.png)
+
+以下のようなテーブル設計に直せば問題点が解消できそう
+
+
+![document_management (3)](https://user-images.githubusercontent.com/76472239/194747271-d32f21a5-18a9-4e0d-ad88-bbbeb9b06f63.png)
