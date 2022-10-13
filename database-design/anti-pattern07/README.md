@@ -23,7 +23,7 @@ WHERE句を書き忘れてしまわないように、Studentを取得する際�
 
 ## 課題2
 
-<div style="width: 640px; height: 480px; margin: 10px; position: relative;"><iframe allowfullscreen frameborder="0" style="width:640px; height:480px" src="https://lucid.app/documents/embedded/d5b50e10-5d3f-4903-9e6e-ec985d16f1b6" id="cUQZ2i4dXR8v"></iframe></div>
+[課題2](https://lucid.app/documents/embedded/d5b50e10-5d3f-4903-9e6e-ec985d16f1b6)
 
 
 
