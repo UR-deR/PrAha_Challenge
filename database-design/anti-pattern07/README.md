@@ -21,6 +21,9 @@ WHERE句を書き忘れてしまわないように、Studentを取得する際�
 この時、DBのレコード上からは、「退会歴があるのか、一度も退会したことが無いStudentなのか」の区別がつかない。
 すなわち退会というイベントを正確に記録できていないと考えられる。
 
+## 課題2
+
+<div style="width: 640px; height: 480px; margin: 10px; position: relative;"><iframe allowfullscreen frameborder="0" style="width:640px; height:480px" src="https://lucid.app/documents/embedded/d5b50e10-5d3f-4903-9e6e-ec985d16f1b6" id="cUQZ2i4dXR8v"></iframe></div>
 
 
 
