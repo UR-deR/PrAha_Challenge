@@ -23,7 +23,7 @@ WHERE句を書き忘れてしまわないように、Studentを取得する際�
 
 ## 課題2
 
-[課題2](https://lucid.app/documents/embedded/d5b50e10-5d3f-4903-9e6e-ec985d16f1b6)
+![students (1)](https://user-images.githubusercontent.com/76472239/197551818-30267a49-73ae-442d-b795-96040480b356.png)
 
 
 
