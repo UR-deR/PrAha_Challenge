@@ -55,6 +55,8 @@ User テーブルからレコードを削除するという命令が、それ以
 
 [MySQL Trigger](https://www.javatpoint.com/mysql-trigger#:~:text=We%20need%2Fuse%20triggers%20in%20MySQL%20due%20to%20the%20following,maintaining%20audit%20trails%20in%20tables.)
 
+[Are database triggers necessary?](https://stackoverflow.com/questions/460316/are-database-triggers-necessary)
+
 ## 課題 2
 
 ## 課題 3
