@@ -57,6 +57,33 @@ User テーブルからレコードを削除するという命令が、それ以
 
 [Are database triggers necessary?](https://stackoverflow.com/questions/460316/are-database-triggers-necessary)
 
+### Enum を使うべきかどうか
+
+**pros**
+
+- DB 内のテーブルと外部キーの数を減らせる
+- 参照用の gender テーブルを設ける場合は`JOIN`が必要だが、enum を使えば JOIN は必要無いのでパフォーマンス的にはベター(JOIN を使ったとて、ある一定規模に達するまでは性能面で問題が発生するとは思えない。性能面で問題が発生してから正規化を解除しても良いと思う)
+- enum で定義したもの以外の値が入ることがない(enum ではなく、参照用のテーブルとして gender テーブルを設けた場合でも参照整合性制約により同様なことを実現できる)
+
+**cons**
+
+- enum を採用する場合、上記クエリで性別一覧を取得するが、実際にレコードに存在している値しか取得できないため全ての gender を取得できる保証が無い。(`cf.` enum ではなく、参照用のテーブルとして gender テーブルを設ければこの問題は解消できる)
+
+```sql
+ SELECT DISTINCT gender FROM User;
+```
+
+- enum として定義する値を追加・変更・削除するために`ALTER TABLE`でテーブル全体を再構築する必要がある。(`cf.` enum ではなく、参照用のテーブルとして gender テーブルを設ければ、`ALTER TABLE`を発行する必要が無いので比較的容易に対応できる)
+
+- enum で定義した値を他のテーブルから参照することができない(`cf.` enum ではなく、参照用のテーブルとして gender テーブルを設ければ、他のテーブルから gender 一覧を参照することができる)
+
+**結論**
+LGBTQ への対応が発生する可能性を否定できないので、enum ではなく gender テーブル用意するのが無難な気がする
+
+**参考記事**
+
+[8 Reasons Why MySQL's ENUM Data Type Is Evil](https://web.archive.org/web/20180324095351/http://komlenic.com/244/8-reasons-why-mysqls-enum-data-type-is-evil/)
+
 ## 課題 2
 
 ## 課題 3
