@@ -31,6 +31,8 @@ DB を操作する主体の数に関わらず、ssh 接続してデータ修正�
 
 [Should data validation be done at the database level?](https://stackoverflow.com/questions/1127122/should-data-validation-be-done-at-the-database-level)
 
+[Is it good to use check constraints for business rules](https://stackoverflow.com/questions/1714293/is-it-good-to-use-check-constraints-for-business-rules)
+
 ### Trigger を使うべきかどうか
 
 **pros**
