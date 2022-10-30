@@ -29,11 +29,9 @@
 
 [Should data validation be done at the database level?](https://stackoverflow.com/questions/1127122/should-data-validation-be-done-at-the-database-level)
 
-<<<<<<< HEAD
 [10 章 31 Flavors(31 のフレーバー)](https://qiita.com/Inagawa/items/6e9745d2598aa713a1f3)
-=======
+
 [Is it good to use check constraints for business rules](https://stackoverflow.com/questions/1714293/is-it-good-to-use-check-constraints-for-business-rules)
->>>>>>> 59e325ac4fb3fa8815b38bd07d19a3b03462fe29
 
 ### Trigger を使うべきかどうか
 
