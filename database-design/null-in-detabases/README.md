@@ -58,6 +58,11 @@ SELECT NULL IS NOT NULL
 
 ## 課題 2
 
+以下のように中間テーブルを作成する。
+
+![Assignee](https://user-images.githubusercontent.com/76472239/207285659-b6beda85-7d4e-4a55-8802-3f326f990f63.png)
+
+
 ## 課題３
 
 ## 　課題 4
