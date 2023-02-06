@@ -7,9 +7,39 @@
 
 ### 具体例
 
-1.
+どのような不具合を防げるか
+
+1. `ActionButton`というbuttonタグをラップしたコンポーネントがあったとする。
+```javascript
+type Props = {
+  type: "button" | "submit";
+  text: string:
+}
+export const Button: FC<Props> = (props) => {
+return <button type={props.type}>{props.text}</button>
+}
+
+```
+
+このコンポーネントはpropsとしてtype属性の値（buttonやsubmitなど）を受け取っているが、ほとんどのページでpropsのtypeとしてsubmitを渡していたので、propsとしてtypeを受け取るのではなく、ActionButtonのコンポーネントを以下のように修正したとする。
+
+```javascript
+type Props = {
+  text: string:
+}
+export const Button: FC<Props> = (props) => {
+return <button type="submit">{props.text}</button> // すべてのページでtype="submit"を指定しても良いと勘違いし、ベタ書きをしてしまったケース
+}
+
+```
+
+この修正をした後にスナップショットを実行すると、もともとpropsとしてtype="button"を用いていた箇所があった場合に失敗する。、もともとpropsとしてtype="button"を用いていた箇所が上記の修正でtype="submit"になってしまい予期せぬフォーム送信が発生してしまいうることに、スナップショットを介して気づくことができる。（エディタの文字列検索などでも気づけるかもだが）
+
+
 
 ## 課題 2
+
+https://github.com/axtx4869/react-tutorial/tree/master/src/components
 
 ## 課題 3
 
