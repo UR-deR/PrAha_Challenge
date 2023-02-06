@@ -66,7 +66,7 @@ Object {
 `;
 ```
 
-Q2. 以下のようなランダム性を文字列を含んだ文字列の snapshot テストを実装したい場合、どのようにすべきでしょうか。
+Q2. 以下のようなランダム性を含んだ文字列の snapshot テストを実装したい場合、どのようにすべきでしょうか。
 
 ```javascript
 const randomNumber = Math.round(Math.random() * 100);
