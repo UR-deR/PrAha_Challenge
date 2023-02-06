@@ -75,4 +75,4 @@ const xxx = stringWithRandomData.hogehoge().fugafuga(); // この行でどのよ
 expect(xxx).toMatchSnapshot();
 ```
 
-Q3. インラインスナップショットと外部スナップショット(`.snapファイル`)の違いはなんでしょうか？
+Q3. jestのsnapshotに関してのmatcherとして、`toMatchSnapshot`と`toMatchInlineSnapshot`があるが、それぞれの違いとしてどのような点があるでしょうか？
