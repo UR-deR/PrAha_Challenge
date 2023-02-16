@@ -2,6 +2,15 @@
 
 ## 課題 1
 
+### 片方のプレイヤーが勝利&引き分け
+
+[e2eテスト](https://github.com/axtx4869/react-tutorial/blob/master/cypress/e2e/game.cy.js)
+[実装](https://github.com/axtx4869/react-tutorial/tree/master/src/components)
+
+### presentational / container
+
+wip
+
 ## 課題 2
 
 ### メリット
@@ -51,6 +60,8 @@ e2e < 統合 < 単体
 特に、`data-testid`のようにテスト用の data 属性であることが読み取れるようにしておくと、細かいデザインの修正や画面の挙動の修正に影響されることが少なくなり、e2e テストが失敗しにくくなる。
 
 ## 課題 3
+
+wip
 
 ## 課題 4
 
