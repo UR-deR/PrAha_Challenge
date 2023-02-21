@@ -7,9 +7,24 @@
 [e2eテスト](https://github.com/axtx4869/react-tutorial/blob/master/cypress/e2e/game.cy.js)
 [実装](https://github.com/axtx4869/react-tutorial/tree/master/src/components)
 
-### presentational / container
+### presentational / containerパターン
 
-wip
+データフェッチング層とプレゼンテーション層とで関心の分離を行うためのコンポーネントの設計パターン
+
+**presentational**
+
+どのようにデータを表示するのかに関心を持つ
+ビューを担う
+
+**container**
+
+どのデータを表示するのかに対して関心を持つ
+データフェッチングを担う
+
+hooksが登場してから、presentational/containerコンポーネントパターンは廃れていった。
+hooksを用いれば、containerコンポーネントでpresentationalコンポーネントをラップして、propsでデータを渡すなどの処理をかかなくても良くなり、コンポーネント内でhooksを呼び出すだけで良くなった
+
+参考: [Container/Presentational Pattern](https://www.patterns.dev/posts/presentational-container-pattern/)
 
 ## 課題 2
 
