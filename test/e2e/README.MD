@@ -7,7 +7,7 @@
 [e2eテスト](https://github.com/axtx4869/react-tutorial/blob/master/cypress/e2e/game.cy.js)
 [実装](https://github.com/axtx4869/react-tutorial/tree/master/src/components)
 
-引き分けの時のsnapshot
+引き分けの時のsnapshot（右にスクロールしてください）
 
 https://github.com/axtx4869/react-tutorial/blob/master/src/__image_snapshots__/__diff_output__/storybook-test-js-image-storyshots-q-2-game-index-1-diff.png
 
