@@ -77,3 +77,6 @@ Gherkin という DSL を利用することで、開発者と QA エンジニア
 合わせて、DSL でテスト内容を明確に記述できます
 
 ## 課題 2
+
+[実装](https://github.com/axtx4869/praha-challenge-templates/blob/master/jestSample/caluculate.ts)
+[テスト](https://github.com/axtx4869/praha-challenge-templates/blob/master/jestSample/__tests__/caluculate.test.ts)
