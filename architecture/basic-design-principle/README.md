@@ -100,6 +100,8 @@ e.g. インターフェイスが変更になった場合は（クライアント
 ### 改善
 
 こちらで実装し直しました。
+
 https://github.com/axtx4869/PrAha_Challenge/blob/main/architecture/basic-design-principle/kadai03.ts
+
 外からプロパティの値を更新できないように readonly を各プロパティに付与しました。
 また、プロパティを更新する際は、インスタンスを新規で生成するようにしました。
