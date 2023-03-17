@@ -11,7 +11,12 @@ class Person {
     this.age = age;
     this.password = password;
   }
-  private copy({ name = this.name, email = this.email, age = this.age, password = this.password }): Person {
+  private copy({
+    name: name = this.name,
+    email: email = this.email,
+    age: age = this.age,
+    password: password = this.password,
+  }): Person {
     return new Person(name, this.starWorkingAt, email, age, password);
   }
 
