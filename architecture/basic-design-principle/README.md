@@ -1,4 +1,4 @@
-#　基本的な設計原則
+# 基本的な設計原則
 
 ## 課題１
 
@@ -105,3 +105,5 @@ https://github.com/axtx4869/PrAha_Challenge/blob/main/architecture/basic-design-
 
 外からプロパティの値を更新できないように readonly を各プロパティに付与しました。
 また、プロパティを更新する際は、インスタンスを新規で生成するようにしました。
+
+参考：[DDDのエンティティはイミュータブルな実装にしてもいいの？(サンプルコード有り)[ドメイン駆動設計 / DDD]](https://little-hands.hatenablog.com/entry/2021/12/13/immutable-entity)
