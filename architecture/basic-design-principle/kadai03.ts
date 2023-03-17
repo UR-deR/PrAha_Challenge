@@ -7,6 +7,9 @@ class Person {
   constructor(name: string, startWorkingAt: Date, email: string, age: number, password: string) {
     this.name = name;
     this.starWorkingAt = startWorkingAt;
+    this.email = email;
+    this.age = age;
+    this.password = password;
   }
   private copy({ name = this.name, email = this.email, age = this.age, password = this.password }): Person {
     return new Person(name, this.starWorkingAt, email, age, password);
