@@ -1,16 +1,19 @@
 class Person {
-  public readonly name: string; // readonlyを付与
-  public readonly starWorkingAt: Date; //readonlyを付与
+  public readonly name: string;
+  public readonly starWorkingAt: Date;
+  public readonly email: string;
+  public readonly age: number;
+  public readonly password: string;
   constructor(name: string, startWorkingAt: Date) {
     this.name = name;
     this.starWorkingAt = startWorkingAt;
   }
-  private copy(name = this.name, startWorkingAt = this.starWorkingAt): Person {
+  private copy({ name = this.name, startWorkingAt = this.starWorkingAt }): Person {
     return new Person(name, startWorkingAt);
   }
 
-  public changeName(newName: string) {
-    return this.copy(newName);
+  public changeName(name: string) {
+    return this.copy({ name });
   }
 }
 
