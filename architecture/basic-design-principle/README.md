@@ -90,7 +90,7 @@ NG な理由
 - 凝集度の低いコードになっており、プロパティの用途が読み取れない
 
 改善策
-→ 不用意な getter, setter を公開せず、必要なひとまとまりの手続きのみを外部から呼び出せるようにする
+→ 不用意な getter, setter を公開せず、必要なひとまとまりの手続きのみを外部から呼び出せるようにする([例](https://github.com/axtx4869/PrAha_Challenge/blob/main/architecture/basic-design-principle/encapsulate.ts))
 
 ## 課題２
 
