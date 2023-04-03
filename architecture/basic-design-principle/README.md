@@ -64,7 +64,8 @@ e.g. インターフェイスが変更になった場合は（クライアント
 
 ### インターフェースを用いる設計上のメリット
 
-インターフェースに依存していれば、モジュール間の関係が疎結合になり、依存先の詳細な実装に変更があったとしても、それに伴う修正が発生しなくなる（発生しても微小）
+- インターフェースに依存していれば、モジュール間の関係が疎結合になり、依存先の詳細な実装に変更があったとしても、それに伴う修正が発生しなくなる（発生しても微小）
+- interfaceを用いることで条件分岐を減らせる（[interface無し](https://github.com/axtx4869/PrAha_Challenge/blob/main/architecture/basic-design-principle/withoutInterface.ts) vs [interfaceあり](https://github.com/axtx4869/PrAha_Challenge/blob/main/architecture/basic-design-principle/withInterface.ts)）
 
 ### 依存性の逆転を用いる場面
 
