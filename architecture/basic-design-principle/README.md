@@ -65,24 +65,32 @@ e.g. インターフェイスが変更になった場合は（クライアント
 ### インターフェースを用いる設計上のメリット
 
 - インターフェースに依存していれば、モジュール間の関係が疎結合になり、依存先の詳細な実装に変更があったとしても、それに伴う修正が発生しなくなる（発生しても微小）
-- interfaceを用いることで条件分岐を減らせる（[interface無し](https://github.com/axtx4869/PrAha_Challenge/blob/main/architecture/basic-design-principle/withoutInterface.ts) vs [interfaceあり](https://github.com/axtx4869/PrAha_Challenge/blob/main/architecture/basic-design-principle/withInterface.ts)）
+- interface を用いることで条件分岐を減らせる（[interface 無し](https://github.com/axtx4869/PrAha_Challenge/blob/main/architecture/basic-design-principle/withoutInterface.ts) vs [interface あり](https://github.com/axtx4869/PrAha_Challenge/blob/main/architecture/basic-design-principle/withInterface.ts)）
 
 ### 依存性の逆転を用いる場面
 
 外部サービスやインフラストラクチャに依存するような実装をする場面
 
-### デメトルの法則
+### デメテルの法則
 
 「親クラス.子クラス.子クラスのメソッド/プロパティ」の様な形で、メソッド/プロパティを呼び出すのは NG であるという法則。
 
-→ 結合度が高く、親クラスや子クラスの詳細についての知識を持っていないといけないから。したがって、関心の分離ができていないと考えられる。
+NG な理由
 
-プロパティやメソッドを直接参照せずに getter, setter などのアクセサ経由で呼び出すことによって、親クラスや子クラスの詳細について知りすぎてしまうという状況を回避できる
+- 結合度が高く、親クラスや子クラスの詳細についての知識を持っていないといけないから。
+- データ構造に修正が発生した際に、メソッドチェーンで呼び出している箇所を全て修正しないといけない。
+
+対応策
+→ インスタンス変数を private にして外部からプロパティを参照できないようにする
+→ getter, setter などのアクセサ経由で呼び出すことによって、親クラスや子クラスの詳細について知りすぎてしまうという状況を回避できる
 
 ### 新人プログラマが書いたコードがダメな理由
 
-- Getter, Setter が露出している
-- プロパティ単位での操作が可能になっている
+- プロパティ単位での操作が可能になってしまい、予期せぬ箇所でプロパティの更新が行われてしまう可能性がある
+- 凝集度の低いコードになっており、プロパティの用途が読み取れない
+
+改善策
+→ 不用意な getter, setter を公開せず、必要なひとまとまりの手続きのみを外部から呼び出せるようにする
 
 ## 課題２
 
@@ -107,4 +115,4 @@ https://github.com/axtx4869/PrAha_Challenge/blob/main/architecture/basic-design-
 外からプロパティの値を更新できないように readonly を各プロパティに付与しました。
 また、プロパティを更新する際は、インスタンスを新規で生成するようにしました。
 
-参考：[DDDのエンティティはイミュータブルな実装にしてもいいの？(サンプルコード有り)[ドメイン駆動設計 / DDD]](https://little-hands.hatenablog.com/entry/2021/12/13/immutable-entity)
+参考：[DDD のエンティティはイミュータブルな実装にしてもいいの？(サンプルコード有り)[ドメイン駆動設計 / DDD]](https://little-hands.hatenablog.com/entry/2021/12/13/immutable-entity)
