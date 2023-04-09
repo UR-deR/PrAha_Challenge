@@ -1,3 +1,41 @@
+/**
+ * 例１: Personクラス
+ * アプリケーション全体でフルネームとして扱いたい
+ * しかし、Personクラスはフルネームを表現するプロパティを持っていない
+ * そのため、アプリケーション層でフルネームを表現するロジックを書く必要がある
+ * アプリケーション全体でどのように名前を扱うのかの振る舞いをドメイン層に定義すべき NOT アプリケーション層（呼び出し側）
+ */
+class Person {
+  private _firstName: string;
+  private _lastName: string;
+
+  constructor(firstName: string, lastName: string) {
+    this._firstName = firstName;
+    this._lastName = lastName;
+  }
+
+  // フルネームのみを扱う場合、以下のようなgetterを用意するべきではない。ルールが崩れる
+  get firstName(): string {
+    return this._firstName;
+  }
+
+  get lastName(): string {
+    return this._lastName;
+  }
+
+  set firstName(firstName: string) {
+    this._firstName = firstName;
+  }
+
+  set lastName(lastName: string) {
+    this._lastName = lastName;
+  }
+}
+
+/**
+ * 例２: PullRequestクラス
+ */
+
 interface User {
   id: number;
   name: string;
@@ -18,7 +56,6 @@ enum PullRequestStatus {
   Draft,
 }
 
-// ドメインモデル貧血症のクラス
 class PullRequest {
   constructor(
     public id: number,
@@ -42,6 +79,7 @@ const pullRequest = new PullRequest(
 );
 
 //　問題点１： ステータスが変更されるが、更新日時が変更されない。不整合が生じる
+// statusが更新される時にupdatedAtも更新されるようにドメイン層で表現すべきである
 pullRequest.status = PullRequestStatus.Closed;
 
 //問題点２： アプリケーション層でドメイン知識を表現しないといけない
