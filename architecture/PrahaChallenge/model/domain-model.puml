@@ -1,0 +1,67 @@
+@startuml Domain Model
+skinparam style strictuml
+skinparam DefaultFontName Arial
+skinparam DefaultFontSize 16
+skinparam DefaultFontStyle bold
+skinparam ArrowThickness 2.2
+skinparam ArrowColor #gray
+hide empty members
+
+class "参加者\n(Attendee)" as Attendee {
+    name
+    email
+    status
+}
+note right of Attendee::email
+    重複NG
+end note
+
+note left of Attendee::status
+    在籍中, 休会中, 退会済の3種類
+    「在籍中」ではない場合、どのチームにもペアにも所属してはいけない
+end note
+
+
+class "チーム\n(Team)" as Team {
+    name
+    pairs
+}
+
+note left of Team::name
+    ・ 1,2,3,4などの数字でなければならない
+    ・ 重複NG
+end note
+
+note left of Team::pairs
+    参加者が最低でも3名必要
+end note
+
+class "ペア\n(Pair)" as Pair {
+    name
+    attendees
+}
+
+note left of Pair::name
+    一文字のアルファベットでなければならない
+end note
+
+note left of Pair::attendees
+    2名以上3名以下
+end note
+    
+class "課題\n(Assignment)" as Assignment {
+    title
+    content
+    status
+}
+
+note right of Assignment::status
+    未着手, レビュー待ち, 完了の3種類
+    完了にしたら、ステータスはこれ以上変更できない
+end note
+
+Team "1" *-- "2" Pair
+Pair "1"-- "2~3" Attendee
+Attendee "1"-- "80" Assignment
+
+
