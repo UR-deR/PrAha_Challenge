@@ -28,8 +28,8 @@ class "チーム\n(Team)" as Team {
 }
 
 note left of Team::name
-    ・ 1,2,3,4などの数字でなければならない
-    ・ 重複NG
+    1,2,3,4などの数字でなければならない
+    重複NG
 end note
 
 note left of Team::pairs
