@@ -8,4 +8,16 @@ export class Attendee {
     public readonly email: Email,
     public readonly status: AttendeeStatus,
   ) {}
+
+  private changeStatus(status: AttendeeStatus): Attendee {
+    return new Attendee(this.id, this.name, this.email, status);
+  }
+
+  public resign(): Attendee {
+    return this.changeStatus(AttendeeStatus.RESIGNED);
+  }
+
+  public stayAway(): Attendee {
+    return this.changeStatus(AttendeeStatus.STAY_AWAY);
+  }
 }

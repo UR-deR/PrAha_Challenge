@@ -1,16 +1,11 @@
 import { AssignmentStatus } from '../assignment-status/model';
 
 export class Assignment {
-  public id: string;
-  private readonly title: string;
-  private readonly description: string;
-  private readonly status: AssignmentStatus;
-
   private constructor(
-    id: string,
-    title: string,
-    description: string,
-    status: AssignmentStatus,
+    public id: string,
+    private title: string,
+    private description: string,
+    private status: AssignmentStatus,
   ) {
     this.id = id;
     this.title = title;
@@ -18,15 +13,15 @@ export class Assignment {
     this.status = status;
   }
 
-  private copy({ status = this.status }) {
+  private changeStatus(status: AssignmentStatus): Assignment {
     return new Assignment(this.id, this.title, this.description, status);
   }
 
   public markAsPendingReview(): Assignment {
-    return this.copy({ status: AssignmentStatus.PENDING_REVIEW });
+    return this.changeStatus(AssignmentStatus.PENDING_REVIEW);
   }
 
   public markAsDone(): Assignment {
-    return this.copy({ status: AssignmentStatus.DONE });
+    return this.changeStatus(AssignmentStatus.DONE);
   }
 }

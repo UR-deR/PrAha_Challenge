@@ -7,7 +7,7 @@ export class Team {
   private readonly pairs: Pair[];
 
   private constructor(id: string, name: TeamName, pairs: Pair[]) {
-    const attendees = pairs.flatMap((pair) => pair.attendees);
+    const attendees = pairs.flatMap(({ attendees }) => attendees);
     if (attendees.length < 3) {
       throw new Error(`Invalid attendee count. given: ${attendees.length}`);
     }

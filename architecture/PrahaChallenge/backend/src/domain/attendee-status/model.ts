@@ -1,5 +1,5 @@
 export enum AttendeeStatus {
   ACTIVE = 'ACTIVE',
-  ON_LEAVE = 'ON_LEAVE',
+  STAY_AWAY = 'STAY_AWAY',
   RESIGNED = 'RESIGNED',
 }

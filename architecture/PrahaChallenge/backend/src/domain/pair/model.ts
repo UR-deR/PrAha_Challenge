@@ -21,17 +21,17 @@ export class Pair {
     this.attendees = attendees;
   }
 
-  private copy({ name = this.name, attendees = this.attendees }) {
-    return new Pair(this.id, name, attendees);
+  private changeAttendees(attendees: Attendee[]): Pair {
+    return new Pair(this.id, this.name, attendees);
   }
 
   public removeAttendee(attendee: Attendee): Pair {
     const attendees = this.attendees.filter(({ id }) => id !== attendee.id);
-    return this.copy({ attendees });
+    return this.changeAttendees(attendees);
   }
 
   public addAttendee(attendee: Attendee): Pair {
     const attendees = [...this.attendees, attendee];
-    return this.copy({ attendees });
+    return this.changeAttendees(attendees);
   }
 }
