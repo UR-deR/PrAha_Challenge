@@ -6,3 +6,4 @@ prisma/*
 *.map
 model.js
 dist/*
+.DS_Store
