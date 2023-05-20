@@ -8,55 +8,35 @@ datasource db {
 }
 
 model teams {
-  id    Int          @id @default(autoincrement())
+  id    Int     @id @default(autoincrement())
   name  String
-  pairs pair_teams[]
+  pairs pairs[]
 }
 
 model pairs {
-  id      Int              @id @default(autoincrement())
-  name    String
-  teams   pair_teams[]
-  members attendee_pairs[]
+  id        Int         @id @default(autoincrement())
+  name      String
+  team_id   Int
+  team      teams       @relation(fields: [team_id], references: [id])
+  attendees attendees[]
 }
 
 model attendees {
-  id             Int                    @id @default(autoincrement())
-  name           String
-  email          String
-  status_id      Int
-  status         attendee_statuses      @relation(fields: [status_id], references: [id])
-  assignments    attendee_assignments[]
-  attendee_pairs attendee_pairs[]
-}
-
-model attendee_pairs {
-  pair_id     Int
-  attendee_id Int
-
-  pair     pairs     @relation(fields: [pair_id], references: [id])
-  attendee attendees @relation(fields: [attendee_id], references: [id])
-
-  @@id([pair_id, attendee_id])
-}
-
-model pair_teams {
-  team_id Int
-  pair_id Int
-
-  team teams @relation(fields: [team_id], references: [id])
-  pair pairs @relation(fields: [pair_id], references: [id])
-
-  @@id([team_id, pair_id])
+  id                           Int                            @id @default(autoincrement())
+  name                         String
+  email                        String
+  pair_id                      Int
+  status_id                    Int
+  pair                         pairs                          @relation(fields: [pair_id], references: [id])
+  status                       attendee_statuses              @relation(fields: [status_id], references: [id])
+  attendee_assignment_statuses attendee_assignment_statuses[]
 }
 
 model assignments {
-  id          Int                    @id @default(autoincrement())
-  title       String
-  description String
-  status_id   Int
-  status      assignment_statuses    @relation(fields: [status_id], references: [id])
-  attendees   attendee_assignments[]
+  id                           Int                            @id @default(autoincrement())
+  title                        String
+  description                  String?
+  attendee_assignment_statuses attendee_assignment_statuses[]
 }
 
 model attendee_statuses {
@@ -66,17 +46,18 @@ model attendee_statuses {
 }
 
 model assignment_statuses {
-  id          Int           @id @default(autoincrement())
-  name        String
-  assignments assignments[]
+  id                           Int                            @id @default(autoincrement())
+  name                         String
+  attendee_assignment_statuses attendee_assignment_statuses[]
 }
 
-model attendee_assignments {
+model attendee_assignment_statuses {
   attendee_id   Int
   assignment_id Int
-
-  attendee   attendees   @relation(fields: [attendee_id], references: [id])
-  assignment assignments @relation(fields: [assignment_id], references: [id])
+  status_id     Int
+  attendee      attendees           @relation(fields: [attendee_id], references: [id])
+  assignment    assignments         @relation(fields: [assignment_id], references: [id])
+  status        assignment_statuses @relation(fields: [status_id], references: [id])
 
   @@id([attendee_id, assignment_id])
 }
