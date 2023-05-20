@@ -5,8 +5,8 @@ export class GetAllPairsResponse {
   @ApiProperty({ type: () => [Pair] })
   allPairs: Pair[];
 
-  public constructor(allPairs: AllPairsDto) {
-    this.allPairs = allPairs.pair.map(({ id, name }) => new Pair(id, name));
+  public constructor({ pair }: AllPairsDto) {
+    this.allPairs = pair;
   }
 }
 

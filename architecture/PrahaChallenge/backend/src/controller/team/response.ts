@@ -5,8 +5,8 @@ export class GetAllTeamsResponse {
   @ApiProperty({ type: () => [Team] })
   allTeams: Team[];
 
-  public constructor(allTeams: AllTeamsDto) {
-    this.allTeams = allTeams.team.map(({ id, name }) => new Team(id, name));
+  public constructor({ team }: AllTeamsDto) {
+    this.allTeams = team;
   }
 }
 
