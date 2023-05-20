@@ -9,7 +9,6 @@ import { ITeamRepository } from '../../../domain/team/repository';
 import { prisma } from '../../client/prisma-client';
 
 export class TeamRepository implements ITeamRepository {
-  public constructor() {}
   public async findById(id: number): Promise<Team | undefined> {
     const team = await prisma.teams.findUnique({
       where: {
@@ -61,9 +60,4 @@ export class TeamRepository implements ITeamRepository {
       pairs,
     );
   }
-
-  // public async getAll(): Promise<Team[]> {
-  //   const teams = await prisma.teams.findMany();
-  //   return teams;
-  // }
 }
