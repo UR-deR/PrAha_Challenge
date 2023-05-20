@@ -2,7 +2,7 @@ import {
   AllTeamsDto,
   IGetAllTeamsQueryService,
 } from '../../usecase/get-all-teams/query-service';
-import { prisma } from '../client/prisma-client';
+import prisma from '../client/prisma-client';
 
 export class GetAllTeamQueryService implements IGetAllTeamsQueryService {
   async execute(): Promise<AllTeamsDto> {

@@ -2,7 +2,7 @@ import {
   AllPairsDto,
   IGetAllPairsQueryService,
 } from '../../usecase/get-all-pairs/query-service';
-import { prisma } from '../client/prisma-client';
+import prisma from '../client/prisma-client';
 
 export class GetAllPairQueryService implements IGetAllPairsQueryService {
   async execute(): Promise<AllPairsDto> {

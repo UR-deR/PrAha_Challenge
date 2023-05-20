@@ -6,7 +6,7 @@ import { Pair } from '../../../domain/pair/model';
 import { TeamName } from '../../../domain/team-name/model';
 import { Team } from '../../../domain/team/model';
 import { ITeamRepository } from '../../../domain/team/repository';
-import { prisma } from '../../client/prisma-client';
+import prisma from '../../client/prisma-client';
 
 export class TeamRepository implements ITeamRepository {
   public async findById(id: number): Promise<Team | undefined> {

@@ -3,7 +3,7 @@ import {
   AllAttendeesDto,
   IGetAllAttendeesQueryService,
 } from '../../usecase/get-all-attendees/query-service';
-import { prisma } from '../client/prisma-client';
+import prisma from '../client/prisma-client';
 import { AttendeeStatus } from '../../domain/attendee-status/model';
 
 export class GetAllAttendeesQueryService
