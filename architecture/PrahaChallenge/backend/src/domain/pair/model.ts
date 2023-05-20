@@ -2,14 +2,14 @@ import { Attendee } from '../attendee/model';
 import { PairName } from '../pair-name/model';
 
 export class Pair {
-  public readonly id: string;
+  public readonly id: number;
   private readonly name: PairName;
   public readonly attendees: Attendee[];
 
   static MAX_ATTENDEE_COUNT = 3;
   static MIN_ATTENDEE_COUNT = 2;
 
-  private constructor(id: string, name: PairName, attendees: Attendee[]) {
+  private constructor(id: number, name: PairName, attendees: Attendee[]) {
     if (
       attendees.length < Pair.MIN_ATTENDEE_COUNT ||
       attendees.length > Pair.MAX_ATTENDEE_COUNT
@@ -19,6 +19,14 @@ export class Pair {
     this.id = id;
     this.name = name;
     this.attendees = attendees;
+  }
+
+  public static reconstruct(
+    id: number,
+    name: PairName,
+    attendees: Attendee[],
+  ): Pair {
+    return new Pair(id, name, attendees);
   }
 
   private changeAttendees(attendees: Attendee[]): Pair {

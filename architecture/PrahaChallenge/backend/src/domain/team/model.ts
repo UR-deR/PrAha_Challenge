@@ -2,11 +2,11 @@ import { Pair } from '../pair/model';
 import { TeamName } from '../team-name/model';
 
 export class Team {
-  public readonly id: string;
+  public readonly id: number;
   private readonly name: TeamName;
   private readonly pairs: Pair[];
 
-  private constructor(id: string, name: TeamName, pairs: Pair[]) {
+  private constructor(id: number, name: TeamName, pairs: Pair[]) {
     const attendees = pairs.flatMap(({ attendees }) => attendees);
     if (attendees.length < 3) {
       throw new Error(`Invalid attendee count. given: ${attendees.length}`);
@@ -18,6 +18,10 @@ export class Team {
 
   private copy({ name: name = this.name, pairs: pairs = this.pairs }): Team {
     return new Team(this.id, name, pairs);
+  }
+
+  public static reconstruct(id: number, name: TeamName, pairs: Pair[]) {
+    return new Team(id, name, pairs);
   }
 
   public reconstruct({

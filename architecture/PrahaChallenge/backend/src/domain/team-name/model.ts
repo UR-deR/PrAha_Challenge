@@ -1,3 +1,3 @@
 export class TeamName {
-  private constructor(public readonly id: number) {}
+  constructor(public readonly id: number) {}
 }

@@ -9,6 +9,15 @@ export class Attendee {
     public readonly status: AttendeeStatus,
   ) {}
 
+  public static reconstruct(
+    id: string,
+    name: string,
+    email: Email,
+    status: AttendeeStatus,
+  ): Attendee {
+    return new Attendee(id, name, email, status);
+  }
+
   private changeStatus(status: AttendeeStatus): Attendee {
     return new Attendee(this.id, this.name, this.email, status);
   }
