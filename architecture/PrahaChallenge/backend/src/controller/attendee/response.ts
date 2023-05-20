@@ -4,10 +4,10 @@ import { AttendeeStatus } from '../../domain/attendee-status/model';
 
 export class GetAllAttendeesResponse {
   @ApiProperty({ type: () => [Attendee] })
-  allAttendees: Attendee[];
+  all_attendees: Attendee[];
 
   constructor(allAttendeesDto: AllAttendeesDto) {
-    this.allAttendees = allAttendeesDto.attendee.map(({ email, ...rest }) => ({
+    this.all_attendees = allAttendeesDto.attendee.map(({ email, ...rest }) => ({
       email: email.value,
       ...rest,
     }));

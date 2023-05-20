@@ -3,10 +3,10 @@ import { AllPairsDto } from '../../usecase/get-all-pairs/query-service';
 
 export class GetAllPairsResponse {
   @ApiProperty({ type: () => [Pair] })
-  allPairs: Pair[];
+  all_pairs: Pair[];
 
   public constructor({ pair }: AllPairsDto) {
-    this.allPairs = pair;
+    this.all_pairs = pair;
   }
 }
 

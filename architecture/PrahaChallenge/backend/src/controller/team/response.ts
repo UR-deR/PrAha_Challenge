@@ -3,10 +3,10 @@ import { AllTeamsDto } from '../../usecase/get-all-teams/query-service';
 
 export class GetAllTeamsResponse {
   @ApiProperty({ type: () => [Team] })
-  allTeams: Team[];
+  all_teams: Team[];
 
   public constructor({ team }: AllTeamsDto) {
-    this.allTeams = team;
+    this.all_teams = team;
   }
 }
 
