@@ -1,27 +1,25 @@
 import { AssignmentStatus } from '../assignment-status/model';
 
 export class Assignment {
-  private constructor(
-    public id: string,
-    private title: string,
-    private description: string,
-    private status: AssignmentStatus,
+  private status: AssignmentStatus;
+  public constructor(
+    public readonly id: string,
+    private readonly title: string,
+    private readonly description: string,
   ) {
     this.id = id;
     this.title = title;
     this.description = description;
-    this.status = status;
-  }
-
-  private changeStatus(status: AssignmentStatus): Assignment {
-    return new Assignment(this.id, this.title, this.description, status);
+    this.status = AssignmentStatus.UNTOUCHED;
   }
 
   public markAsPendingReview(): Assignment {
-    return this.changeStatus(AssignmentStatus.PENDING_REVIEW);
+    this.status = AssignmentStatus.PENDING_REVIEW;
+    return this;
   }
 
   public markAsDone(): Assignment {
-    return this.changeStatus(AssignmentStatus.DONE);
+    this.status = AssignmentStatus.DONE;
+    return this;
   }
 }
