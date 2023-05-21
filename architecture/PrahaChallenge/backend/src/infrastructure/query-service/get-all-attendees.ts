@@ -2,7 +2,7 @@ import { Email } from './../../domain/email/model';
 import {
   AllAttendeesDto,
   IGetAllAttendeesQueryService,
-} from '../../usecase/get-all-attendees/query-service';
+} from '../../app/get-all-attendees/query-service';
 import prisma from '../client/prisma-client';
 import { AttendeeStatus } from '../../domain/attendee-status/model';
 

@@ -1,7 +1,7 @@
 import {
   AllTeamsDto,
   IGetAllTeamsQueryService,
-} from '../../usecase/get-all-teams/query-service';
+} from '../../app/get-all-teams/query-service';
 import prisma from '../client/prisma-client';
 
 export class GetAllTeamQueryService implements IGetAllTeamsQueryService {

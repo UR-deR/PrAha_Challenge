@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 import { ApiResponse } from '@nestjs/swagger';
 import { GetAllTeamsResponse } from './response';
-import { GetAllTeamsUsecase } from '../../usecase/get-all-teams/usecase';
+import { GetAllTeamsUsecase } from '../../app/get-all-teams/usecase';
 import { GetAllTeamQueryService } from '../../infrastructure/query-service/get-all-teams';
 
 @Controller('team')

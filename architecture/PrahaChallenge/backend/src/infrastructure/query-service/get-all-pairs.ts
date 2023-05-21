@@ -1,7 +1,7 @@
 import {
   AllPairsDto,
   IGetAllPairsQueryService,
-} from '../../usecase/get-all-pairs/query-service';
+} from '../../app/get-all-pairs/query-service';
 import prisma from '../client/prisma-client';
 
 export class GetAllPairsQueryService implements IGetAllPairsQueryService {

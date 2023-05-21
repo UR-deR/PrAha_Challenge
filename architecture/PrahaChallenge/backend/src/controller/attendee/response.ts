@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { AllAttendeesDto } from '../../usecase/get-all-attendees/query-service';
+import { AllAttendeesDto } from '../../app/get-all-attendees/query-service';
 import { AttendeeStatus } from '../../domain/attendee-status/model';
 
 export class GetAllAttendeesResponse {

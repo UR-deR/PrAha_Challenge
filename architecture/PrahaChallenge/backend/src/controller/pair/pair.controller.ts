@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 import { ApiResponse } from '@nestjs/swagger';
 import { GetAllPairsResponse } from './response';
-import { GetAllPairsUsecase } from '../../usecase/get-all-pairs/usecase';
+import { GetAllPairsUsecase } from '../../app/get-all-pairs/usecase';
 import { GetAllPairsQueryService } from '../../infrastructure/query-service/get-all-pairs';
 
 @Controller('pair')
