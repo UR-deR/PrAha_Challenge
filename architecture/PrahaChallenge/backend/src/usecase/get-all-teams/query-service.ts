@@ -1,6 +1,6 @@
 export class AllTeamsDto {
   constructor(
-    public readonly team: {
+    public readonly teams: {
       id: number;
       name: string;
     }[],
