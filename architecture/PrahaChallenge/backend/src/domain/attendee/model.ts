@@ -1,26 +1,55 @@
-import { AttendeeId } from '../attendeeId/model';
+import { AttendeeId } from '../attendee-id/model';
 import { Email } from '../email/model';
 import { AttendeeStatus } from './../attendee-status/model';
 
+type ConstructorArgs = {
+  id?: AttendeeId;
+  name: string;
+  email: Email;
+  status?: AttendeeStatus;
+};
+
 export class Attendee {
   public readonly id: AttendeeId;
-  private status: AttendeeStatus;
+  private readonly name: string;
+  private readonly email: Email;
+  private readonly status: AttendeeStatus;
 
-  private constructor(
-    private readonly name: string,
-    private readonly email: Email,
-  ) {
-    this.id = new AttendeeId();
+  private constructor({ id, status, name, email }: ConstructorArgs) {
+    this.id = id ?? AttendeeId.generate();
     this.name = name;
     this.email = email;
-    this.status = AttendeeStatus.ACTIVE;
+    this.status = status ?? AttendeeStatus.ACTIVE;
   }
 
-  public resign() {
-    this.status = AttendeeStatus.RESIGNED;
+  public static create(
+    args: Pick<ConstructorArgs, 'name' | 'email'>,
+  ): Attendee {
+    return new Attendee({
+      ...args,
+    });
   }
 
-  public stayAway() {
-    this.status = AttendeeStatus.STAY_AWAY;
+  public static reconstruct(args: Required<ConstructorArgs>): Attendee {
+    return new Attendee({
+      ...args,
+    });
+  }
+
+  private changeStatus(status: AttendeeStatus): Attendee {
+    return new Attendee({
+      id: this.id,
+      name: this.name,
+      email: this.email,
+      status,
+    });
+  }
+
+  public resign(): Attendee {
+    return this.changeStatus(AttendeeStatus.RESIGNED);
+  }
+
+  public stayAway(): Attendee {
+    return this.changeStatus(AttendeeStatus.STAY_AWAY);
   }
 }

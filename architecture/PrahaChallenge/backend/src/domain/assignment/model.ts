@@ -1,28 +1,56 @@
 import { AssignmentStatus } from '../assignment-status/model';
-import { AssignmentId } from '../assignmentId/model';
+import { AssignmentId } from '../assignment-id/model';
 
+type ConstructorArgs = {
+  id?: AssignmentId;
+  status?: AssignmentStatus;
+  title: string;
+  description: string;
+};
 export class Assignment {
   private readonly id: AssignmentId;
-  private status: AssignmentStatus;
-  private constructor(
-    private readonly title: string,
-    private readonly description: string,
-  ) {
-    this.id = new AssignmentId();
+  private readonly status: AssignmentStatus;
+  private readonly title: string;
+  private readonly description: string;
+
+  private constructor({ id, title, description, status }: ConstructorArgs) {
+    this.id = id ?? AssignmentId.generate();
     this.title = title;
     this.description = description;
-    this.status = AssignmentStatus.UNTOUCHED;
+    this.status = status ?? AssignmentStatus.UNTOUCHED;
   }
 
-  static create(title: string, description: string): Assignment {
-    return new Assignment(title, description);
+  public static create(
+    args: Pick<ConstructorArgs, 'title' | 'description'>,
+  ): Assignment {
+    return new Assignment({
+      ...args,
+    });
   }
 
-  public markAsPendingReview() {
-    this.status = AssignmentStatus.PENDING_REVIEW;
+  public reconstruct(args: Required<ConstructorArgs>) {
+    return new Assignment({
+      ...args,
+    });
   }
 
-  public markAsDone() {
-    this.status = AssignmentStatus.DONE;
+  private changeStatus(status: AssignmentStatus): Assignment {
+    if (this.status === AssignmentStatus.DONE) {
+      throw new Error('Cannot change status of done assignment');
+    }
+    return new Assignment({
+      id: this.id,
+      title: this.title,
+      description: this.description,
+      status,
+    });
+  }
+
+  public markAsPendingReview(): Assignment {
+    return this.changeStatus(AssignmentStatus.PENDING_REVIEW);
+  }
+
+  public markAsDone(): Assignment {
+    return this.changeStatus(AssignmentStatus.DONE);
   }
 }

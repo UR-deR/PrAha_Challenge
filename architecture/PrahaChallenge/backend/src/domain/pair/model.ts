@@ -1,28 +1,53 @@
 import { Attendee } from '../attendee/model';
+import { PairId } from '../pair-id/model';
 import { PairName } from '../pair-name/model';
 
+type ConstructorArgs = {
+  id?: PairId;
+  name: PairName;
+  attendees: Attendee[];
+};
+
 export class Pair {
-  public readonly id: number;
+  public readonly id: PairId;
   private readonly name: PairName;
-  public readonly attendees: Attendee[];
+  private readonly attendees: Attendee[];
 
-  static MAX_ATTENDEE_COUNT = 3;
-  static MIN_ATTENDEE_COUNT = 2;
+  private static readonly MAX_ATTENDEE_COUNT = 3;
+  private static readonly MIN_ATTENDEE_COUNT = 2;
 
-  private constructor(id: number, name: PairName, attendees: Attendee[]) {
+  private constructor({ id, name, attendees }: ConstructorArgs) {
     if (
       attendees.length < Pair.MIN_ATTENDEE_COUNT ||
       attendees.length > Pair.MAX_ATTENDEE_COUNT
     ) {
       throw new Error(`Invalid attendee count. given: ${attendees.length}`);
     }
-    this.id = id;
+    this.id = id ?? PairId.generate();
     this.name = name;
     this.attendees = attendees;
   }
 
+  public static create(
+    args: Pick<ConstructorArgs, 'name' | 'attendees'>,
+  ): Pair {
+    return new Pair({
+      ...args,
+    });
+  }
+
+  public static reconstruct(args: Required<ConstructorArgs>): Pair {
+    return new Pair({
+      ...args,
+    });
+  }
+
   private changeAttendees(attendees: Attendee[]): Pair {
-    return new Pair(this.id, this.name, attendees);
+    return new Pair({
+      id: this.id,
+      name: this.name,
+      attendees,
+    });
   }
 
   public removeAttendee(attendee: Attendee): Pair {
