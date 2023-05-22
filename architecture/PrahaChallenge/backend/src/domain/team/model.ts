@@ -1,43 +1,29 @@
 import { Pair } from '../pair/model';
 import { TeamName } from '../team-name/model';
+import { TeamId } from '../teamId/model';
 
 export class Team {
-  public readonly id: number;
+  private readonly id: TeamId;
   private readonly name: TeamName;
-  private readonly pairs: Pair[];
+  private pairs: Pair[];
 
-  private constructor(id: number, name: TeamName, pairs: Pair[]) {
-    const attendees = pairs.flatMap(({ attendees }) => attendees);
-    if (attendees.length < 3) {
-      throw new Error(`Invalid attendee count. given: ${attendees.length}`);
-    }
-    this.id = id;
+  private constructor(name: TeamName, pairs: Pair[]) {
+    this.id = new TeamId();
     this.name = name;
     this.pairs = pairs;
   }
 
-  private copy({ name: name = this.name, pairs: pairs = this.pairs }): Team {
-    return new Team(this.id, name, pairs);
+  public static create(name: TeamName, pairs: Pair[]): Team {
+    return new Team(name, pairs);
   }
 
-  public static reconstruct(id: number, name: TeamName, pairs: Pair[]) {
-    return new Team(id, name, pairs);
-  }
-
-  public reconstruct({
-    name: name = this.name,
-    pairs: pairs = this.pairs,
-  }): Team {
-    return new Team(this.id, name, pairs);
-  }
-
-  public removePair(pair: Pair): Team {
+  public removePair(pair: Pair) {
     const pairs = this.pairs.filter(({ id }) => id !== pair.id);
-    return this.copy({ pairs });
+    this.pairs = pairs;
   }
 
-  public addNewPair(newPair: Pair): Team {
+  public addNewPair(newPair: Pair) {
     const pairs = [...this.pairs, newPair];
-    return this.copy({ pairs });
+    this.pairs = pairs;
   }
 }

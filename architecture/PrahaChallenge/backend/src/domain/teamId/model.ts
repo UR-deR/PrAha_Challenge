@@ -1,6 +1,6 @@
 import { ulid } from 'ulid';
 
-export class AssignmentId {
+export class TeamId {
   private readonly _value: string;
   public constructor() {
     this._value = ulid();

@@ -21,14 +21,6 @@ export class Pair {
     this.attendees = attendees;
   }
 
-  public static reconstruct(
-    id: number,
-    name: PairName,
-    attendees: Attendee[],
-  ): Pair {
-    return new Pair(id, name, attendees);
-  }
-
   private changeAttendees(attendees: Attendee[]): Pair {
     return new Pair(this.id, this.name, attendees);
   }
