@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { AllAttendeesDto } from '../../app/get-all-attendees/query-service';
-import { AttendeeStatus } from '../../domain/attendee-status/model';
+import { AllAttendeesDto } from '../../../app/get-all-attendees/query-service';
+import { AttendeeStatus } from '../../../domain/attendee-status/model';
 
 export class GetAllAttendeesResponse {
   @ApiProperty({ type: () => [Attendee] })
@@ -16,7 +16,7 @@ export class GetAllAttendeesResponse {
 
 class Attendee {
   @ApiProperty()
-  id: number;
+  id: string;
 
   @ApiProperty()
   name: string;
@@ -28,7 +28,7 @@ class Attendee {
   status: AttendeeStatus;
 
   public constructor(
-    id: number,
+    id: string,
     name: string,
     email: string,
     status: AttendeeStatus,

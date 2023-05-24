@@ -1,7 +1,7 @@
 export class AllTeamsDto {
   constructor(
     public readonly teams: {
-      id: number;
+      id: string;
       name: string;
     }[],
   ) {}

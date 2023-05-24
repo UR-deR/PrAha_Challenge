@@ -5,12 +5,14 @@ import {
 } from '../../app/get-all-attendees/query-service';
 import prisma from '../client/prisma-client';
 import { AttendeeStatus } from '../../domain/attendee-status/model';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 export class GetAllAttendeesQueryService
   implements IGetAllAttendeesQueryService
 {
   async execute(): Promise<AllAttendeesDto> {
-    const attendees = await prisma.attendees.findMany({
+    const attendees = await prisma.attendee.findMany({
       include: {
         status: true,
       },

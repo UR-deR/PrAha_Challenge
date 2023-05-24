@@ -1,3 +1,4 @@
+import { TeamId } from './../../../domain/team-id/model';
 import { AttendeeId } from '../../../domain/attendee-id/model';
 import { AttendeeStatus } from '../../../domain/attendee-status/model';
 import { Attendee } from '../../../domain/attendee/model';
@@ -5,22 +6,21 @@ import { Email } from '../../../domain/email/model';
 import { PairId } from '../../../domain/pair-id/model';
 import { PairName } from '../../../domain/pair-name/model';
 import { Pair } from '../../../domain/pair/model';
-import { TeamId } from '../../../domain/team-id/model';
 import { TeamName } from '../../../domain/team-name/model';
 import { Team } from '../../../domain/team/model';
 import { ITeamRepository } from '../../../domain/team/repository';
 import prisma from '../../client/prisma-client';
 
 export class TeamRepository implements ITeamRepository {
-  public async findById(id: number): Promise<Team | undefined> {
-    const team = await prisma.teams.findUnique({
+  public async findById({ value: teamId }: TeamId): Promise<Team | undefined> {
+    const team = await prisma.team.findUnique({
       where: {
-        id,
+        id: teamId,
       },
       include: {
         pairs: {
           include: {
-            attendees: {
+            members: {
               include: {
                 status: true,
               },
@@ -35,7 +35,7 @@ export class TeamRepository implements ITeamRepository {
     }
 
     const pairs = team.pairs.map((pair) => {
-      const attendees = pair.attendees.map((attendee) => {
+      const attendees = pair.members.map((attendee) => {
         const attendeeStatus = Object.values(AttendeeStatus).find(
           (status) => status === attendee.status.name,
         );

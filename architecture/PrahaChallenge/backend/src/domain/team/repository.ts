@@ -1,5 +1,6 @@
+import { TeamId } from '../team-id/model';
 import { Team } from './model';
 
 export interface ITeamRepository {
-  findById(id: number): Promise<Team | undefined>;
+  findById(id: TeamId): Promise<Team | undefined>;
 }

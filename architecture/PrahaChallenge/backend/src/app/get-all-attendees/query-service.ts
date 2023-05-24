@@ -4,7 +4,7 @@ import { Email } from '../../domain/email/model';
 export class AllAttendeesDto {
   constructor(
     public readonly attendee: {
-      id: number;
+      id: string;
       name: string;
       email: Email;
       status: AttendeeStatus;

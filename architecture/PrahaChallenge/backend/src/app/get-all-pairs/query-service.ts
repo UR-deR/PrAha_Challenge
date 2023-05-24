@@ -1,7 +1,7 @@
 export class AllPairsDto {
   constructor(
     public readonly pair: {
-      id: number;
+      id: string;
       name: string;
     }[],
   ) {}

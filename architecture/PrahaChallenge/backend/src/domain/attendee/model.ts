@@ -11,9 +11,9 @@ type ConstructorArgs = {
 
 export class Attendee {
   public readonly id: AttendeeId;
-  private readonly name: string;
-  private readonly email: Email;
-  private readonly status: AttendeeStatus;
+  public readonly name: string;
+  public readonly email: Email;
+  public readonly status: AttendeeStatus;
 
   private constructor({ id, status, name, email }: ConstructorArgs) {
     this.id = id ?? AttendeeId.generate();
