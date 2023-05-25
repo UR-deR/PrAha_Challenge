@@ -1,7 +1,8 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Inject } from '@nestjs/common';
 import { ApiResponse } from '@nestjs/swagger';
 import { GetAllAttendeesResponse } from './response/getAllAttendeesResponse';
-import { GetAllAttendeesUsecase } from '../../app/get-all-attendees/usecase';
+import { IAttendeeRepository } from '../../domain/attendee/repository';
+import { PROVIDERS } from '../../constants';
 
 export type AddNewAttendeeRequest = {
   name: string;
@@ -11,13 +12,14 @@ export type AddNewAttendeeRequest = {
 @Controller('attendee')
 export class AttendeeController {
   constructor(
-    private readonly getAllAttendeesUsecase: GetAllAttendeesUsecase,
+    @Inject(PROVIDERS.ATTENDEE_REPOSITORY)
+    private readonly attendeeRepository: IAttendeeRepository,
   ) {}
 
   @Get()
   @ApiResponse({ status: 200, type: GetAllAttendeesResponse })
   async getAllAttendees() {
-    const allAttendees = await this.getAllAttendeesUsecase.do();
+    const allAttendees = await this.attendeeRepository.findAll();
     const response = new GetAllAttendeesResponse(allAttendees);
     return response;
   }

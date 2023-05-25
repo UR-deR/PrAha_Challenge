@@ -3,10 +3,8 @@ import { TeamController } from './controller/team/team.controller';
 import { PairController } from './controller/pair/pair.controller';
 import { AttendeeController } from './controller/attendee/attendee.controller';
 import { AttendeeRepository } from './infrastructure/repository/attendee/repository';
-import { GetAllAttendeesUsecase } from './app/get-all-attendees/usecase';
 import { GetAllTeamsUsecase } from './app/get-all-teams/usecase';
 import { GetAllPairsUsecase } from './app/get-all-pairs/usecase';
-import { GetAllAttendeesQueryService } from './infrastructure/query-service/get-all-attendees';
 import { GetAllTeamsQueryService } from './infrastructure/query-service/get-all-teams';
 import { GetAllPairsQueryService } from './infrastructure/query-service/get-all-pairs';
 import { PROVIDERS } from './constants';
@@ -17,7 +15,7 @@ import { PROVIDERS } from './constants';
   providers: [
     {
       provide: PROVIDERS.ATTENDEE_REPOSITORY,
-      useValue: AttendeeRepository,
+      useClass: AttendeeRepository,
     },
     {
       provide: PROVIDERS.GET_ALL_TEAMS_QUERY_SERVICE,
@@ -27,19 +25,10 @@ import { PROVIDERS } from './constants';
       provide: PROVIDERS.GET_ALL_PAIRS_QUERY_SERVICE,
       useClass: GetAllPairsQueryService,
     },
-    {
-      provide: PROVIDERS.GET_ALL_ATTENDEES_QUERY_SERVICE,
-      useClass: GetAllAttendeesQueryService,
-    },
-    GetAllAttendeesUsecase,
     GetAllTeamsUsecase,
     GetAllPairsUsecase,
   ],
   exports: [
-    {
-      provide: PROVIDERS.GET_ALL_ATTENDEES_QUERY_SERVICE,
-      useClass: GetAllAttendeesQueryService,
-    },
     {
       provide: PROVIDERS.GET_ALL_PAIRS_QUERY_SERVICE,
       useClass: GetAllPairsQueryService,

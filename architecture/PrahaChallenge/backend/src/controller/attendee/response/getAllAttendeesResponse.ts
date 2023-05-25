@@ -1,18 +1,6 @@
+import { Attendee as AttendeeModel } from './../../../domain/attendee/model';
 import { ApiProperty } from '@nestjs/swagger';
-import { AllAttendeesDto } from '../../../app/get-all-attendees/query-service';
 import { AttendeeStatus } from '../../../domain/attendee-status/model';
-
-export class GetAllAttendeesResponse {
-  @ApiProperty({ type: () => [Attendee] })
-  all_attendees: Attendee[];
-
-  constructor(allAttendeesDto: AllAttendeesDto) {
-    this.all_attendees = allAttendeesDto.attendee.map(({ email, ...rest }) => ({
-      email: email.value,
-      ...rest,
-    }));
-  }
-}
 
 class Attendee {
   @ApiProperty()
@@ -37,5 +25,16 @@ class Attendee {
     this.name = name;
     this.email = email;
     this.status = status;
+  }
+}
+
+export class GetAllAttendeesResponse {
+  @ApiProperty({ type: () => [Attendee] })
+  all_attendees: Attendee[];
+
+  constructor(allAttendees: AttendeeModel[]) {
+    this.all_attendees = allAttendees.map(({ id, name, email, status }) => {
+      return new Attendee(id.value, name, email.value, status);
+    });
   }
 }

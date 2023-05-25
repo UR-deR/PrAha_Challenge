@@ -22,5 +22,6 @@ export class AddNewAttendeeUsecase {
     }
     const newAttendee = Attendee.create({ ...command });
     await this.attendeeRepository.save(newAttendee);
+    // TODO: add attendee to team and pair
   }
 }
