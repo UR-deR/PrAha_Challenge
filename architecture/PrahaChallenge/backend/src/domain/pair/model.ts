@@ -3,7 +3,7 @@ import { PairId } from '../pair-id/model';
 import { PairName } from '../pair-name/model';
 
 type ConstructorArgs = {
-  id?: PairId;
+  id: PairId;
   name: PairName;
   attendees: Attendee[];
 };
@@ -23,15 +23,14 @@ export class Pair {
     ) {
       throw new Error(`Invalid attendee count. given: ${attendees.length}`);
     }
-    this.id = id ?? PairId.generate();
+    this.id = id;
     this.name = name;
     this.attendees = attendees;
   }
 
-  public static create(
-    args: Pick<ConstructorArgs, 'name' | 'attendees'>,
-  ): Pair {
+  public static create(args: Omit<ConstructorArgs, 'id'>): Pair {
     return new Pair({
+      id: PairId.generate(),
       ...args,
     });
   }

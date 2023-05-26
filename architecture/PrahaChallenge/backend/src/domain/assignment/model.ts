@@ -2,8 +2,8 @@ import { AssignmentStatus } from '../assignment-status/model';
 import { AssignmentId } from '../assignment-id/model';
 
 type ConstructorArgs = {
-  id?: AssignmentId;
-  status?: AssignmentStatus;
+  id: AssignmentId;
+  status: AssignmentStatus;
   title: string;
   description: string;
 };
@@ -14,21 +14,23 @@ export class Assignment {
   private readonly description: string;
 
   private constructor({ id, title, description, status }: ConstructorArgs) {
-    this.id = id ?? AssignmentId.generate();
+    this.id = id;
     this.title = title;
     this.description = description;
-    this.status = status ?? AssignmentStatus.UNTOUCHED;
+    this.status = status;
   }
 
   public static create(
     args: Pick<ConstructorArgs, 'title' | 'description'>,
   ): Assignment {
     return new Assignment({
+      id: AssignmentId.generate(),
+      status: AssignmentStatus.UNTOUCHED,
       ...args,
     });
   }
 
-  public reconstruct(args: Required<ConstructorArgs>) {
+  public reconstruct(args: ConstructorArgs) {
     return new Assignment({
       ...args,
     });

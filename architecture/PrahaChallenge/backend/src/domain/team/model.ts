@@ -3,7 +3,7 @@ import { TeamName } from '../team-name/model';
 import { TeamId } from '../team-id/model';
 
 type ConstructorArgs = {
-  id?: TeamId;
+  id: TeamId;
   name: TeamName;
   pairs: Pair[];
 };
@@ -14,13 +14,14 @@ export class Team {
   private readonly pairs: Pair[];
 
   private constructor({ id, name, pairs }: ConstructorArgs) {
-    this.id = id ?? TeamId.generate();
+    this.id = id;
     this.name = name;
     this.pairs = pairs;
   }
 
-  public static create(args: Pick<ConstructorArgs, 'name' | 'pairs'>): Team {
+  public static create(args: Omit<ConstructorArgs, 'id'>): Team {
     return new Team({
+      id: TeamId.generate(),
       ...args,
     });
   }
