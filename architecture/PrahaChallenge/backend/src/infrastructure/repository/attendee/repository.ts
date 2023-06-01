@@ -3,7 +3,7 @@ import { Attendee } from '../../../domain/attendee/model';
 import { IAttendeeRepository } from '../../../domain/attendee/repository';
 import { Email } from '../../../domain/email/model';
 import prisma from '../../client/prisma-client';
-import { AttendeeId } from '../../../domain/attendee-id/model';
+import { AttendeeId } from '../../../domain/id/model';
 import { AttendeeStatus } from '../../../domain/attendee-status/model';
 
 @Injectable()

@@ -1,12 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { AllPairsDto } from '../../app/get-all-pairs/query-service';
+import { GetAllPairsDto } from '../../app/get-all-pairs/usecase';
 
 export class GetAllPairsResponse {
   @ApiProperty({ type: () => [Pair] })
   all_pairs: Pair[];
 
-  public constructor({ pair }: AllPairsDto) {
-    this.all_pairs = pair;
+  public constructor({ value }: GetAllPairsDto) {
+    this.all_pairs = value;
   }
 }
 

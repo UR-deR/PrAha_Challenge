@@ -1,5 +1,5 @@
 export const PROVIDERS = {
   ATTENDEE_REPOSITORY: 'AttendeeRepository',
-  GET_ALL_TEAMS_QUERY_SERVICE: 'GetAllTeamsQueryService',
-  GET_ALL_PAIRS_QUERY_SERVICE: 'GetAllPairsQueryService',
+  PAIR_REPOSITORY: 'PairRepository',
+  TEAM_REPOSITORY: 'TeamRepository',
 } as const;

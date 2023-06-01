@@ -1,22 +1,21 @@
-import { Pair } from '../pair/model';
 import { TeamName } from '../team-name/model';
-import { TeamId } from '../team-id/model';
+import { TeamId, PairId } from '../id/model';
 
 type ConstructorArgs = {
   id: TeamId;
   name: TeamName;
-  pairs: Pair[];
+  pairIds: PairId[];
 };
 
 export class Team {
-  private readonly id: TeamId;
-  private readonly name: TeamName;
-  private readonly pairs: Pair[];
+  public readonly id: TeamId;
+  public readonly name: TeamName;
+  private readonly pairIds: PairId[];
 
-  private constructor({ id, name, pairs }: ConstructorArgs) {
+  private constructor({ id, name, pairIds }: ConstructorArgs) {
     this.id = id;
     this.name = name;
-    this.pairs = pairs;
+    this.pairIds = pairIds;
   }
 
   public static create(args: Omit<ConstructorArgs, 'id'>): Team {
@@ -32,21 +31,23 @@ export class Team {
     });
   }
 
-  private changePairs(pairs: Pair[]): Team {
+  private changePairs({ pairIds }: Pick<ConstructorArgs, 'pairIds'>): Team {
     return new Team({
       id: this.id,
       name: this.name,
-      pairs,
+      pairIds,
     });
   }
 
-  public removePair(pair: Pair): Team {
-    const pairs = this.pairs.filter(({ id }) => id !== pair.id);
-    return this.changePairs(pairs);
+  public removePair(pairId: PairId): Team {
+    const pairIds = this.pairIds.filter(
+      (pairMemberAttendeeId) => pairMemberAttendeeId.value !== pairId.value,
+    );
+    return this.changePairs({ pairIds });
   }
 
-  public addNewPair(newPair: Pair) {
-    const pairs = [...this.pairs, newPair];
-    return this.changePairs(pairs);
+  public addNewPair(pairId: PairId): Team {
+    const pairIds = [...this.pairIds, pairId];
+    return this.changePairs({ pairIds });
   }
 }

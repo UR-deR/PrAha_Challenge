@@ -1,11 +1,4 @@
-import { TeamId } from './../../../domain/team-id/model';
-import { AttendeeId } from '../../../domain/attendee-id/model';
-import { AttendeeStatus } from '../../../domain/attendee-status/model';
-import { Attendee } from '../../../domain/attendee/model';
-import { Email } from '../../../domain/email/model';
-import { PairId } from '../../../domain/pair-id/model';
-import { PairName } from '../../../domain/pair-name/model';
-import { Pair } from '../../../domain/pair/model';
+import { TeamId, PairId } from '../../../domain/id/model';
 import { TeamName } from '../../../domain/team-name/model';
 import { Team } from '../../../domain/team/model';
 import { ITeamRepository } from '../../../domain/team/repository';
@@ -34,37 +27,34 @@ export class TeamRepository implements ITeamRepository {
       return undefined;
     }
 
-    const pairs = team.pairs.map((pair) => {
-      const attendees = pair.members.map((attendee) => {
-        const attendeeStatus = Object.values(AttendeeStatus).find(
-          (status) => status === attendee.status.name,
-        );
-
-        if (!attendeeStatus) {
-          throw new Error(
-            `Invalid attendee status. given: ${attendee.status.name}`,
-          );
-        }
-
-        return Attendee.reconstruct({
-          id: new AttendeeId(attendee.id.toString()),
-          name: attendee.name,
-          email: new Email(attendee.email),
-          status: attendeeStatus,
-        });
-      });
-
-      return Pair.reconstruct({
-        id: new PairId(pair.id.toString()),
-        name: new PairName(pair.name),
-        attendees,
-      });
-    });
-
     return Team.reconstruct({
-      id: new TeamId(team.id.toString()),
-      name: new TeamName(parseInt(team.name, 10)),
-      pairs,
+      id: new TeamId(team.id),
+      name: new TeamName(parseInt(team.name, 10)), // I should have set team name as number type
+      pairIds: team.pairs.map(({ id }) => new PairId(id)),
     });
+  }
+
+  public async findAll(): Promise<Team[]> {
+    const allTeams = await prisma.team.findMany({
+      include: {
+        pairs: {
+          include: {
+            members: {
+              include: {
+                status: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    return allTeams.map(({ id, name, pairs }) =>
+      Team.reconstruct({
+        id: new TeamId(id),
+        name: new TeamName(parseInt(name, 10)),
+        pairIds: pairs.map(({ id }) => new PairId(id)),
+      }),
+    );
   }
 }

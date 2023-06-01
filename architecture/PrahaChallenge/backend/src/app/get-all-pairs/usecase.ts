@@ -1,15 +1,31 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { IGetAllPairsQueryService } from './query-service';
 import { PROVIDERS } from '../../constants';
+import { IPairRepository } from '../../domain/pair/repository';
+import { Pair } from '../../domain/pair/model';
+
+type Dto = {
+  id: string;
+  name: string;
+}[];
+
+export class GetAllPairsDto {
+  public readonly value: Dto;
+  constructor(pairs: Pair[]) {
+    this.value = pairs.map(({ id, name }) => ({
+      id: id.value,
+      name: name.value,
+    }));
+  }
+}
 
 @Injectable()
 export class GetAllPairsUsecase {
   constructor(
-    @Inject(PROVIDERS.GET_ALL_PAIRS_QUERY_SERVICE)
-    private getAllPairsQuerySerivice: IGetAllPairsQueryService,
+    @Inject(PROVIDERS.TEAM_REPOSITORY)
+    private pairRepository: IPairRepository,
   ) {}
   async do() {
-    const pairs = await this.getAllPairsQuerySerivice.execute();
-    return pairs;
+    const pairs = await this.pairRepository.findAll();
+    return new GetAllPairsDto(pairs);
   }
 }

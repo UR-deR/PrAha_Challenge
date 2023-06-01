@@ -1,4 +1,4 @@
-import { AttendeeId } from '../attendee-id/model';
+import { AttendeeId } from '../id/model';
 import { Email } from '../email/model';
 import { AttendeeStatus } from './../attendee-status/model';
 

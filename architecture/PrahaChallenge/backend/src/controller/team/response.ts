@@ -1,12 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { AllTeamsDto } from '../../app/get-all-teams/query-service';
+import { GetAllTeamsDto } from '../../app/get-all-teams/usecase';
 
 export class GetAllTeamsResponse {
   @ApiProperty({ type: () => [Team] })
   all_teams: Team[];
 
-  public constructor({ teams }: AllTeamsDto) {
-    this.all_teams = teams;
+  public constructor({ value }: GetAllTeamsDto) {
+    this.all_teams = value;
   }
 }
 

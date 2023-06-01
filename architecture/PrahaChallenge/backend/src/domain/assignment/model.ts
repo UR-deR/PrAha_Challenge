@@ -1,5 +1,5 @@
 import { AssignmentStatus } from '../assignment-status/model';
-import { AssignmentId } from '../assignment-id/model';
+import { AssignmentId } from '../id/model';
 
 type ConstructorArgs = {
   id: AssignmentId;
