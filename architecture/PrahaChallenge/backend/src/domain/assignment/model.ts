@@ -8,10 +8,10 @@ type ConstructorArgs = {
   description: string;
 };
 export class Assignment {
-  private readonly id: AssignmentId;
-  private readonly status: AssignmentStatus;
-  private readonly title: string;
-  private readonly description: string;
+  public readonly id: AssignmentId;
+  public readonly status: AssignmentStatus;
+  public readonly title: string;
+  public readonly description: string;
 
   private constructor({ id, title, description, status }: ConstructorArgs) {
     this.id = id;
