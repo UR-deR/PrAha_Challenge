@@ -12,9 +12,17 @@ abstract class Id {
   }
 }
 
-class TeamId extends Id {}
-class PairId extends Id {}
-class AttendeeId extends Id {}
-class AssignmentId extends Id {}
+class TeamId extends Id {
+  _teamId!: never;
+}
+class PairId extends Id {
+  _pairId!: never;
+}
+class AttendeeId extends Id {
+  _attendeeId!: never;
+}
+class AssignmentId extends Id {
+  _assignmentId!: never;
+}
 
 export { TeamId, PairId, AssignmentId, AttendeeId };
