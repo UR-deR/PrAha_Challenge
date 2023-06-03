@@ -10,7 +10,7 @@ type ConstructorArgs = {
 export class Pair {
   public readonly id: PairId;
   public readonly name: PairName;
-  private readonly pairMemberAttendeeIds: AttendeeId[];
+  public readonly pairMemberAttendeeIds: AttendeeId[];
 
   private static readonly MAX_ATTENDEE_COUNT = 3;
   private static readonly MIN_ATTENDEE_COUNT = 2;
