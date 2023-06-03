@@ -1,44 +1,27 @@
-import { Attendee } from '../attendee/model';
-import { Email } from '../email/model';
+import { AttendeeId } from '../id/model';
 import { PairName } from '../pair-name/model';
 import { Pair } from './model';
 
-const targetAttendee = Attendee.create({
-  name: 'Michelle',
-  email: new Email('piyo@piyo.com'),
-});
-
-describe('Pair', () => {
-  let testAttendees: Attendee[];
-  beforeEach(() => {
-    testAttendees = [
-      Attendee.create({
-        name: 'Grace',
-        email: new Email('test@test.com'),
-      }),
-      Attendee.create({
-        name: 'Simon',
-        email: new Email('hoge@hoge.com'),
-      }),
-    ];
-  });
-
+describe('Pair Entity', () => {
   test('removeAttendeeメソッドによって、Attendeeを脱退することができる', () => {
     const pair = Pair.create({
       name: new PairName('a'),
-      attendees: [...testAttendees, targetAttendee],
-    }).removeAttendee(testAttendees[2]);
-    expect((pair as any).attendees).toStrictEqual([
-      testAttendees[0],
-      testAttendees[1],
-    ]);
+      pairMemberAttendeeIds: ['hoge', 'fuga', 'fuga'].map(
+        (id) => new AttendeeId(id),
+      ),
+    }).removeAttendee(new AttendeeId('hoge'));
+    expect(pair.pairMemberAttendeeIds).toHaveLength(2);
+    expect(pair.pairMemberAttendeeIds).not.toContainEqual(
+      new AttendeeId('hoge'),
+    );
   });
 
   test('AddAttendeeメソッドによって、Attendeeを追加できる', () => {
     const pair = Pair.create({
       name: new PairName('a'),
-      attendees: testAttendees,
-    }).addAttendee(targetAttendee);
-    expect((pair as any).attendees[2]).toBe(targetAttendee);
+      pairMemberAttendeeIds: ['hoge', 'fuga'].map((id) => new AttendeeId(id)),
+    }).addAttendee(new AttendeeId('piyo'));
+    expect(pair.pairMemberAttendeeIds).toHaveLength(3);
+    expect(pair.pairMemberAttendeeIds).toContainEqual(new AttendeeId('piyo'));
   });
 });
