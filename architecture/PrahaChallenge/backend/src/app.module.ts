@@ -9,6 +9,7 @@ import { PROVIDERS } from './constants';
 import { GetAllAttendeesUsecase } from './app/get-all-attendees/usecase';
 import { PairRepository } from './infrastructure/repository/pair/repository';
 import { TeamRepository } from './infrastructure/repository/team/repository';
+import { PairMemberAssigner } from './domain/pair/pair-member-assigner';
 
 @Module({
   imports: [],
@@ -29,6 +30,7 @@ import { TeamRepository } from './infrastructure/repository/team/repository';
     GetAllAttendeesUsecase,
     GetAllTeamsUsecase,
     GetAllPairsUsecase,
+    PairMemberAssigner,
   ],
 })
 export class AppModule {}

@@ -10,7 +10,7 @@ type ConstructorArgs = {
 export class Team {
   public readonly id: TeamId;
   public readonly name: TeamName;
-  private readonly pairIds: PairId[];
+  public readonly pairIds: PairId[];
 
   private constructor({ id, name, pairIds }: ConstructorArgs) {
     this.id = id;
