@@ -2,6 +2,7 @@ import { AttendeeService } from './../../domain/attendee/service';
 import { Email } from '../../domain/email/model';
 import { IAttendeeRepository } from '../../domain/attendee/repository';
 import { Attendee } from '../../domain/attendee/model';
+import { PairMemberAssigner } from '../../domain/pair/pair-member-assigner';
 
 export interface AddNewAttendeeCommand {
   name: string;
@@ -12,6 +13,7 @@ export class AddNewAttendeeUsecase {
   constructor(
     private readonly attendeeService: AttendeeService,
     private readonly attendeeRepository: IAttendeeRepository,
+    private readonly pairMemberAssigner: PairMemberAssigner,
   ) {}
   public async do(command: AddNewAttendeeCommand) {
     const isDuplicatedEmail = await this.attendeeService.isDuplicatedEmail(
@@ -21,7 +23,7 @@ export class AddNewAttendeeUsecase {
       throw new Error(`Duplicated email: ${command.email.value}`);
     }
     const newAttendee = Attendee.create({ ...command });
-    await this.attendeeRepository.save(newAttendee);
-    // TODO: add attendee to team and pair
+    await this.attendeeRepository.insert(newAttendee);
+    await this.pairMemberAssigner.assign(newAttendee);
   }
 }
