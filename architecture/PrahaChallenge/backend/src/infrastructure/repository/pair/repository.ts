@@ -8,18 +8,19 @@ export class PairRepository implements IPairRepository {
   public async findAll(): Promise<Pair[]> {
     const allPairs = await prisma.pair.findMany({
       include: {
-        members: true,
+        AttendeePairMembership: true,
       },
     });
 
-    return allPairs.map(({ id, name, members }) =>
-      Pair.reconstruct({
-        id: new PairId(id),
-        name: new PairName(name),
-        pairMemberAttendeeIds: members.map(
-          (member) => new AttendeeId(member.id),
-        ),
-      }),
+    return allPairs.map(
+      ({ id, name, AttendeePairMembership: attendeePairMembership }) =>
+        Pair.reconstruct({
+          id: new PairId(id),
+          name: new PairName(name),
+          pairMemberAttendeeIds: attendeePairMembership.map(
+            ({ attendeeId }) => new AttendeeId(attendeeId),
+          ),
+        }),
     );
   }
 }
