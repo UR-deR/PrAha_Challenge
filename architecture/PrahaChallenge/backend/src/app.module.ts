@@ -10,6 +10,7 @@ import { GetAllAttendeesUsecase } from './app/get-all-attendees/usecase';
 import { PairRepository } from './infrastructure/repository/pair/repository';
 import { TeamRepository } from './infrastructure/repository/team/repository';
 import { PairMemberAssigner } from './domain/pair/pair-member-assigner';
+import { AddNewAttendeeUsecase } from './app/add-new-attendee/usecase';
 
 @Module({
   imports: [],
@@ -28,6 +29,7 @@ import { PairMemberAssigner } from './domain/pair/pair-member-assigner';
       useClass: TeamRepository,
     },
     GetAllAttendeesUsecase,
+    AddNewAttendeeUsecase,
     GetAllTeamsUsecase,
     GetAllPairsUsecase,
     PairMemberAssigner,
