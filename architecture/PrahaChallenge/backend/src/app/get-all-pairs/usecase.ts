@@ -21,7 +21,7 @@ export class GetAllPairsDto {
 @Injectable()
 export class GetAllPairsUsecase {
   constructor(
-    @Inject(PROVIDERS.TEAM_REPOSITORY)
+    @Inject(PROVIDERS.PAIR_REPOSITORY)
     private pairRepository: IPairRepository,
   ) {}
   async do() {
