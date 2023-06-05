@@ -3,15 +3,19 @@ import { Email } from '../../domain/email/model';
 import { IAttendeeRepository } from '../../domain/attendee/repository';
 import { Attendee } from '../../domain/attendee/model';
 import { PairMemberAssigner } from '../../domain/pair/pair-member-assigner';
+import { Inject, Injectable } from '@nestjs/common';
+import { PROVIDERS } from '../../constants';
 
 export interface AddNewAttendeeCommand {
   name: string;
   email: Email;
 }
 
+@Injectable()
 export class AddNewAttendeeUsecase {
   constructor(
     private readonly attendeeService: AttendeeService,
+    @Inject(PROVIDERS.ATTENDEE_REPOSITORY)
     private readonly attendeeRepository: IAttendeeRepository,
     private readonly pairMemberAssigner: PairMemberAssigner,
   ) {}

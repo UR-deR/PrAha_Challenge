@@ -11,6 +11,7 @@ import { PairRepository } from './infrastructure/repository/pair/repository';
 import { TeamRepository } from './infrastructure/repository/team/repository';
 import { PairMemberAssigner } from './domain/pair/pair-member-assigner';
 import { AddNewAttendeeUsecase } from './app/add-new-attendee/usecase';
+import { AttendeeService } from './domain/attendee/service';
 
 @Module({
   imports: [],
@@ -33,6 +34,7 @@ import { AddNewAttendeeUsecase } from './app/add-new-attendee/usecase';
     GetAllTeamsUsecase,
     GetAllPairsUsecase,
     PairMemberAssigner,
+    AttendeeService,
   ],
 })
 export class AppModule {}
