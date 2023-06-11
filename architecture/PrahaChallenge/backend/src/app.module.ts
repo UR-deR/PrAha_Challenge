@@ -9,10 +9,18 @@ import { PROVIDERS } from './constants';
 import { GetAllAttendeesUsecase } from './app/get-all-attendees/usecase';
 import { PairRepository } from './infrastructure/repository/pair/repository';
 import { TeamRepository } from './infrastructure/repository/team/repository';
+import { UpdateAssignmentStatusUsecase } from './app/update-assignment-status/usecase';
+import { AssignmentController } from './controller/assignment/assignment.controller';
+import { AttendeeAssignmentStatusRepository } from './infrastructure/repository/assignment-status-by-attendee/repository';
 
 @Module({
   imports: [],
-  controllers: [TeamController, PairController, AttendeeController],
+  controllers: [
+    TeamController,
+    PairController,
+    AttendeeController,
+    AssignmentController,
+  ],
   providers: [
     {
       provide: PROVIDERS.ATTENDEE_REPOSITORY,
@@ -26,6 +34,11 @@ import { TeamRepository } from './infrastructure/repository/team/repository';
       provide: PROVIDERS.TEAM_REPOSITORY,
       useClass: TeamRepository,
     },
+    {
+      provide: PROVIDERS.ATTENDEE_ASSIGNMENT_STATUS_REPOSITORY,
+      useClass: AttendeeAssignmentStatusRepository,
+    },
+    UpdateAssignmentStatusUsecase,
     GetAllAttendeesUsecase,
     GetAllTeamsUsecase,
     GetAllPairsUsecase,
