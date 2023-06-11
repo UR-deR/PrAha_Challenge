@@ -7,6 +7,9 @@ export const UpdateAssignmentStatusAdaptor = {
   toCommand(
     request: UpdateAssignmentStatusRequest,
   ): UpdateAssignmentStatusCommand {
+    if (request.userId !== request.attendeeId) {
+      throw new Error('Cannot update other user assignment status.');
+    }
     const status: AssignmentStatus =
       Object.values(AssignmentStatus).find(
         (assignmentStatus) => assignmentStatus === request.status,
