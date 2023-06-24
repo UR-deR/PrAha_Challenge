@@ -12,6 +12,9 @@ import { TeamRepository } from './infrastructure/repository/team/repository';
 import { UpdateAssignmentStatusUsecase } from './app/update-assignment-status/usecase';
 import { AssignmentController } from './controller/assignment/assignment.controller';
 import { AttendeeAssignmentStatusRepository } from './infrastructure/repository/assignment-status-by-attendee/repository';
+import { PairMemberAssigner } from './domain/pair/pair-member-assigner';
+import { AddNewAttendeeUsecase } from './app/add-new-attendee/usecase';
+import { DuplicatedEmailChecker } from './domain/attendee/duplicated-email-checker';
 
 @Module({
   imports: [],
@@ -40,8 +43,11 @@ import { AttendeeAssignmentStatusRepository } from './infrastructure/repository/
     },
     UpdateAssignmentStatusUsecase,
     GetAllAttendeesUsecase,
+    AddNewAttendeeUsecase,
     GetAllTeamsUsecase,
     GetAllPairsUsecase,
+    PairMemberAssigner,
+    DuplicatedEmailChecker,
   ],
 })
 export class AppModule {}

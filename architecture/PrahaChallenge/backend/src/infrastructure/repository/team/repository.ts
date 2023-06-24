@@ -11,15 +11,7 @@ export class TeamRepository implements ITeamRepository {
         id: teamId,
       },
       include: {
-        pairs: {
-          include: {
-            members: {
-              include: {
-                status: true,
-              },
-            },
-          },
-        },
+        PairTeamBelonging: true,
       },
     });
 
@@ -30,30 +22,22 @@ export class TeamRepository implements ITeamRepository {
     return Team.reconstruct({
       id: new TeamId(team.id),
       name: new TeamName(parseInt(team.name, 10)), // I should have set team name as number type
-      pairIds: team.pairs.map(({ id }) => new PairId(id)),
+      pairIds: team.PairTeamBelonging.map(({ pairId }) => new PairId(pairId)),
     });
   }
 
   public async findAll(): Promise<Team[]> {
     const allTeams = await prisma.team.findMany({
       include: {
-        pairs: {
-          include: {
-            members: {
-              include: {
-                status: true,
-              },
-            },
-          },
-        },
+        PairTeamBelonging: true,
       },
     });
 
-    return allTeams.map(({ id, name, pairs }) =>
+    return allTeams.map(({ id, name, PairTeamBelonging: pairTeamBelonging }) =>
       Team.reconstruct({
         id: new TeamId(id),
         name: new TeamName(parseInt(name, 10)),
-        pairIds: pairs.map(({ id }) => new PairId(id)),
+        pairIds: pairTeamBelonging.map(({ pairId }) => new PairId(pairId)),
       }),
     );
   }

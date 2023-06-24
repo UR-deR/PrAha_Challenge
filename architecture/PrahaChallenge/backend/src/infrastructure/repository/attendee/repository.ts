@@ -64,7 +64,7 @@ export class AttendeeRepository implements IAttendeeRepository {
     );
   }
 
-  public async save(attendee: Attendee): Promise<void> {
+  public async insert(attendee: Attendee): Promise<void> {
     const activeAttendeeStatus = await prisma.attendeeStatus.findFirst({
       where: {
         name: attendee.status,
