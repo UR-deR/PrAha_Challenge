@@ -1,6 +1,6 @@
 import { AddNewAttendeeCommand } from '../../../app/add-new-attendee/usecase';
 import { Email } from '../../../domain/email/model';
-import { AddNewAttendeeRequest } from '../attendee.controller';
+import { AddNewAttendeeRequest } from './AddNewAttendeeRequest';
 
 export const AddNewAttendeeAdaptor = {
   toCommand(request: AddNewAttendeeRequest): AddNewAttendeeCommand {

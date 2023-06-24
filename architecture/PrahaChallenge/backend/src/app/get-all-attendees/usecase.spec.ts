@@ -1,6 +1,6 @@
 import { Attendee } from '../../domain/attendee/model';
 import { Email } from '../../domain/email/model';
-import { IAttendeeRepository } from './../../domain/attendee/repository';
+import { MockAttendeeRepository } from '../../mocks/repositories';
 import { GetAllAttendeesDto, GetAllAttendeesUsecase } from './usecase';
 
 const attendees: Attendee[] = [
@@ -15,24 +15,16 @@ const attendees: Attendee[] = [
 ];
 
 describe('GetAllPairsUsecase', () => {
-  const mockFindAll = jest.fn().mockReturnValue(Promise.resolve(attendees));
-  const mockFindByEmail = jest.fn();
-  const mockSave = jest.fn();
-  const mockRepository = jest
-    .fn<IAttendeeRepository, []>()
-    .mockImplementation(() => ({
-      findAll: mockFindAll,
-      findByEmail: mockFindByEmail,
-      save: mockSave,
-    }));
-
   afterEach(() => {
-    mockFindAll.mockClear();
+    jest.restoreAllMocks();
   });
 
   test('AllAttendeesDtoを返す', () => {
-    const getAllAttendeesUseCase = new GetAllAttendeesUsecase(mockRepository());
-    // maybe this is not good way to assert.
+    const mockAttendeeRepository = new MockAttendeeRepository();
+    mockAttendeeRepository.findAll = jest.fn().mockResolvedValueOnce(attendees);
+    const getAllAttendeesUseCase = new GetAllAttendeesUsecase(
+      mockAttendeeRepository,
+    );
     expect(getAllAttendeesUseCase.do()).resolves.toEqual(
       new GetAllAttendeesDto(attendees),
     );
