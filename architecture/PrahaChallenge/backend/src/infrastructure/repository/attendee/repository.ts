@@ -8,6 +8,32 @@ import { AttendeeStatus } from '../../../domain/attendee-status/model';
 
 @Injectable()
 export class AttendeeRepository implements IAttendeeRepository {
+  public async findById(id: AttendeeId): Promise<Attendee | null> {
+    const attendee = await prisma.attendee.findFirstOrThrow({
+      where: {
+        id: id.value,
+      },
+      include: {
+        status: true,
+      },
+    });
+
+    const attendeeStatus = Object.values(AttendeeStatus).find(
+      (status) => status === attendee.status.name,
+    );
+
+    if (!attendeeStatus) {
+      throw new Error(`Invalid attendee status. given: ${attendee.status}`);
+    }
+
+    return Attendee.reconstruct({
+      id: new AttendeeId(attendee.id),
+      name: attendee.name,
+      email: new Email(attendee.email),
+      status: attendeeStatus,
+    });
+  }
+
   public async findByEmail(email: Email): Promise<Attendee | null> {
     const attendee = await prisma.attendee.findFirst({
       where: {
