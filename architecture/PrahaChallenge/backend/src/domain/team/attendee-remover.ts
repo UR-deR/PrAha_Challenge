@@ -6,22 +6,43 @@ import { Team } from './model';
 import { Pair } from '../pair/model';
 import { PairName } from '../pair-name/model';
 import { AttendeeId } from '../id/model';
+import { PROVIDERS } from '../../constants';
+import {
+  EmailAddressConfig,
+  EmailClient,
+  EmailTemplateConfig,
+  InShortOfTeamMemberNotificationParameter,
+} from '../email/email-client';
+import { Admin } from '../admin/model';
+import { IAttendeeRepository } from '../attendee/repository';
 
 @Injectable()
 export class InactiveAttendeeRemover {
   public constructor(
-    @Inject('TeamRepository')
+    @Inject(PROVIDERS.TEAM_REPOSITORY)
     private teamRepository: ITeamRepository,
-    @Inject('PairRepository')
+    @Inject(PROVIDERS.PAIR_REPOSITORY)
     private pairRepository: IPairRepository,
+    @Inject(PROVIDERS.ATTENDEE_REPOSITORY)
+    private attendeeRepository: IAttendeeRepository,
+    @Inject(PROVIDERS.EMAIL_CLIENT)
+    private emailClient: EmailClient,
   ) {}
   public async remove(inactiveAttendee: Attendee) {
     const belongingTeam = await this.getBelongingTeam(inactiveAttendee);
-    const teamMemberCount = await this.getTeamMemberCount(belongingTeam);
-
-    if (teamMemberCount === Team.MIN_ATTENDEE_COUNT) {
-      // send email to administator
-      // because team is in short of member
+    const otherTeamMembers = await this.getOtherTeamMembers(
+      belongingTeam,
+      inactiveAttendee,
+    );
+    const teamMembers = [inactiveAttendee, ...otherTeamMembers];
+    if (teamMembers.length === Team.MIN_ATTENDEE_COUNT) {
+      await this.sendInShortOfTeamMemberNotificationEmail(
+        {
+          inactiveAttendee,
+          otherTeamMembers,
+        },
+        belongingTeam,
+      );
       return;
     }
 
@@ -39,7 +60,6 @@ export class InactiveAttendeeRemover {
       (pairMemberAttendeeId) =>
         pairMemberAttendeeId.value !== inactiveAttendee.id.value,
     );
-
     const fewestMemberPair = await this.getFewestMemberPair(belongingTeam);
     if (
       fewestMemberPair.pairMemberAttendeeIds.length === Pair.MAX_ATTENDEE_COUNT
@@ -89,12 +109,23 @@ export class InactiveAttendeeRemover {
     return belongingPair;
   }
 
-  private async getTeamMemberCount(team: Team): Promise<number> {
+  private async getOtherTeamMembers(
+    team: Team,
+    inactiveattendee: Attendee,
+  ): Promise<Attendee[]> {
     const pairs = await this.pairRepository.findByIds(team.pairIds);
-    const teamMemberCount = pairs.reduce((acc, pair) => {
-      return acc + pair.pairMemberAttendeeIds.length;
-    }, 0);
-    return teamMemberCount;
+    const otherTeamMemberIds = pairs
+      .map(({ pairMemberAttendeeIds }) =>
+        pairMemberAttendeeIds.filter(
+          (pairMemberAttendeeId) =>
+            pairMemberAttendeeId.value !== inactiveattendee.id.value,
+        ),
+      )
+      .flat();
+    const otherTeamMembers = await this.attendeeRepository.findByIds(
+      otherTeamMemberIds,
+    );
+    return otherTeamMembers;
   }
 
   private async getFewestMemberPair(team: Team): Promise<Pair> {
@@ -114,7 +145,7 @@ export class InactiveAttendeeRemover {
   ): Promise<void> {
     const [randomAttendeeId] = fewestMemberPair.pairMemberAttendeeIds;
     const newPair = Pair.create({
-      name: new PairName('z'),
+      name: new PairName('z'), //TODO: 仮の名前なので後で変更する。処理を考える必要がある
       pairMemberAttendeeIds: [randomAttendeeId, attendeeId],
     });
     await this.pairRepository.insert(newPair);
@@ -123,5 +154,29 @@ export class InactiveAttendeeRemover {
     );
   }
 
-  //assign
+  private async sendInShortOfTeamMemberNotificationEmail(
+    {
+      inactiveAttendee,
+      otherTeamMembers,
+    }: {
+      inactiveAttendee: Attendee;
+      otherTeamMembers: Attendee[];
+    },
+    belongingTeam: Team,
+  ): Promise<void> {
+    const emailTemplateConfig =
+      EmailTemplateConfig.InShortOfTeamMemberNotification(
+        new InShortOfTeamMemberNotificationParameter(
+          belongingTeam.name,
+          inactiveAttendee,
+          otherTeamMembers,
+        ),
+      );
+    const emailAddressConfig = new EmailAddressConfig(
+      inactiveAttendee.email.value,
+      [Admin.EMAIL_ADDRESS],
+    );
+
+    await this.emailClient.send(emailTemplateConfig, emailAddressConfig);
+  }
 }
