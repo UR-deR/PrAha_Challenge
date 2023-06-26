@@ -34,6 +34,38 @@ export class AttendeeRepository implements IAttendeeRepository {
     });
   }
 
+  public async findByIds(ids: AttendeeId[]): Promise<Attendee[]> {
+    const allAttendees = prisma.attendee.findMany({
+      where: {
+        id: {
+          in: ids.map((id) => id.value),
+        },
+      },
+      include: {
+        status: true,
+      },
+    });
+
+    return allAttendees.then((attendees) =>
+      attendees.map((attendee) => {
+        const attendeeStatus = Object.values(AttendeeStatus).find(
+          (status) => status === attendee.status.name,
+        );
+
+        if (!attendeeStatus) {
+          throw new Error(`Invalid attendee status. given: ${attendee.status}`);
+        }
+
+        return Attendee.reconstruct({
+          id: new AttendeeId(attendee.id),
+          name: attendee.name,
+          email: new Email(attendee.email),
+          status: attendeeStatus,
+        });
+      }),
+    );
+  }
+
   public async findByEmail(email: Email): Promise<Attendee | null> {
     const attendee = await prisma.attendee.findFirst({
       where: {
