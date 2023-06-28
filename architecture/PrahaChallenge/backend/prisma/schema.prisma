@@ -91,3 +91,9 @@ model AttendeeAssignmentStatus {
 
   @@id([attendeeId, assignmentId])
 }
+
+// EmailTemplates table
+model EmailTemplate {
+  emailTemplateCode   String               @id
+  emailTemplaceType   String
+}

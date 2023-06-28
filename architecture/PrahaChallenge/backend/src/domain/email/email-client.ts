@@ -8,7 +8,7 @@ export class EmailAddressConfig {
   ) {}
 }
 
-enum EmailTemplateType {
+export enum EmailTemplateType {
   IN_SHORT_OF_TEAM_MEMBER_NOTIFICATION = 'IN_SHORT_OF_TEAM_MEMBER_NOTIFICATION',
 }
 
@@ -22,8 +22,8 @@ export class InShortOfTeamMemberNotificationParameter {
 
 export class EmailTemplateConfig<T> {
   constructor(
-    private readonly type: EmailTemplateType,
-    private readonly parameter: T,
+    public readonly type: EmailTemplateType,
+    public readonly parameter: T,
   ) {}
 
   public static InShortOfTeamMemberNotification(
@@ -36,7 +36,7 @@ export class EmailTemplateConfig<T> {
   }
 }
 
-export interface EmailClient {
+export interface IEmailClient {
   send<T>(
     emailTemplateConfig: EmailTemplateConfig<T>,
     emailAddressConfig: EmailAddressConfig,

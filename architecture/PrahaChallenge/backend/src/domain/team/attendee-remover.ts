@@ -9,7 +9,7 @@ import { AttendeeId } from '../id/model';
 import { PROVIDERS } from '../../constants';
 import {
   EmailAddressConfig,
-  EmailClient,
+  IEmailClient,
   EmailTemplateConfig,
   InShortOfTeamMemberNotificationParameter,
 } from '../email/email-client';
@@ -26,7 +26,7 @@ export class InactiveAttendeeRemover {
     @Inject(PROVIDERS.ATTENDEE_REPOSITORY)
     private attendeeRepository: IAttendeeRepository,
     @Inject(PROVIDERS.EMAIL_CLIENT)
-    private emailClient: EmailClient,
+    private emailClient: IEmailClient,
   ) {}
   public async remove(inactiveAttendee: Attendee) {
     const belongingTeam = await this.getBelongingTeam(inactiveAttendee);
