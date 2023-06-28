@@ -15,6 +15,13 @@ import {
 } from '../email/email-client';
 import { Admin } from '../admin/model';
 import { IAttendeeRepository } from '../attendee/repository';
+import { FewestMemberPairGetter } from './fewest-member-pair-getter';
+
+export class InsufficientTeamMemberError extends Error {
+  public constructor(message: string) {
+    super(message);
+  }
+}
 
 @Injectable()
 export class InactiveAttendeeRemover {
@@ -27,6 +34,7 @@ export class InactiveAttendeeRemover {
     private attendeeRepository: IAttendeeRepository,
     @Inject(PROVIDERS.EMAIL_CLIENT)
     private emailClient: IEmailClient,
+    private fewestMemberPairGetter: FewestMemberPairGetter,
   ) {}
   public async remove(inactiveAttendee: Attendee) {
     const belongingTeam = await this.getBelongingTeam(inactiveAttendee);
@@ -60,14 +68,16 @@ export class InactiveAttendeeRemover {
       (pairMemberAttendeeId) =>
         pairMemberAttendeeId.value !== inactiveAttendee.id.value,
     );
-    const fewestMemberPair = await this.getFewestMemberPair(belongingTeam);
+    const fewestMemberPair = await this.fewestMemberPairGetter.get(
+      belongingTeam,
+    );
     if (
       fewestMemberPair.pairMemberAttendeeIds.length === Pair.MAX_ATTENDEE_COUNT
     ) {
       await this.dividePairIntoTwo(fewestMemberPair, loneAttendeeId);
     } else {
       await this.pairRepository.update(
-        fewestMemberPair.addAttendee(loneAttendeeId),
+        fewestMemberPair.acceptAttendee(loneAttendeeId),
       );
     }
     this.pairRepository.delete(belongingPair);
@@ -126,17 +136,6 @@ export class InactiveAttendeeRemover {
       otherTeamMemberIds,
     );
     return otherTeamMembers;
-  }
-
-  private async getFewestMemberPair(team: Team): Promise<Pair> {
-    const pairs = await this.pairRepository.findByIds(team.pairIds);
-    const fewestMemberPair = pairs.reduce((acc, pair) => {
-      return acc.pairMemberAttendeeIds.length <
-        pair.pairMemberAttendeeIds.length
-        ? acc
-        : pair;
-    });
-    return fewestMemberPair;
   }
 
   private async dividePairIntoTwo(
