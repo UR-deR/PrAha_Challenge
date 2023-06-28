@@ -67,7 +67,7 @@ export class AttendeeRepository implements IAttendeeRepository {
   }
 
   public async findByEmail(email: Email): Promise<Attendee | null> {
-    const attendee = await prisma.attendee.findFirst({
+    const attendee = await prisma.attendee.findFirstOrThrow({
       where: {
         email: email.value,
       },
@@ -75,9 +75,6 @@ export class AttendeeRepository implements IAttendeeRepository {
         status: true,
       },
     });
-    if (!attendee) {
-      return null;
-    }
 
     const attendeeStatus = Object.values(AttendeeStatus).find(
       (status) => status === attendee.status.name,
@@ -123,19 +120,34 @@ export class AttendeeRepository implements IAttendeeRepository {
   }
 
   public async insert(attendee: Attendee): Promise<void> {
-    const activeAttendeeStatus = await prisma.attendeeStatus.findFirst({
+    const activeAttendeeStatus = await prisma.attendeeStatus.findFirstOrThrow({
       where: {
         name: attendee.status,
       },
     });
 
-    if (!activeAttendeeStatus) {
-      throw new Error(`Invalid attendee status. given: ${attendee.status}`);
-    }
-
     await prisma.attendee.create({
       data: {
         id: attendee.id.value,
+        name: attendee.name,
+        email: attendee.email.value,
+        statusId: activeAttendeeStatus.id,
+      },
+    });
+  }
+
+  public async update(attendee: Attendee): Promise<void> {
+    const activeAttendeeStatus = await prisma.attendeeStatus.findFirstOrThrow({
+      where: {
+        name: attendee.status,
+      },
+    });
+
+    await prisma.attendee.update({
+      where: {
+        id: attendee.id.value,
+      },
+      data: {
         name: attendee.name,
         email: attendee.email.value,
         statusId: activeAttendeeStatus.id,
