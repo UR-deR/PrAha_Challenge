@@ -11,6 +11,7 @@ export class Team {
   public readonly id: TeamId;
   public readonly name: TeamName;
   public readonly pairIds: PairId[];
+  public static readonly MIN_ATTENDEE_COUNT = 3;
 
   private constructor({ id, name, pairIds }: ConstructorArgs) {
     this.id = id;

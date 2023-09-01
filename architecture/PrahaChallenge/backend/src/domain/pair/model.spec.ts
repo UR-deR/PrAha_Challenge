@@ -16,11 +16,11 @@ describe('Pair Entity', () => {
     );
   });
 
-  test('AddAttendeeメソッドによって、Attendeeを追加できる', () => {
+  test('AcceptAttendeeメソッドによって、Attendeeを追加できる', () => {
     const pair = Pair.create({
       name: new PairName('a'),
       pairMemberAttendeeIds: ['hoge', 'fuga'].map((id) => new AttendeeId(id)),
-    }).addAttendee(new AttendeeId('piyo'));
+    }).acceptAttendee(new AttendeeId('piyo'));
     expect(pair.pairMemberAttendeeIds).toHaveLength(3);
     expect(pair.pairMemberAttendeeIds).toContainEqual(new AttendeeId('piyo'));
   });

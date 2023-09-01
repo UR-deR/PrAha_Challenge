@@ -36,20 +36,12 @@ export class Attendee {
     });
   }
 
-  private changeStatus(status: AttendeeStatus): Attendee {
+  public updateStatus(status: AttendeeStatus): Attendee {
     return new Attendee({
       id: this.id,
       name: this.name,
       email: this.email,
       status,
     });
-  }
-
-  public resign(): Attendee {
-    return this.changeStatus(AttendeeStatus.RESIGNED);
-  }
-
-  public stayAway(): Attendee {
-    return this.changeStatus(AttendeeStatus.STAY_AWAY);
   }
 }

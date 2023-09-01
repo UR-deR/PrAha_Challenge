@@ -12,8 +12,8 @@ export class Pair {
   public readonly name: PairName;
   public readonly pairMemberAttendeeIds: AttendeeId[];
 
-  private static readonly MAX_ATTENDEE_COUNT = 3;
-  private static readonly MIN_ATTENDEE_COUNT = 2;
+  public static readonly MAX_ATTENDEE_COUNT = 3;
+  public static readonly MIN_ATTENDEE_COUNT = 2;
 
   private constructor({ id, name, pairMemberAttendeeIds }: ConstructorArgs) {
     if (
@@ -59,7 +59,7 @@ export class Pair {
     return this.changeAttendees({ pairMemberAttendeeIds });
   }
 
-  public addAttendee(attendeeId: AttendeeId): Pair {
+  public acceptAttendee(attendeeId: AttendeeId): Pair {
     const pairMemberAttendeeIds = [...this.pairMemberAttendeeIds, attendeeId];
     return this.changeAttendees({ pairMemberAttendeeIds });
   }

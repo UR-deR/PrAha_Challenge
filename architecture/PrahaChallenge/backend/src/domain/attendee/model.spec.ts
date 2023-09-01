@@ -10,19 +10,12 @@ describe('Attendee', () => {
     });
     expect(status).toBe(AttendeeStatus.ACTIVE);
   });
-  test('resignメソッドによってstatusがRESIGNEDになる', () => {
-    const { status } = Attendee.create({
+  test('updateStatusメソッドによってAttendeeStatusを更新できる', () => {
+    const attendee = Attendee.create({
       name: 'name',
       email: new Email('test@test.com'),
-    }).resign();
-    expect(status).toBe(AttendeeStatus.RESIGNED);
-  });
-
-  test('stayAwayメソッドによってstatusがSTAY_AWAYになる', () => {
-    const { status } = Attendee.create({
-      name: 'name',
-      email: new Email('test@test.com'),
-    }).stayAway();
-    expect(status).toBe(AttendeeStatus.STAY_AWAY);
+    });
+    const resignedAttendee = attendee.updateStatus(AttendeeStatus.RESIGNED);
+    expect(resignedAttendee.status).toBe(AttendeeStatus.RESIGNED);
   });
 });
