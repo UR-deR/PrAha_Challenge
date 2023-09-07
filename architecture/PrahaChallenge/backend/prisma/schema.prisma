@@ -19,23 +19,23 @@ model Participant {
   email                 String
   status                ParticipantStatus       @relation(fields: [statusId], references: [id])
   statusId              String
-  assignment            Assignment?
+  assignment            ParticipantAssignment?
   participantTaskStatus ParticipantTaskStatus[]
 }
 
 model Pair {
   id         String       @id
   name       String
-  assignment Assignment[]
+  assignment ParticipantAssignment[]
 }
 
 model Team {
   id         String       @id
   name       Int
-  assignment Assignment[]
+  assignment ParticipantAssignment[]
 }
 
-model Assignment {
+model ParticipantAssignment {
   participantId String      @id
   participant   Participant @relation(fields: [participantId], references: [id])
   pairId        String

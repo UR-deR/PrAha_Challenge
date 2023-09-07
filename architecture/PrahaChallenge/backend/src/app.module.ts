@@ -1,53 +1,73 @@
 import { Module } from '@nestjs/common';
-import { TeamController } from './controller/team/team.controller';
+import { INJECTION_TOKENS } from './injection-tokens';
+import { ParticipantRepository } from './infrastructure/repository/participant/participant.repository';
+import { ParticipantController } from './controller/participant/participant.controller';
+import { GetAllParticipantsUsecase } from './app/usecases/get-all-participants.usecase';
 import { PairController } from './controller/pair/pair.controller';
-import { AttendeeController } from './controller/attendee/attendee.controller';
-import { AttendeeRepository } from './infrastructure/repository/attendee/repository';
-import { GetAllTeamsUsecase } from './app/get-all-teams/usecase';
-import { GetAllPairsUsecase } from './app/get-all-pairs/usecase';
-import { PROVIDERS } from './constants';
-import { GetAllAttendeesUsecase } from './app/get-all-attendees/usecase';
-import { PairRepository } from './infrastructure/repository/pair/repository';
-import { TeamRepository } from './infrastructure/repository/team/repository';
-import { UpdateAssignmentStatusUsecase } from './app/update-assignment-status/usecase';
-import { AssignmentController } from './controller/assignment/assignment.controller';
-import { AttendeeAssignmentStatusRepository } from './infrastructure/repository/assignment-status-by-attendee/repository';
-import { PairMemberAssigner } from './domain/pair/pair-member-assigner';
-import { AddNewAttendeeUsecase } from './app/add-new-attendee/usecase';
-import { DuplicatedEmailChecker } from './domain/attendee/duplicated-email-checker';
+import { PairRepository } from './infrastructure/repository/pair/pair.repository';
+import { GetAllPairsUsecase } from './app/usecases/get-all-pairs.usecase';
+import { TeamRepository } from './infrastructure/repository/team/team.repository';
+import { GetAllTeamsUsecase } from './app/usecases/get-all-teams.usecase';
+import { TeamController } from './controller/team/team.controller';
+import { ParticipantAssignmentRepository } from './infrastructure/repository/participant-assignment/participant-assignment.repository';
+import { ParticipantAssigner } from './domain-service/participant-assigner.service';
+import { RegisterNewParticipantUsecase } from './app/usecases/register-new-participant.usecase';
+import { DuplicatedEmailChecker } from './domain-service/duplicated-email-checker.service';
+// import { TeamController } from './controller/team/team.controller';
+// import { PairController } from './controller/pair/pair.controller';
+// import { AttendeeController } from './controller/attendee/attendee.controller';
+// import { AttendeeRepository } from './infrastructure/repository/attendee/repository';
+// import { GetAllTeamsUsecase } from './app/get-all-teams/usecase';
+// import { GetAllPairsUsecase } from './app/get-all-pairs/usecase';
+// import { PROVIDERS } from './constants';
+// import { GetAllAttendeesUsecase } from './app/get-all-attendees/usecase';
+// import { PairRepository } from './infrastructure/repository/pair/repository';
+// import { TeamRepository } from './infrastructure/repository/team/repository';
+// import { UpdateAssignmentStatusUsecase } from './app/update-assignment-status/usecase';
+// import { AssignmentController } from './controller/assignment/assignment.controller';
+// import { AttendeeAssignmentStatusRepository } from './infrastructure/repository/assignment-status-by-attendee/repository';
+// import { PairMemberAssigner } from './domain/pair/pair-member-assigner';
+// import { AddNewAttendeeUsecase } from './app/add-new-attendee/usecase';
+// import { DuplicatedEmailChecker } from './domain/attendee/duplicated-email-checker';
 
 @Module({
   imports: [],
-  controllers: [
-    TeamController,
-    PairController,
-    AttendeeController,
-    AssignmentController,
-  ],
+  controllers: [ParticipantController, PairController, TeamController],
   providers: [
     {
-      provide: PROVIDERS.ATTENDEE_REPOSITORY,
-      useClass: AttendeeRepository,
+      provide: INJECTION_TOKENS.PARTICIPANT_REPOSITORY,
+      useClass: ParticipantRepository,
     },
     {
-      provide: PROVIDERS.PAIR_REPOSITORY,
+      provide: INJECTION_TOKENS.PAIR_REPOSITORY,
       useClass: PairRepository,
     },
     {
-      provide: PROVIDERS.TEAM_REPOSITORY,
+      provide: INJECTION_TOKENS.TEAM_REPOSITORY,
       useClass: TeamRepository,
     },
     {
-      provide: PROVIDERS.ATTENDEE_ASSIGNMENT_STATUS_REPOSITORY,
-      useClass: AttendeeAssignmentStatusRepository,
+      provide: INJECTION_TOKENS.PARTICIPANT_ASSIGNMENT_REPOSITORY,
+      useClass: ParticipantAssignmentRepository,
     },
-    UpdateAssignmentStatusUsecase,
-    GetAllAttendeesUsecase,
-    AddNewAttendeeUsecase,
-    GetAllTeamsUsecase,
+    GetAllParticipantsUsecase,
     GetAllPairsUsecase,
-    PairMemberAssigner,
+    GetAllTeamsUsecase,
+    RegisterNewParticipantUsecase,
     DuplicatedEmailChecker,
+    ParticipantAssigner,
+
+    // {
+    //   provide: PROVIDERS.ATTENDEE_ASSIGNMENT_STATUS_REPOSITORY,
+    //   useClass: AttendeeAssignmentStatusRepository,
+    // },
+    // UpdateAssignmentStatusUsecase,
+    // GetAllAttendeesUsecase,
+    // AddNewAttendeeUsecase,
+    // GetAllTeamsUsecase,
+    // GetAllPairsUsecase,
+    // PairMemberAssigner,
+    // DuplicatedEmailChecker,
   ],
 })
 export class AppModule {}
