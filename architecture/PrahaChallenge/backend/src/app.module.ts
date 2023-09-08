@@ -13,6 +13,7 @@ import { ParticipantAssignmentRepository } from './infrastructure/repository/par
 import { ParticipantAssigner } from './domain-service/participant-assigner.service';
 import { RegisterNewParticipantUsecase } from './app/usecases/register-new-participant.usecase';
 import { DuplicatedEmailChecker } from './domain-service/duplicated-email-checker.service';
+import { UpdateParticipantStatusUsecase } from './app/usecases/update-participant-status.usecase';
 // import { TeamController } from './controller/team/team.controller';
 // import { PairController } from './controller/pair/pair.controller';
 // import { AttendeeController } from './controller/attendee/attendee.controller';
@@ -54,6 +55,7 @@ import { DuplicatedEmailChecker } from './domain-service/duplicated-email-checke
     GetAllPairsUsecase,
     GetAllTeamsUsecase,
     RegisterNewParticipantUsecase,
+    UpdateParticipantStatusUsecase,
     DuplicatedEmailChecker,
     ParticipantAssigner,
 
