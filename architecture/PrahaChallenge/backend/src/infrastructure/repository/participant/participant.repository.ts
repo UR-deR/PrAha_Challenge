@@ -13,19 +13,6 @@ export class ParticipantRepository implements IParticipantRepository {
     this.prismaClient = new PrismaClient();
   }
 
-  private statusTextToStatusEnum(statusText: string): ParticipantStatus {
-    switch (statusText) {
-      case 'ACTIVE':
-        return ParticipantStatus.ACTIVE;
-      case 'STAY_AWAY':
-        return ParticipantStatus.STAY_AWAY;
-      case 'RESIGNED':
-        return ParticipantStatus.RESIGNED;
-      default:
-        throw new Error(`Invalid status text. given: ${statusText}`);
-    }
-  }
-
   public async findAll(): Promise<Participant[]> {
     const allParticipants = await this.prismaClient.participant.findMany();
     const participantStatuses =
@@ -50,7 +37,7 @@ export class ParticipantRepository implements IParticipantRepository {
         id: new ParticipantId(participant.id),
         name: participant.name,
         email: new Email(participant.email),
-        status: this.statusTextToStatusEnum(participantStatus.name),
+        status: ParticipantStatus.valueOf(participantStatus.name),
       });
     });
   }
@@ -73,7 +60,7 @@ export class ParticipantRepository implements IParticipantRepository {
       id: new ParticipantId(participant.id),
       name: participant.name,
       email: new Email(participant.email),
-      status: this.statusTextToStatusEnum(participantStatus.name),
+      status: ParticipantStatus.valueOf(participantStatus.name),
     });
   }
 
@@ -108,7 +95,7 @@ export class ParticipantRepository implements IParticipantRepository {
         id: new ParticipantId(participant.id),
         name: participant.name,
         email: new Email(participant.email),
-        status: this.statusTextToStatusEnum(participantStatus.name),
+        status: ParticipantStatus.valueOf(participantStatus.name),
       });
     });
   }
@@ -135,7 +122,7 @@ export class ParticipantRepository implements IParticipantRepository {
       id: new ParticipantId(participant.id),
       name: participant.name,
       email: new Email(participant.email),
-      status: this.statusTextToStatusEnum(participantStatus.name),
+      status: ParticipantStatus.valueOf(participantStatus.name),
     });
   }
 
@@ -143,7 +130,7 @@ export class ParticipantRepository implements IParticipantRepository {
     const participantStatus =
       await this.prismaClient.participantStatus.findFirstOrThrow({
         where: {
-          name: status,
+          name: status.toString(),
         },
       });
 

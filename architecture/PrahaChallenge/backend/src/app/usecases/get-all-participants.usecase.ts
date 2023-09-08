@@ -18,7 +18,7 @@ export class GetAllParticipantsDto {
       id: participant.id.value,
       name: participant.name,
       email: participant.email.value,
-      status: participant.status,
+      status: participant.status.toString(),
     }));
   }
 }
