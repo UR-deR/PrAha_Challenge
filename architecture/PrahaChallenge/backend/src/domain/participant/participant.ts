@@ -14,12 +14,14 @@ export class Participant {
   public readonly name: string;
   public readonly email: Email;
   public readonly status: ParticipantStatus;
+  public readonly isActive: boolean;
 
   private constructor({ id, status, name, email }: ConstructorArgs) {
     this.id = id;
     this.name = name;
     this.email = email;
     this.status = status;
+    this.isActive = status.equals(ParticipantStatus.ACTIVE);
   }
 
   public static create(

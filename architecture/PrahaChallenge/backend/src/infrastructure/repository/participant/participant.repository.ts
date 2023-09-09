@@ -45,7 +45,7 @@ export class ParticipantRepository implements IParticipantRepository {
   public async findById(id: ParticipantId): Promise<Participant | null> {
     const participant = await this.prismaClient.participant.findFirstOrThrow({
       where: {
-        id: id.value,
+        id: id.toString(),
       },
     });
 
@@ -68,7 +68,7 @@ export class ParticipantRepository implements IParticipantRepository {
     const participants = await this.prismaClient.participant.findMany({
       where: {
         id: {
-          in: ids.map((id) => id.value),
+          in: ids.map((id) => id.toString()),
         },
       },
     });
@@ -140,12 +140,14 @@ export class ParticipantRepository implements IParticipantRepository {
       statusId: participantStatus.id,
     } as const;
 
+    const participantId = id.toString();
+
     await this.prismaClient.participant.upsert({
       where: {
-        id: id.value,
+        id: participantId,
       },
       update: values,
-      create: { ...values, id: id.value },
+      create: { ...values, id: participantId },
     });
   }
 }

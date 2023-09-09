@@ -7,7 +7,7 @@ import { TeamName } from '../../../domain/team/team-name';
 
 @Injectable()
 export class TeamRepository implements ITeamRepository {
-  private prismaClient: PrismaClient;
+  private readonly prismaClient: PrismaClient;
   public constructor() {
     this.prismaClient = new PrismaClient();
   }
@@ -36,14 +36,71 @@ export class TeamRepository implements ITeamRepository {
     );
   }
 
+  public async findById(teamId: TeamId): Promise<Team | undefined> {
+    const team = await this.prismaClient.team.findFirst({
+      where: {
+        id: teamId.toString(),
+      },
+    });
+
+    if (!team) {
+      return undefined;
+    }
+
+    const participantAssignments =
+      await this.prismaClient.participantAssignment.findMany({
+        where: {
+          teamId: team.id,
+        },
+      });
+
+    return Team.reconstruct({
+      id: new TeamId(team.id),
+      name: new TeamName(team.name),
+      pairIds: participantAssignments.map(({ pairId }) => new PairId(pairId)),
+      participantIds: participantAssignments.map(
+        ({ participantId }) => new ParticipantId(participantId),
+      ),
+    });
+  }
+
+  public async findFewestMemberTeam(): Promise<Team> {
+    const allTeams = await this.prismaClient.team.findMany();
+    const allParticipantAssignments =
+      await this.prismaClient.participantAssignment.findMany();
+
+    const [fewestMemberTeam] = allTeams
+      .map((team) =>
+        Team.reconstruct({
+          id: new TeamId(team.id),
+          name: new TeamName(team.name),
+          pairIds: allParticipantAssignments.flatMap((participantAssignment) =>
+            participantAssignment.teamId === team.id
+              ? [new PairId(participantAssignment.pairId)]
+              : [],
+          ),
+          participantIds: allParticipantAssignments.flatMap(
+            (participantAssignment) =>
+              participantAssignment.teamId === team.id
+                ? [new ParticipantId(participantAssignment.participantId)]
+                : [],
+          ),
+        }),
+      )
+      .sort((a, b) => a.participantIds.length - b.participantIds.length);
+
+    return fewestMemberTeam;
+  }
+
   public async save(team: Team): Promise<void> {
+    const teamId = team.id.toString();
     await this.prismaClient.team.upsert({
-      where: { id: team.id.value },
+      where: { id: teamId },
       update: {
         name: team.name.value,
       },
       create: {
-        id: team.id.value,
+        id: teamId,
         name: team.name.value,
       },
     });

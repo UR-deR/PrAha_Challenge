@@ -2,104 +2,48 @@ import { Inject, Injectable } from '@nestjs/common';
 import { IPairRepository } from '../domain/pair/pair-repository';
 import { ITeamRepository } from '../domain/team/team-repository';
 import { Participant } from '../domain/participant/participant';
-import { Team } from '../domain/team/team';
-import { Pair } from '../domain/pair/pair';
 import { INJECTION_TOKENS } from '../injection-tokens';
 import { IParticipantAssignmentRepository } from '../domain/participant-assignment/participant-assignment-repository';
 import { ParticipantAssignment } from '../domain/participant-assignment/participant-assignment';
+import { VacantPairFinder } from './vacant-pair-finder.service';
+import { PairSplitter } from './pair-spliter.service';
 
 @Injectable()
 export class ParticipantAssigner {
   public constructor(
     @Inject(INJECTION_TOKENS.PAIR_REPOSITORY)
-    private PairRepository: IPairRepository,
+    private pairRepository: IPairRepository,
     @Inject(INJECTION_TOKENS.TEAM_REPOSITORY)
-    private TeamRepository: ITeamRepository,
+    private teamRepository: ITeamRepository,
     @Inject(INJECTION_TOKENS.PARTICIPANT_ASSIGNMENT_REPOSITORY)
-    private ParticipantAssignmentRepository: IParticipantAssignmentRepository,
+    private participantAssignmentRepository: IParticipantAssignmentRepository,
+    private readonly vacantPairFinder: VacantPairFinder,
+    private readonly pairSplitter: PairSplitter,
   ) {}
   public async assign(newParticipant: Participant): Promise<void> {
-    const fewestMemberTeam = await this.getFewestMemberTeam();
+    const fewestMemberTeam = await this.teamRepository.findFewestMemberTeam();
+    const vacantPair = await this.vacantPairFinder.find(fewestMemberTeam);
 
-    const vacantPair = await this.getVacantPair(fewestMemberTeam);
     if (vacantPair) {
-      await this.ParticipantAssignmentRepository.register(
+      await this.participantAssignmentRepository.upsert(
         ParticipantAssignment.create(
           fewestMemberTeam.id,
-          vacantPair.id,
+          vacantPair[0].id,
           newParticipant.id,
         ),
       );
-      return;
-    }
+    } else {
+      const [nonvacantPairId] = fewestMemberTeam.pairIds;
+      const nonvacantPair = await this.pairRepository.findById(nonvacantPairId);
+      if (!nonvacantPair) {
+        throw new Error(`Pair not found. id: ${nonvacantPairId.toString()}`);
+      }
 
-    const newVacantPair = await this.createVacantPairInFewestMemberTeam(
-      fewestMemberTeam,
-      newParticipant,
-    );
-
-    await this.ParticipantAssignmentRepository.register(
-      ParticipantAssignment.create(
+      await this.pairSplitter.split(
         fewestMemberTeam.id,
-        newVacantPair.id,
+        nonvacantPair.pairMemberIds[0],
         newParticipant.id,
-      ),
-    );
-  }
-
-  private async getFewestMemberTeam(): Promise<Team> {
-    const allTeams = await this.TeamRepository.findAll();
-
-    const fewestMemberTeam = allTeams.reduce((prev, current) => {
-      if (prev.participantIds.length < current.participantIds.length) {
-        return prev;
-      }
-      return current;
-    });
-
-    return fewestMemberTeam;
-  }
-
-  private async getVacantPair(team: Team): Promise<Pair | null> {
-    const participantAssingments =
-      await this.ParticipantAssignmentRepository.findAllByTeamId(team.id);
-
-    const pairIds = participantAssingments.map(({ pairId }) => pairId);
-
-    for (const pairId of pairIds) {
-      const pair = await this.PairRepository.findById(pairId);
-      if (pair.isVacant) {
-        return pair;
-      }
+      );
     }
-    return null;
-  }
-
-  private async createVacantPairInFewestMemberTeam(
-    fewestMemberTeam: Team,
-    newParticipant: Participant,
-  ): Promise<Pair> {
-    const [randomNotVacantPairId] = fewestMemberTeam.pairIds;
-    const randomNotVacantPair = await this.PairRepository.findById(
-      randomNotVacantPairId,
-    );
-    const [leavingMemberId] = randomNotVacantPair.pairMemberIds;
-    const existingPairs = await this.PairRepository.findAll();
-    const newVacantPair = Pair.create(
-      [leavingMemberId, newParticipant.id],
-      existingPairs,
-    );
-
-    await this.PairRepository.register(newVacantPair);
-
-    await this.ParticipantAssignmentRepository.update(
-      ParticipantAssignment.create(
-        fewestMemberTeam.id,
-        newVacantPair.id,
-        leavingMemberId,
-      ),
-    );
-
-    return newVacantPair;
   }
 }

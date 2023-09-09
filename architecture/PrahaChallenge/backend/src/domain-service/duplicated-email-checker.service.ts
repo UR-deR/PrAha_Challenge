@@ -7,10 +7,10 @@ import { INJECTION_TOKENS } from '../injection-tokens';
 export class DuplicatedEmailChecker {
   public constructor(
     @Inject(INJECTION_TOKENS.PARTICIPANT_REPOSITORY)
-    private ParticipantRepository: IParticipantRepository,
+    private participantRepository: IParticipantRepository,
   ) {}
   public async isDuplicated(email: Email): Promise<boolean> {
-    const participant = await this.ParticipantRepository.findByEmail(email);
+    const participant = await this.participantRepository.findByEmail(email);
     return participant !== null;
   }
 }

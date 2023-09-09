@@ -19,7 +19,7 @@ export class GetAllPairsDto {
 
   constructor(allPairs: Pair[], allParticipants: Participant[]) {
     this.value = allPairs.map((pair) => ({
-      id: pair.id.value,
+      id: pair.id.toString(),
       name: pair.name.value,
       participants: pair.pairMemberIds.map((pairMemberId) => {
         const participant = allParticipants.find((participant) =>
@@ -28,12 +28,12 @@ export class GetAllPairsDto {
 
         if (!participant) {
           throw new Error(`
-            Participant not found. pairMemberId: ${pairMemberId.value}
+            Participant not found. pairMemberId: ${pairMemberId.toString()}
           `);
         }
 
         return {
-          id: participant.id.value,
+          id: participant.id.toString(),
           name: participant.name,
         };
       }),

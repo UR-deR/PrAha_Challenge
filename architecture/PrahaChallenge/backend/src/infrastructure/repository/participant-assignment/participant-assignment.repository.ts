@@ -1,5 +1,4 @@
 import { PrismaClient } from '@prisma/client';
-import { Pair } from '../../../domain/pair/pair';
 import { Injectable } from '@nestjs/common';
 import { PairId, ParticipantId, TeamId } from '../../../domain/id/id';
 import { IParticipantAssignmentRepository } from '../../../domain/participant-assignment/participant-assignment-repository';
@@ -14,24 +13,32 @@ export class ParticipantAssignmentRepository
     this.prismaClient = new PrismaClient();
   }
 
-  public async register(
-    participantAssignment: ParticipantAssignment,
-  ): Promise<void> {
-    await this.prismaClient.participantAssignment.create({
-      data: {
-        participantId: participantAssignment.participantId.value,
-        pairId: participantAssignment.pairId.value,
-        teamId: participantAssignment.teamId.value,
+  public async upsert({
+    participantId,
+    pairId,
+    teamId,
+  }: ParticipantAssignment): Promise<void> {
+    const newRecord = {
+      participantId: participantId.toString(),
+      pairId: pairId.toString(),
+      teamId: teamId.toString(),
+    };
+    await this.prismaClient.participantAssignment.upsert({
+      where: {
+        participantId: participantId.toString(),
       },
+      update: newRecord,
+      create: newRecord,
     });
   }
+
   public async findAllByTeamId(
     teamId: TeamId,
   ): Promise<ParticipantAssignment[]> {
     const participantAssignments =
       await this.prismaClient.participantAssignment.findMany({
         where: {
-          teamId: teamId.value,
+          teamId: teamId.toString(),
         },
       });
 
@@ -44,28 +51,13 @@ export class ParticipantAssignmentRepository
     );
   }
 
-  public async update(
-    participantAssignment: ParticipantAssignment,
-  ): Promise<void> {
-    await this.prismaClient.participantAssignment.update({
-      where: {
-        participantId: participantAssignment.participantId.value,
-      },
-      data: {
-        participantId: participantAssignment.participantId.value,
-        pairId: participantAssignment.pairId.value,
-        teamId: participantAssignment.teamId.value,
-      },
-    });
-  }
-
   public async findByParticipantId(
     participantId: ParticipantId,
   ): Promise<ParticipantAssignment> {
     const participantAssignment =
       await this.prismaClient.participantAssignment.findFirstOrThrow({
         where: {
-          participantId: participantId.value,
+          participantId: participantId.toString(),
         },
       });
 
@@ -74,5 +66,13 @@ export class ParticipantAssignmentRepository
       new PairId(participantAssignment.pairId),
       new ParticipantId(participantAssignment.participantId),
     );
+  }
+
+  public async delete({ participantId }: ParticipantAssignment): Promise<void> {
+    await this.prismaClient.participantAssignment.delete({
+      where: {
+        participantId: participantId.toString(),
+      },
+    });
   }
 }

@@ -2,18 +2,18 @@ import { ParticipantId, TaskId } from '../id/id';
 import { TaskStatus } from './task-status';
 
 type ConstructorArgs = {
-  TaskId: TaskId;
+  taskId: TaskId;
   participantId: ParticipantId;
   status: TaskStatus;
 };
 
 export class participantTaskStatus {
-  public readonly TaskId: TaskId;
+  public readonly taskId: TaskId;
   public readonly participantId: ParticipantId;
   public readonly status: TaskStatus;
 
-  constructor(args: ConstructorArgs) {
-    this.TaskId = args.TaskId;
+  private constructor(args: ConstructorArgs) {
+    this.taskId = args.taskId;
     this.participantId = args.participantId;
     this.status = args.status;
   }
@@ -25,11 +25,11 @@ export class participantTaskStatus {
   public updateStatus(status: TaskStatus): participantTaskStatus {
     if (this.status === TaskStatus.COMPLETED) {
       throw new Error(
-        `Cannot change status of completed Task. TaskId: ${this.TaskId.value}, participantId: ${this.participantId.value}`,
+        `Cannot change status of completed Task. TaskId: ${this.taskId.toString()}, participantId: ${this.participantId.toString()}`,
       );
     }
     return new participantTaskStatus({
-      TaskId: this.TaskId,
+      taskId: this.taskId,
       participantId: this.participantId,
       status,
     });

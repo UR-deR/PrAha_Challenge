@@ -14,6 +14,9 @@ import { ParticipantAssigner } from './domain-service/participant-assigner.servi
 import { RegisterNewParticipantUsecase } from './app/usecases/register-new-participant.usecase';
 import { DuplicatedEmailChecker } from './domain-service/duplicated-email-checker.service';
 import { UpdateParticipantStatusUsecase } from './app/usecases/update-participant-status.usecase';
+import { VacantPairFinder } from './domain-service/vacant-pair-finder.service';
+import { PairSplitter } from './domain-service/pair-spliter.service';
+import { InactiveParticipantRemover } from './domain-service/inactive-participant-remover.service';
 // import { TeamController } from './controller/team/team.controller';
 // import { PairController } from './controller/pair/pair.controller';
 // import { AttendeeController } from './controller/attendee/attendee.controller';
@@ -58,6 +61,9 @@ import { UpdateParticipantStatusUsecase } from './app/usecases/update-participan
     UpdateParticipantStatusUsecase,
     DuplicatedEmailChecker,
     ParticipantAssigner,
+    InactiveParticipantRemover,
+    VacantPairFinder,
+    PairSplitter,
 
     // {
     //   provide: PROVIDERS.ATTENDEE_ASSIGNMENT_STATUS_REPOSITORY,

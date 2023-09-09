@@ -13,18 +13,21 @@ export class Team {
   public readonly name: TeamName;
   public readonly pairIds: PairId[];
   public readonly participantIds: ParticipantId[];
+  public readonly canRemoveMember: boolean;
   private static readonly MIN_MEMBER_COUNT = 3;
 
   private constructor({ id, name, participantIds, pairIds }: ConstructorArgs) {
-    if (participantIds.length < Team.MIN_MEMBER_COUNT) {
+    const memberCount = participantIds.length;
+    if (memberCount < Team.MIN_MEMBER_COUNT) {
       throw new Error(
-        `Team must have at least ${Team.MIN_MEMBER_COUNT} members but got ${participantIds.length}`,
+        `Team must have at least ${Team.MIN_MEMBER_COUNT} members but got ${memberCount}`,
       );
     }
     this.id = id;
     this.name = name;
     this.participantIds = participantIds;
     this.pairIds = pairIds;
+    this.canRemoveMember = memberCount > Team.MIN_MEMBER_COUNT;
   }
 
   public static create(args: Omit<ConstructorArgs, 'id'>): Team {
@@ -40,8 +43,6 @@ export class Team {
     });
   }
 
-  //TODO: Pairの更新用のメソッドを追加する
-
   private changeMembers({
     participantIds,
   }: Pick<ConstructorArgs, 'participantIds'>): Team {
@@ -55,7 +56,7 @@ export class Team {
 
   public removeMember(participantId: ParticipantId): Team {
     const participantIds = this.participantIds.filter(
-      ({ value }) => value !== participantId.value,
+      ({ equals }) => !equals(participantId),
     );
     return this.changeMembers({ participantIds });
   }

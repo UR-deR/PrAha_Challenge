@@ -11,7 +11,9 @@ export class Pair {
   public readonly id: PairId;
   public readonly name: PairName;
   public readonly pairMemberIds: ParticipantId[];
+
   public readonly isVacant: boolean;
+  public readonly canRemoveMember: boolean;
 
   private static readonly MAX_MEMBER_COUNT = 3;
   private static readonly MIN_MEMBER_COUNT = 2;
@@ -22,12 +24,14 @@ export class Pair {
       memberCount < Pair.MIN_MEMBER_COUNT ||
       memberCount > Pair.MAX_MEMBER_COUNT
     ) {
-      throw new Error(`Invalid Member count. given: ${memberCount}`);
+      throw new Error(`Invalid Member count for PairId: ${id.toString()}
+      . memberCount: ${memberCount}`);
     }
     this.id = id;
     this.name = name;
     this.pairMemberIds = pairMemberIds;
     this.isVacant = memberCount < Pair.MAX_MEMBER_COUNT;
+    this.canRemoveMember = memberCount > Pair.MIN_MEMBER_COUNT;
   }
 
   public static create(
@@ -61,7 +65,7 @@ export class Pair {
 
   public removeMember(participantId: ParticipantId): Pair {
     const pairMemberIds = this.pairMemberIds.filter(
-      (pairMemberId) => pairMemberId.value !== participantId.value,
+      ({ equals }) => !equals(participantId),
     );
     return this.changeMembers({ pairMemberIds });
   }

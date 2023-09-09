@@ -31,12 +31,16 @@ export class PairRepository implements IPairRepository {
     );
   }
 
-  public async findById(pairId: PairId): Promise<Pair> {
-    const pair = await this.prismaClient.pair.findFirstOrThrow({
+  public async findById(pairId: PairId): Promise<Pair | undefined> {
+    const pair = await this.prismaClient.pair.findFirst({
       where: {
-        id: pairId.value,
+        id: pairId.toString(),
       },
     });
+
+    if (!pair) {
+      return undefined;
+    }
 
     const participantAssignments =
       await this.prismaClient.participantAssignment.findMany({
@@ -55,14 +59,23 @@ export class PairRepository implements IPairRepository {
   }
 
   public async register(pair: Pair): Promise<void> {
+    const pairId = pair.id.toString();
     await this.prismaClient.pair.upsert({
-      where: { id: pair.id.value },
+      where: { id: pairId },
       update: {
         name: pair.name.value,
       },
       create: {
-        id: pair.id.value,
+        id: pairId,
         name: pair.name.value,
+      },
+    });
+  }
+
+  public async delete(pair: Pair): Promise<void> {
+    await this.prismaClient.pair.delete({
+      where: {
+        id: pair.id.toString(),
       },
     });
   }

@@ -1,10 +1,14 @@
 import { ulid } from 'ulid';
 
 abstract class Id<T extends Id<T>> {
-  public constructor(public readonly value: string) {}
+  public constructor(private readonly value: string) {}
 
   public static generate<T extends Id<T>>(): T {
     return new (this as unknown as new (value: string) => T)(ulid());
+  }
+
+  public toString(): string {
+    return this.value;
   }
 
   equals(other: Id<T>): boolean {
@@ -13,16 +17,16 @@ abstract class Id<T extends Id<T>> {
 }
 
 class TeamId extends Id<TeamId> {
-  private type: this;
+  private _: this;
 }
 class PairId extends Id<PairId> {
-  private type: this;
+  private _: this;
 }
 class ParticipantId extends Id<ParticipantId> {
-  private type: this;
+  private _: this;
 }
 class TaskId extends Id<TaskId> {
-  private type: this;
+  private _: this;
 }
 
 export { TeamId, PairId, TaskId, ParticipantId };

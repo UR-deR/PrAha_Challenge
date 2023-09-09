@@ -26,7 +26,7 @@ export class GetAllTeamsDto {
     allParticipants: Participant[],
   ) {
     this.value = allTeams.map((team) => ({
-      id: team.id.value,
+      id: team.id.toString(),
       name: team.name.value.toString(),
       participants: team.participantIds.map((participantId) => {
         const participant = allParticipants.find((participant) =>
@@ -35,7 +35,7 @@ export class GetAllTeamsDto {
 
         if (!participant) {
           throw new Error(`
-            Participant not found. participantId: ${participantId.value}
+            Participant not found. participantId: ${participantId.toString()}
           `);
         }
 
@@ -47,14 +47,14 @@ export class GetAllTeamsDto {
 
         if (!pair) {
           throw new Error(`
-            Pair not found. participantId: ${participantId.value}
+            Pair not found. participantId: ${participantId.toString()}
           `);
         }
 
         return {
-          id: participant.id.value,
+          id: participant.id.toString(),
           name: participant.name,
-          pairId: pair.id.value,
+          pairId: pair.id.toString(),
         };
       }),
     }));

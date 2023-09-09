@@ -4,6 +4,7 @@ import { IParticipantRepository } from '../../domain/participant/participant-rep
 import { ParticipantId } from '../../domain/id/id';
 import { ParticipantStatus } from '../../domain/participant/participant-status';
 import { ParticipantAssigner } from '../../domain-service/participant-assigner.service';
+import { InactiveParticipantRemover } from '../../domain-service/inactive-participant-remover.service';
 
 export type UpdateParticipantStatusParams = {
   participantId: ParticipantId;
@@ -16,6 +17,7 @@ export class UpdateParticipantStatusUsecase {
     @Inject(INJECTION_TOKENS.PARTICIPANT_REPOSITORY)
     private readonly participantRepository: IParticipantRepository,
     private readonly participantAssigner: ParticipantAssigner,
+    private readonly inactiveParticipantRemover: InactiveParticipantRemover,
   ) {}
 
   public async do(params: UpdateParticipantStatusParams): Promise<void> {
@@ -25,7 +27,7 @@ export class UpdateParticipantStatusUsecase {
 
     if (!participant) {
       throw new Error(
-        `Participant not found. id: ${params.participantId.value}`,
+        `Participant not found. id: ${params.participantId.toString()}`,
       );
     }
 
@@ -35,14 +37,10 @@ export class UpdateParticipantStatusUsecase {
 
     await this.participantRepository.save(updatedParticipant);
 
-    const isActivated = params.newParticipantStatus.equals(
-      ParticipantStatus.ACTIVE,
-    );
-
-    if (isActivated) {
+    if (updatedParticipant.isActive) {
       await this.participantAssigner.assign(updatedParticipant);
     } else {
-      //休会・退会の場合
+      await this.inactiveParticipantRemover.remove(updatedParticipant);
     }
   }
 }

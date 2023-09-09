@@ -15,7 +15,7 @@ export class GetAllParticipantsDto {
 
   constructor(allParticipants: Participant[]) {
     this.value = allParticipants.map((participant) => ({
-      id: participant.id.value,
+      id: participant.id.toString(),
       name: participant.name,
       email: participant.email.value,
       status: participant.status.toString(),
