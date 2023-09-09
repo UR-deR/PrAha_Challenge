@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
+import { GetAllPairsUsecase } from '../../app/usecases/get-all-pairs.usecase';
 import { ApiResponse } from '@nestjs/swagger';
-import { GetAllPairsResponse } from './response';
-import { GetAllPairsUsecase } from '../../app/get-all-pairs/usecase';
+import { GetAllPairsResponse } from './response/get-all-pairs-response';
 
 @Controller('pair')
 export class PairController {
@@ -10,8 +10,7 @@ export class PairController {
   @Get()
   @ApiResponse({ status: 200, type: GetAllPairsResponse })
   async getAllPairs() {
-    const allPairs = await this.getAllPairsUsecase.do();
-    const response = new GetAllPairsResponse(allPairs);
-    return response;
+    const allPairsDto = await this.getAllPairsUsecase.do();
+    return new GetAllPairsResponse(allPairsDto);
   }
 }

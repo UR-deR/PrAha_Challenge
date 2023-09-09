@@ -7,93 +7,68 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Teams table
-model Team {
-  id                String                 @id
-  name              String
-  pairs             Pair[]
-  PairTeamBelonging PairTeamBelonging[]
-}
-
-// Pairs table
-model Pair {
-  id                     String                      @id
-  name                   String
-  teams                  Team[]
-  members                Attendee[]
-  AttendeePairMembership AttendeePairMembership[]
-  PairTeamBelonging      PairTeamBelonging[]
-}
-
-// Attendees table
-model Attendee {
-  id          String                        @id
+model ParticipantStatus {
+  id          String        @id
   name        String
-  email       String
-  status      AttendeeStatus             @relation(fields: [statusId], references: [id])
-  statusId    String
-  pairs       AttendeePairMembership[]
-  assignments AttendeeAssignmentStatus[]
-  Pair        Pair?                      @relation(fields: [pairId], references: [id])
-  pairId      String?
+  participant Participant[]
 }
 
-// AttendeePairMemberships table
-model AttendeePairMembership {
-  attendee   Attendee @relation(fields: [attendeeId], references: [id])
-  attendeeId String
-  pair       Pair     @relation(fields: [pairId], references: [id])
-  pairId     String
-
-  @@id([attendeeId, pairId])
+model Participant {
+  id                    String                  @id
+  name                  String
+  email                 String
+  status                ParticipantStatus       @relation(fields: [statusId], references: [id])
+  statusId              String
+  assignment            ParticipantAssignment?
+  participantTaskStatus ParticipantTaskStatus[]
 }
 
-// PairTeamBelongings table
-model PairTeamBelonging {
-  team   Team @relation(fields: [teamId], references: [id])
-  teamId String
-  pair   Pair @relation(fields: [pairId], references: [id])
-  pairId String
-
-  @@id([teamId, pairId])
+model Pair {
+  id         String       @id
+  name       String
+  assignment ParticipantAssignment[]
 }
 
-// Assignments table
-model Assignment {
-  id          String                        @id
-  title       String
-  description String
-  attendees   AttendeeAssignmentStatus[]
+model Team {
+  id         String       @id
+  name       Int
+  assignment ParticipantAssignment[]
 }
 
-// AttendeeStatuses table
-model AttendeeStatus {
-  id        String        @id
-  name      String
-  attendees Attendee[]
+model ParticipantAssignment {
+  participantId String      @id
+  participant   Participant @relation(fields: [participantId], references: [id])
+  pairId        String
+  pair          Pair        @relation(fields: [pairId], references: [id])
+  teamId        String
+  team          Team        @relation(fields: [teamId], references: [id])
 }
 
-// AssignmentStatuses table
-model AssignmentStatus {
-  id        String                        @id
-  name      String
-  attendees AttendeeAssignmentStatus[]
+model Task {
+  id                    String                  @id
+  name                  String
+  description           String
+  ParticipantTaskStatus ParticipantTaskStatus[]
 }
 
-// AttendeeAssignmentStatuses table
-model AttendeeAssignmentStatus {
-  attendee     Attendee         @relation(fields: [attendeeId], references: [id])
-  attendeeId   String
-  assignment   Assignment       @relation(fields: [assignmentId], references: [id])
-  assignmentId String
-  status       AssignmentStatus @relation(fields: [statusId], references: [id])
-  statusId     String
-
-  @@id([attendeeId, assignmentId])
+model TaskStatus {
+  id                    String                  @id
+  name                  String
+  ParticipantTaskStatus ParticipantTaskStatus[]
 }
 
-// EmailTemplates table
+model ParticipantTaskStatus {
+  participantId String
+  participant   Participant @relation(fields: [participantId], references: [id])
+  taskId        String
+  task          Task        @relation(fields: [taskId], references: [id])
+  statusId      String
+  status        TaskStatus  @relation(fields: [statusId], references: [id])
+
+  @@unique([participantId, taskId])
+}
+
 model EmailTemplate {
-  emailTemplateCode   String               @id
-  emailTemplaceType   String
+  emailTemplateCode String @id
+  emailTemplteType  String
 }

@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 import { ApiResponse } from '@nestjs/swagger';
-import { GetAllTeamsResponse } from './response';
-import { GetAllTeamsUsecase } from '../../app/get-all-teams/usecase';
+import { GetAllTeamsResponse } from './response/get-all-teams-response';
+import { GetAllTeamsUsecase } from '../../app/usecases/get-all-teams.usecase';
 
 @Controller('team')
 export class TeamController {
@@ -10,8 +10,7 @@ export class TeamController {
   @Get()
   @ApiResponse({ status: 200, type: GetAllTeamsResponse })
   async getAllTeams() {
-    const allTeams = await this.getAllTeamsUsecase.do();
-    const response = new GetAllTeamsResponse(allTeams);
-    return response;
+    const allTeamsDto = await this.getAllTeamsUsecase.do();
+    return new GetAllTeamsResponse(allTeamsDto);
   }
 }
