@@ -15,6 +15,14 @@ export class ParticipantAssignment {
     return new ParticipantAssignment(teamId, pairId, participantId);
   };
 
+  public changePair = (newPairId: PairId) => {
+    return new ParticipantAssignment(
+      this.teamId,
+      newPairId,
+      this.participantId,
+    );
+  };
+
   public static reconstruct(
     teamId: TeamId,
     pairId: PairId,
