@@ -17,6 +17,7 @@ import { UpdateParticipantStatusUsecase } from './app/usecases/update-participan
 import { VacantPairFinder } from './domain-service/vacant-pair-finder.service';
 import { PairSplitter } from './domain-service/pair-spliter.service';
 import { InactiveParticipantRemover } from './domain-service/inactive-participant-remover.service';
+import { SwapPairMembersUsecase } from './app/usecases/swap-pair-members.usecase';
 // import { TeamController } from './controller/team/team.controller';
 // import { PairController } from './controller/pair/pair.controller';
 // import { AttendeeController } from './controller/attendee/attendee.controller';
@@ -59,6 +60,7 @@ import { InactiveParticipantRemover } from './domain-service/inactive-participan
     GetAllTeamsUsecase,
     RegisterNewParticipantUsecase,
     UpdateParticipantStatusUsecase,
+    SwapPairMembersUsecase,
     DuplicatedEmailChecker,
     ParticipantAssigner,
     InactiveParticipantRemover,

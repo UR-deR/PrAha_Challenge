@@ -63,6 +63,20 @@ export class Pair {
     });
   }
 
+  public exchangeMembers = (
+    oldParticipantId: ParticipantId,
+    newParticipantId: ParticipantId,
+  ): Pair => {
+    const newPairMemberIds = this.pairMemberIds.map((pairMemberId) => {
+      if (pairMemberId.equals(oldParticipantId)) {
+        return newParticipantId;
+      }
+      return pairMemberId;
+    });
+
+    return this.changeMembers({ pairMemberIds: newPairMemberIds });
+  };
+
   public removeMember(participantId: ParticipantId): Pair {
     const pairMemberIds = this.pairMemberIds.filter(
       ({ equals }) => !equals(participantId),

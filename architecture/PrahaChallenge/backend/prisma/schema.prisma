@@ -42,6 +42,8 @@ model ParticipantAssignment {
   pair          Pair        @relation(fields: [pairId], references: [id])
   teamId        String
   team          Team        @relation(fields: [teamId], references: [id])
+  assignedAt    DateTime   @default(now())
+  @@unique([participantId, assignedAt])
 }
 
 model Task {

@@ -22,6 +22,7 @@ export class ParticipantAssignmentRepository
       participantId: participantId.toString(),
       pairId: pairId.toString(),
       teamId: teamId.toString(),
+      assignedAt: new Date(),
     };
     await this.prismaClient.participantAssignment.upsert({
       where: {
