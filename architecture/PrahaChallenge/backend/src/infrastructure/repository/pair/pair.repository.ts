@@ -58,6 +58,46 @@ export class PairRepository implements IPairRepository {
     });
   }
 
+  public async findByMemberId(
+    participantId: ParticipantId,
+  ): Promise<Pair | undefined> {
+    const participantAssignment =
+      await this.prismaClient.participantAssignment.findFirst({
+        where: {
+          participantId: participantId.toString(),
+        },
+      });
+
+    if (!participantAssignment) {
+      return undefined;
+    }
+
+    const pair = await this.prismaClient.pair.findFirst({
+      where: {
+        id: participantAssignment.pairId,
+      },
+    });
+
+    if (!pair) {
+      return undefined;
+    }
+
+    const participantAssignments =
+      await this.prismaClient.participantAssignment.findMany({
+        where: {
+          pairId: pair.id,
+        },
+      });
+
+    return Pair.reconstruct({
+      id: new PairId(pair.id),
+      name: new PairName(pair.name),
+      pairMemberIds: participantAssignments.map(
+        ({ participantId }) => new ParticipantId(participantId),
+      ),
+    });
+  }
+
   public async register(pair: Pair): Promise<void> {
     const pairId = pair.id.toString();
     await this.prismaClient.pair.upsert({
