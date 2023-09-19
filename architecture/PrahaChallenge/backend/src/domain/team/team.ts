@@ -54,15 +54,42 @@ export class Team {
     });
   }
 
-  public removeMember(participantId: ParticipantId): Team {
-    const participantIds = this.participantIds.filter(
-      ({ equals }) => !equals(participantId),
+  public removeMembers(removedParticipantIds: ParticipantId[]): Team {
+    const newParticipantIds = this.participantIds.filter(
+      (id) =>
+        !removedParticipantIds
+          .map((removedParticipantId) => removedParticipantId.toString())
+          .includes(id.toString()),
     );
-    return this.changeMembers({ participantIds });
+    return this.changeMembers({ participantIds: newParticipantIds });
   }
 
-  public acceptNewMember(participantId: ParticipantId): Team {
-    const participantIds = [...this.participantIds, participantId];
-    return this.changeMembers({ participantIds });
+  public acceptNewMembers(newParticipantIds: ParticipantId[]): Team {
+    return this.changeMembers({
+      participantIds: [...this.participantIds, ...newParticipantIds],
+    });
+  }
+
+  private changePairs({ pairIds }: Pick<ConstructorArgs, 'pairIds'>): Team {
+    return new Team({
+      id: this.id,
+      name: this.name,
+      pairIds,
+      participantIds: this.participantIds,
+    });
+  }
+
+  public removePairs(removedPairIds: PairId[]): Team {
+    const newPairIds = this.pairIds.filter(
+      (id) =>
+        !removedPairIds
+          .map((removedPairId) => removedPairId.toString())
+          .includes(id.toString()),
+    );
+    return this.changePairs({ pairIds: newPairIds });
+  }
+
+  public acceptNewPairs(newPairIds: PairId[]): Team {
+    return this.changePairs({ pairIds: [...this.pairIds, ...newPairIds] });
   }
 }

@@ -133,7 +133,7 @@ export class InactiveParticipantRemover {
     inactiveParticipantAssignment: ParticipantAssignment,
   ): Promise<void> {
     await this.participantAssignmentRepository.delete(
-      inactiveParticipantAssignment,
+      inactiveParticipantAssignment.participantId,
     );
   }
 }

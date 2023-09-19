@@ -64,6 +64,45 @@ export class TeamRepository implements ITeamRepository {
     });
   }
 
+  public async findByPairId(pairId: PairId): Promise<Team | undefined> {
+    const participantAssignment =
+      await this.prismaClient.participantAssignment.findFirst({
+        where: {
+          pairId: pairId.toString(),
+        },
+      });
+
+    if (!participantAssignment) {
+      return undefined;
+    }
+
+    const team = await this.prismaClient.team.findFirst({
+      where: {
+        id: participantAssignment.teamId,
+      },
+    });
+
+    if (!team) {
+      return undefined;
+    }
+
+    const participantAssignments =
+      await this.prismaClient.participantAssignment.findMany({
+        where: {
+          teamId: team.id,
+        },
+      });
+
+    return Team.reconstruct({
+      id: new TeamId(team.id),
+      name: new TeamName(team.name),
+      pairIds: participantAssignments.map(({ pairId }) => new PairId(pairId)),
+      participantIds: participantAssignments.map(
+        ({ participantId }) => new ParticipantId(participantId),
+      ),
+    });
+  }
+
   public async findFewestMemberTeam(): Promise<Team> {
     const allTeams = await this.prismaClient.team.findMany();
     const allParticipantAssignments =

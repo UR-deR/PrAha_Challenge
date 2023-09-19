@@ -18,22 +18,7 @@ import { VacantPairFinder } from './domain-service/vacant-pair-finder.service';
 import { PairSplitter } from './domain-service/pair-spliter.service';
 import { InactiveParticipantRemover } from './domain-service/inactive-participant-remover.service';
 import { SwapPairMembersUsecase } from './app/usecases/swap-pair-members.usecase';
-// import { TeamController } from './controller/team/team.controller';
-// import { PairController } from './controller/pair/pair.controller';
-// import { AttendeeController } from './controller/attendee/attendee.controller';
-// import { AttendeeRepository } from './infrastructure/repository/attendee/repository';
-// import { GetAllTeamsUsecase } from './app/get-all-teams/usecase';
-// import { GetAllPairsUsecase } from './app/get-all-pairs/usecase';
-// import { PROVIDERS } from './constants';
-// import { GetAllAttendeesUsecase } from './app/get-all-attendees/usecase';
-// import { PairRepository } from './infrastructure/repository/pair/repository';
-// import { TeamRepository } from './infrastructure/repository/team/repository';
-// import { UpdateAssignmentStatusUsecase } from './app/update-assignment-status/usecase';
-// import { AssignmentController } from './controller/assignment/assignment.controller';
-// import { AttendeeAssignmentStatusRepository } from './infrastructure/repository/assignment-status-by-attendee/repository';
-// import { PairMemberAssigner } from './domain/pair/pair-member-assigner';
-// import { AddNewAttendeeUsecase } from './app/add-new-attendee/usecase';
-// import { DuplicatedEmailChecker } from './domain/attendee/duplicated-email-checker';
+import { SwapTeamPairUsecase } from './app/usecases/swap-team-pair.usecase';
 
 @Module({
   imports: [],
@@ -61,23 +46,12 @@ import { SwapPairMembersUsecase } from './app/usecases/swap-pair-members.usecase
     RegisterNewParticipantUsecase,
     UpdateParticipantStatusUsecase,
     SwapPairMembersUsecase,
+    SwapTeamPairUsecase,
     DuplicatedEmailChecker,
     ParticipantAssigner,
     InactiveParticipantRemover,
     VacantPairFinder,
     PairSplitter,
-
-    // {
-    //   provide: PROVIDERS.ATTENDEE_ASSIGNMENT_STATUS_REPOSITORY,
-    //   useClass: AttendeeAssignmentStatusRepository,
-    // },
-    // UpdateAssignmentStatusUsecase,
-    // GetAllAttendeesUsecase,
-    // AddNewAttendeeUsecase,
-    // GetAllTeamsUsecase,
-    // GetAllPairsUsecase,
-    // PairMemberAssigner,
-    // DuplicatedEmailChecker,
   ],
 })
 export class AppModule {}
