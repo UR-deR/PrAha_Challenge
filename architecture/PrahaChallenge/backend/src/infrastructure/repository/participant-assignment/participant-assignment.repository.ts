@@ -52,6 +52,25 @@ export class ParticipantAssignmentRepository
     );
   }
 
+  public async findAllByPairId(
+    pairId: PairId,
+  ): Promise<ParticipantAssignment[]> {
+    const participantAssignments =
+      await this.prismaClient.participantAssignment.findMany({
+        where: {
+          pairId: pairId.toString(),
+        },
+      });
+
+    return participantAssignments.map(({ participantId, pairId, teamId }) =>
+      ParticipantAssignment.reconstruct(
+        new TeamId(teamId),
+        new PairId(pairId),
+        new ParticipantId(participantId),
+      ),
+    );
+  }
+
   public async findByParticipantId(
     participantId: ParticipantId,
   ): Promise<ParticipantAssignment> {
@@ -69,7 +88,7 @@ export class ParticipantAssignmentRepository
     );
   }
 
-  public async delete({ participantId }: ParticipantAssignment): Promise<void> {
+  public async delete(participantId: ParticipantId): Promise<void> {
     await this.prismaClient.participantAssignment.delete({
       where: {
         participantId: participantId.toString(),
