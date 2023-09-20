@@ -19,10 +19,18 @@ import { PairSplitter } from './domain-service/pair-spliter.service';
 import { InactiveParticipantRemover } from './domain-service/inactive-participant-remover.service';
 import { SwapPairMembersUsecase } from './app/usecases/swap-pair-members.usecase';
 import { SwapTeamPairUsecase } from './app/usecases/swap-team-pair.usecase';
+import { TaskController } from './controller/task/task.controller';
+import { ParticipantTaskStatusRepository } from './infrastructure/repository/participant-task-status/participant-task-status.repository';
+import { UpdateTaskStatusUsecase } from './app/usecases/update-task-status.usecase';
 
 @Module({
   imports: [],
-  controllers: [ParticipantController, PairController, TeamController],
+  controllers: [
+    ParticipantController,
+    PairController,
+    TeamController,
+    TaskController,
+  ],
   providers: [
     {
       provide: INJECTION_TOKENS.PARTICIPANT_REPOSITORY,
@@ -40,11 +48,16 @@ import { SwapTeamPairUsecase } from './app/usecases/swap-team-pair.usecase';
       provide: INJECTION_TOKENS.PARTICIPANT_ASSIGNMENT_REPOSITORY,
       useClass: ParticipantAssignmentRepository,
     },
+    {
+      provide: INJECTION_TOKENS.PARTICIPANT_TASK_STATUS_REPOSITORY,
+      useClass: ParticipantTaskStatusRepository,
+    },
     GetAllParticipantsUsecase,
     GetAllPairsUsecase,
     GetAllTeamsUsecase,
     RegisterNewParticipantUsecase,
     UpdateParticipantStatusUsecase,
+    UpdateTaskStatusUsecase,
     SwapPairMembersUsecase,
     SwapTeamPairUsecase,
     DuplicatedEmailChecker,
