@@ -10,14 +10,14 @@ export class UpdateTaskStatusRequest {
   task_id: string;
   @ApiProperty()
   new_status: string;
-}
 
-export const convertRequestIntoUsecaseParams = (
-  request: UpdateTaskStatusRequest,
-): UpdateTaskStatusParams => {
-  return {
-    participantId: new ParticipantId(request.user_id),
-    taskId: new TaskId(request.task_id),
-    newStatus: TaskStatus.valueOf(request.new_status),
-  };
-};
+  static toUsecaseParams(
+    request: UpdateTaskStatusRequest,
+  ): UpdateTaskStatusParams {
+    return {
+      participantId: new ParticipantId(request.user_id),
+      taskId: new TaskId(request.task_id),
+      newStatus: TaskStatus.valueOf(request.new_status),
+    };
+  }
+}

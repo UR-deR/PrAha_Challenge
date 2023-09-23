@@ -22,6 +22,8 @@ import { SwapTeamPairUsecase } from './app/usecases/swap-team-pair.usecase';
 import { TaskController } from './controller/task/task.controller';
 import { ParticipantTaskStatusRepository } from './infrastructure/repository/participant-task-status/participant-task-status.repository';
 import { UpdateTaskStatusUsecase } from './app/usecases/update-task-status.usecase';
+import { SearchSpecificTaskStatusParticipants } from './infrastructure/query-serivice/search-specific-task-status-participants';
+import { SearchSpecificTaskStatusParticipantsUsecase } from './app/usecases/search-specific-task-status-participants.usecase';
 
 @Module({
   imports: [],
@@ -52,6 +54,10 @@ import { UpdateTaskStatusUsecase } from './app/usecases/update-task-status.useca
       provide: INJECTION_TOKENS.PARTICIPANT_TASK_STATUS_REPOSITORY,
       useClass: ParticipantTaskStatusRepository,
     },
+    {
+      provide: INJECTION_TOKENS.SEARCH_SPECIFIC_TASK_STATUS_PARTICIPANTS,
+      useClass: SearchSpecificTaskStatusParticipants,
+    },
     GetAllParticipantsUsecase,
     GetAllPairsUsecase,
     GetAllTeamsUsecase,
@@ -60,6 +66,7 @@ import { UpdateTaskStatusUsecase } from './app/usecases/update-task-status.useca
     UpdateTaskStatusUsecase,
     SwapPairMembersUsecase,
     SwapTeamPairUsecase,
+    SearchSpecificTaskStatusParticipantsUsecase,
     DuplicatedEmailChecker,
     ParticipantAssigner,
     InactiveParticipantRemover,
