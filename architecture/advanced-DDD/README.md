@@ -56,3 +56,40 @@ interface User {
 
 ドメイン層の User エンティティに認証に関してのプロパティを追加すると、User エンティティが肥大化してしまう。
 また、それらの認証に関わるプロパティはドメインロジックとして使うための値ではなく、認証のためだけに使われる値である場合、ドメイン層の User エンティティにとってはノイズになるので設けるべきではないと思う。
+
+**超過文字数エラーの対処について**
+
+**用語**
+
+**Result 型**
+
+バリデーションに引っかかった時などに Error を投げることがあるが、Error を投げるかどうかは関数の実装を見ないと知ることができない（関数シグネチャからは読み取れない。）
+したがって、try-catch を忘れてしまいうる状況になっている。
+しかし、以下のような Result 型を定義し、関数の戻り値の型として定義すれば、try-catch は書かなくてよくなり、成功時と失敗時のケースを必ず書くようになる。
+
+```ts
+export type Ok<T> = { ok: true; value: T };
+export type Err<E> = { ok: false; error: E };
+export type Result<T, E> = Ok<T> | Err<E>;
+```
+
+### 検査例外
+
+Exception クラスのサブクラスのうち、RuntimeException クラス配下以外の例外クラス。
+try-catch が必要。しないと、コンパイルエラーになる。
+
+例
+
+- IOException
+- SQLException
+- ClassNotFoundException
+
+**非検査例外**
+Exception クラスのサブクラスうち、RuntimeException クラス配下の例外クラス。
+try-catch は不必要。
+
+例
+
+- NullPointerException
+- ArrayIndexOutOfBoundsException
+- IllegalArgumentException
