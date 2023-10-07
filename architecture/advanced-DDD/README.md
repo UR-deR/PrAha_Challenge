@@ -84,7 +84,8 @@ try-catch が必要。しないと、コンパイルエラーになる。
 - SQLException
 - ClassNotFoundException
 
-**非検査例外**
+### 非検査例外
+
 Exception クラスのサブクラスうち、RuntimeException クラス配下の例外クラス。
 try-catch は不必要。
 
@@ -93,3 +94,9 @@ try-catch は不必要。
 - NullPointerException
 - ArrayIndexOutOfBoundsException
 - IllegalArgumentException
+
+### ドメインイベント
+
+ドメインイベントはドメインで発生する出来事であり、それを同じドメインの他の部分に認識させる。他の部分は通知を受けると、イベントに何らかの方法で対処します。
+ドメインイベントの重要な利点は、副作用を明示的に表現できることである。
+ドメインイベントとその副作用 (その後にトリガーされる、イベント ハンドラーによって管理されるアクション) は、ほぼ瞬時に (通常はインプロセス) 同じドメイン内で発生する必要がある。 したがって、ドメインイベントは同期でも非同期でもかまわない。
