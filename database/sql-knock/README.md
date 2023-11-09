@@ -142,3 +142,71 @@ FROM Orders
 LEFT OUTER JOIN Employees USING(EmployeeID)
 ORDER BY Employees.EmployeeID;
 ```
+
+### 課題２
+
+> where と having の違い
+
+where は group by の前に実行されるため対象はテーブルである。
+
+```sql
+SELECT country FROM Customers WHERE Country LIKE 'S%';
+
+```
+
+having は group by 句の後に実行されるため、グルーピング化した集合に対して選択条件を指定することができる。例えば、
+
+```sql
+SELECT count(*), country FROM Customers GROUP BY Country HAVING Count(*) >= 5;
+```
+
+上記のクエリでは、Country ごとにグルーピングした後、グループに含まれる Country の数が 5 以上の国のみを抽出している。
+
+したがって、グルーピング化したいか否かによって、使い分けが必要になる。
+
+> DDL、DML、DCL、TCL
+
+**DDL**
+DDL(Data Definition Language)は、CREATE や DROP、ALTER などデータベースオブジェクトの生成や削除変更を行うコマンド
+
+**DML**
+DML(Data Manipulation Language)は SELECT/INSERT/UPDATE/DELETE などテーブルに対するデータの取得・追加・更新・削除を行うコマンド。
+
+**DCL**
+DCL(Data Control Language)は「DML や DDL の実行に関する許可や拒否を設定するための言語」であり、GRANT, REVOKE などがある。(REVOKE: テーブル、ビュー、などに対する権限を取り消す。)
+
+**TCL**
+TCL(Transaction Control Language)は、BEGIN、COMMIT、ROLLBACK などトランザクションの制御を行うためのコマンド。
+
+### 課題 3
+
+**問題 1**
+
+次の各演算子の違いはなんでしょうか？
+
+- exists
+- any
+- all
+
+**問題 2**
+
+以下のクエリは、「大阪のサプライヤーが供給している Product の売り上げ個数の総和」を求めるためのものです。
+以下のクエリを WITH 句を用いてリファクタリングしてください。
+
+```sql
+SELECT SUM(OrderDetails.Quantity)
+FROM OrderDetails
+WHERE OrderDetails.ProductID IN
+  (SELECT Products.ProductID
+  FROM Products
+  WHERE Products.SupplierID
+  IN (SELECT Suppliers.SupplierID
+      FROM Suppliers
+      WHERE City = 'Osaka'
+      )
+   );
+```
+
+**問題 3**
+
+サブクエリと比較した際の WITH 句の欠点はなんでしょうか？
