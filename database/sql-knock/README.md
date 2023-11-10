@@ -17,8 +17,7 @@ ORDER BY orderCount DESC, CustomerID DESC;
 SELECT OrderID, COUNT(*) AS OrderDetailCount
 FROM OrderDetails
 GROUP BY OrderID
-ORDER BY COUNT(*) DESC
-LIMIT 1;
+ORDER BY OrderDetailCount DESC;
 ```
 
 > 過去最も多くの Order が紐づいた Shipper
@@ -27,7 +26,7 @@ LIMIT 1;
 SELECT ShipperID, COUNT(*) AS ShippingCount
 FROM Orders
 GROUP BY ShipperID
-ORDER BY COUNT(*) DESC;
+ORDER BY ShippingCount DESC;
 ```
 
 > 売上が高い順番に Country を出す
@@ -50,7 +49,7 @@ FROM Orders
 JOIN OrderDetails USING(OrderID)
 JOIN Products USING(ProductID)
 JOIN Customers USING(CustomerID)
-GROUP BY Country, strftime('%Y', Orders.OrderDate)
+GROUP BY Country, OrderYear
 ORDER BY Country, Orders.OrderDate;
 ```
 
@@ -84,7 +83,7 @@ END;
 SELECT EmployeeID, MAX(OrderDate) AS LatestOrderDate
 FROM Orders
 GROUP BY EmployeeID
-HAVING MAX(OrderDate) = OrderDate;
+HAVING LatestOrderDate = OrderDate;
 ```
 
 > Customer テーブルの任意の１レコードの CustomerName を NULL にする
@@ -139,6 +138,7 @@ JOIN Employees USING(EmployeeID);
 SELECT Orders.OrderID, Orders.CustomerID, Employees.EmployeeID, Orders.OrderDate, Orders.ShipperID
 FROM Orders
 LEFT OUTER JOIN Employees USING(EmployeeID)
+WHERE Orders.EmployeeID = 1
 ORDER BY Employees.EmployeeID;
 ```
 
