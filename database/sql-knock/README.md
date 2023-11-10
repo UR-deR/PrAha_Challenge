@@ -3,13 +3,12 @@
 > 96 年に 3 回以上注文した（Orders が 3 つ以上紐づいている）Customer の id と、注文回数
 
 ```sql
-SELECT C.CustomerID, COUNT(*) AS OrderCount
-FROM Customers as C
-JOIN Orders AS O USING(CustomerID)
-WHERE O.OrderDate BETWEEN '1996-01-01' and '1996-12-31'
-GROUP BY C.CustomerID
-HAVING COUNT(*) >= 3
-ORDER BY COUNT(*) DESC, C.CustomerID DESC;
+SELECT CustomerID, count(*) as orderCount
+FROM Orders
+WHERE OrderDate BETWEEN '1996-01-01' and '1996-12-31'
+GROUP BY CustomerID
+HAVING orderCount >= 3
+ORDER BY orderCount DESC, CustomerID DESC;
 ```
 
 > 過去最も多くの OrderDetail が紐づいた Order
