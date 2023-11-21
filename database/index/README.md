@@ -159,7 +159,7 @@ Query OK, 0 rows affected (1.02 sec)
 Records: 0  Duplicates: 0  Warnings: 0
 
 mysql> SHOW INDEX FROM employees
-    -> ;
+       ;
 +-----------+------------+---------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
 | Table     | Non_unique | Key_name      | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment |
 +-----------+------------+---------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
@@ -240,6 +240,103 @@ mysql> SHOW STATUS LIKE 'Qcache%';
 
 - データがメモリ内に存在していた可能性: データベースはキャッシュを使わず、データがメモリ内に残っていたため、2 回目のクエリが高速に実行された。
 - データベースの最適化: データベースがクエリの実行において最適化され、2 回目の実行がより効率的に行われた。
+
+### 課題3
+
+元の実行結果
+```sql
+SELECT
+t.title,
+AVG(s.salary) AS average_salary,
+AVG(s.salary) - (SELECT AVG(salary) FROM salaries) AS salary_difference
+FROM titles AS t 
+JOIN employees AS e USING(emp_no)
+JOIN salaries AS s USING(emp_no)
+WHERE t.title NOT LIKE '%Engineer%'
+GROUP BY t.title;
+
++------------------+----------------+-------------------+
+| title            | average_salary | salary_difference |
++------------------+----------------+-------------------+
+| Manager          |     66924.2706 |         3113.5258 |
+| Senior Staff     |     70470.8353 |         6660.0905 |
+| Staff            |     69309.1023 |         5498.3574 |
+| Technique Leader |     59294.3742 |        -4516.3707 |
++------------------+----------------+-------------------+
+4 rows in set (46.58 sec)
+```
+
+インデックスを貼ってみる（各テーブルのemp_noやtitles.titleは元々indexが貼られていた）
+
+```sql
+mysql> CREATE INDEX idx_salary ON salaries (salary);
+Query OK, 0 rows affected (7.91 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+```
+
+再実行してみる。
+
+```sql
+
+
+mysql> SELECT
+       t.title,
+       AVG(s.salary) AS average_salary,
+       AVG(s.salary) - (SELECT AVG(salary) FROM salaries) AS salary_difference
+       FROM titles AS t 
+       JOIN employees AS e USING(emp_no)
+       JOIN salaries AS s USING(emp_no)
+       WHERE t.title NOT LIKE '%Engineer%'
+       GROUP BY t.title;
++------------------+----------------+-------------------+
+| title            | average_salary | salary_difference |
++------------------+----------------+-------------------+
+| Manager          |     66924.2706 |         3113.5258 |
+| Senior Staff     |     70470.8353 |         6660.0905 |
+| Staff            |     69309.1023 |         5498.3574 |
+| Technique Leader |     59294.3742 |        -4516.3707 |
++------------------+----------------+-------------------+
+4 rows in set (15.82 sec)
+```
+
+劇的に速くなった。
+
+
+実行計画
+
+```sql
+mysql> explain SELECT t.title, AVG(s.salary) AS average_salary, AVG(s.salary) - (SELECT AVG(salary) FROM salaries) AS salary_difference FROM titles AS t JOIN employees AS e USING(emp_no) JOIN salaries AS s USING(emp_no) WHERE t.title NOT LIKE '%Engineer%' GROUP BY t.title;
++----+-------------+----------+------------+--------+---------------+------------+---------+--------------------+------+----------+----------------------------------------------+
+| id | select_type | table    | partitions | type   | possible_keys | key        | key_len | ref                | rows | filtered | Extra                                        |
++----+-------------+----------+------------+--------+---------------+------------+---------+--------------------+------+----------+----------------------------------------------+
+|  1 | PRIMARY     | s        | NULL       | index  | PRIMARY       | idx_salary | 4       | NULL               |    1 |   100.00 | Using index; Using temporary; Using filesort |
+|  1 | PRIMARY     | e        | NULL       | eq_ref | PRIMARY       | PRIMARY    | 4       | employees.s.emp_no |    1 |   100.00 | Using index                                  |
+|  1 | PRIMARY     | t        | NULL       | ref    | PRIMARY       | PRIMARY    | 4       | employees.s.emp_no |    1 |    88.89 | Using where; Using index                     |
+|  2 | SUBQUERY    | salaries | NULL       | index  | NULL          | idx_salary | 4       | NULL               |    1 |   100.00 | Using index                                  |
++----+-------------+----------+------------+--------+---------------+------------+---------+--------------------+------+----------+----------------------------------------------+
+4 rows in set, 1 warning (0.00 sec)
+```
+
+indexをdropしてみる。
+
+```sql
+mysql> drop index idx_salary on salaries;
+Query OK, 0 rows affected (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> explain SELECT t.title, AVG(s.salary) AS average_salary, AVG(s.salary) - (SELECT AVG(salary) FROM salaries) AS salary_difference FROM titles AS t JOIN employees AS e USING(emp_no) JOIN salaries AS s USING(emp_no) WHERE t.title NOT LIKE '%Engineer%' GROUP BY t.title;
++----+-------------+----------+------------+--------+---------------+---------+---------+--------------------+------+----------+---------------------------------+
+| id | select_type | table    | partitions | type   | possible_keys | key     | key_len | ref                | rows | filtered | Extra                           |
++----+-------------+----------+------------+--------+---------------+---------+---------+--------------------+------+----------+---------------------------------+
+|  1 | PRIMARY     | s        | NULL       | ALL    | PRIMARY       | NULL    | NULL    | NULL               |    1 |   100.00 | Using temporary; Using filesort |
+|  1 | PRIMARY     | e        | NULL       | eq_ref | PRIMARY       | PRIMARY | 4       | employees.s.emp_no |    1 |   100.00 | Using index                     |
+|  1 | PRIMARY     | t        | NULL       | ref    | PRIMARY       | PRIMARY | 4       | employees.s.emp_no |    1 |    88.89 | Using where; Using index        |
+|  2 | SUBQUERY    | salaries | NULL       | ALL    | NULL          | NULL    | NULL    | NULL               |    1 |   100.00 | NULL                            |
++----+-------------+----------+------------+--------+---------------+---------+---------+--------------------+------+----------+---------------------------------+
+4 rows in set, 1 warning (0.00 sec)
+```
+
 
 ### 課題4
 
