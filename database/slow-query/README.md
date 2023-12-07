@@ -337,3 +337,127 @@ possible_keys: PRIMARY
 ```
 
 salaries テーブルにおいて、`Using temporary; Using filesort`が発生している。一旦対応は見送り。index で解決する問題ではないため。`tmp_table_size`と`max_heap_table_size`の値を増やせば解消できそう。
+
+### 課題4
+
+**LIMIT 1なのに遅い件**
+
+例として、以下のクエリを取り上げる。
+point_historiesテーブルには数百万行のレコードがあるとする。
+
+
+```sql
+SELECT * FROM point_histories WHERE user_name = "山田太郎" ORDER BY issued_at DESC LIMIT 1; 
+```
+
+このクエリは、ポイント付与日時を降順にソートして、山田太郎さんのポイント付与履歴を1件のみを返す。
+このクエリを実行する際に、`issued_at`カラムに対してインデックスを貼っていない場合、このクエリを実行するたびに、テーブルをフルスキャンして数百万行のレコードをソートし、最初の1行のみを返すことになる。
+
+`LIMIT 1`の有無に関わらず、テーブルフルスキャン＋ソートが発生するため、クエリの実行時間は遅くなってしまう。
+
+対処案としては、issued_atカラムにインデックスを貼ることが考えられる。
+クエリを実行したらインデックスの順番通りに1行だけ読み込んで返すようになるため、テーブルフルスキャン＋ソートを回避することができる。
+
+**WHEREで絞るか、結合条件で絞るか**
+
+
+EXPLAINしてみる。
+
+```sql
+--WHEREで絞る
+mysql> explain SELECT * FROM employees e JOIN salaries s ON e.emp_no = s.emp_no WHERE gender = "M" AND birth_date > "1960-01-01"\G
+*************************** 1. row ***************************
+           id: 1
+  select_type: SIMPLE
+        table: s
+   partitions: NULL
+         type: ALL
+possible_keys: PRIMARY
+          key: NULL
+      key_len: NULL
+          ref: NULL
+         rows: 1
+     filtered: 100.00
+        Extra: NULL
+*************************** 2. row ***************************
+           id: 1
+  select_type: SIMPLE
+        table: e
+   partitions: NULL
+         type: eq_ref
+possible_keys: PRIMARY
+          key: PRIMARY
+      key_len: 4
+          ref: employees.s.emp_no
+         rows: 1
+     filtered: 16.66
+        Extra: Using where
+2 rows in set, 1 warning (0.00 sec)
+
+--JOINで絞る
+mysql> explain SELECT * FROM employees e JOIN salaries s ON e.emp_no = s.emp_no AND gender = "M" AND birth_date > "1960-01-01" \G
+*************************** 1. row ***************************
+           id: 1
+  select_type: SIMPLE
+        table: s
+   partitions: NULL
+         type: ALL
+possible_keys: PRIMARY
+          key: NULL
+      key_len: NULL
+          ref: NULL
+         rows: 1
+     filtered: 100.00
+        Extra: NULL
+*************************** 2. row ***************************
+           id: 1
+  select_type: SIMPLE
+        table: e
+   partitions: NULL
+         type: eq_ref
+possible_keys: PRIMARY
+          key: PRIMARY
+      key_len: 4
+          ref: employees.s.emp_no
+         rows: 1
+     filtered: 16.66
+        Extra: Using where
+2 rows in set, 1 warning (0.00 sec)
+```
+
+わかったこと
+- 実行計画に違いは無い
+- 得られる結果に違いは無い
+
+**LEFT OUTER JOINに変えてみる**
+
+```sql
+mysql> SELECT * FROM employees e LEFT OUTER JOIN salaries s ON e.emp_no = s.emp_no AND gender = "M" AND birth_date > "1960-01-01";
+^C^C -- query aborted
+ERROR 1317 (70100): Query execution was interrupted
+```
+
+あまりにも遅すぎて実行できなかった。。。
+が、外部結合なので、得られる結果は内部結合の結果とは異なる。
+ただし、外部結合であったとしても、WHERE句でgenderと生年月日を絞り込むと、内部結合と同じ結果が得られる。
+
+```sql
+mysql> SELECT * FROM employees e LEFT OUTER JOIN salaries s ON e.emp_no = s.emp_no WHERE gender = "M" AND birth_date > "1960-01-01";
+^C^C -- query aborted
+ERROR 1317 (70100): Query execution was interrupted
+```
+（またとしても、遅すぎて実行できず、、、）
+
+
+**個人的な結論**
+
+実行計画、パフォーマンスに違いが無い場合は、
+- ON句に結合条件
+- WHERE句に絞り込み条件
+
+としたい。
+SQLのJOINとWHEREのセマンティクスに則っていて人間目線で読みやすいと思うので。
+
+
+参考  
+[SQLにおける結合条件の違いを把握しよう！ON句とWHERE句に指定する場合の違いとは？](https://style.potepan.com/articles/26226.html)
