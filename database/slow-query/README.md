@@ -461,3 +461,116 @@ SQLのJOINとWHEREのセマンティクスに則っていて人間目線で読�
 
 参考  
 [SQLにおける結合条件の違いを把握しよう！ON句とWHERE句に指定する場合の違いとは？](https://style.potepan.com/articles/26226.html)
+
+
+### 課題5
+
+それぞれのメリット・デメリットを考えてみる。
+
+**オフセットページネーション**
+
+```sql
+SELECT * FROM employees LIMIT 10 OFFSET 100 
+```
+
+
+メリット
+
+- 特定のページに飛べる
+
+例えば、`GET /list?offset=3&limit=4`のように指定すれば、4~7件目のデータを取得できる。
+
+
+デメリット
+- オフセットが大きくなると、パフォーマンスが劣化する。
+- リクエストのたびに指定された Offset の数だけレコードがスキップされるため、レコードの挿入や削除により、一貫性の無いリストが取得される可能性がある。
+
+**カーソルページネーション**
+
+メリット
+- オフセットを用いないので、オフセットページネーションのデメリットを回避できる。
+
+デメリット
+
+- どのページにどのデータがくるか予想ができない。「Xページ目を表示する」みたいなユースケースに対応できない
+- カーソルの指し示すデータが削除されると、ページングはできなくなる
+
+![Twitterのタイムライン実装におけるCursor実装](https://camo.qiitausercontent.com/1ff4d9c05daa66a668555bf54017fdda27cb1e99/68747470733a2f2f71696974612d696d6167652d73746f72652e73332e616d617a6f6e6177732e636f6d2f302f3132333438302f33643563333337322d316232662d666136362d323930632d3466323234643061653962642e706e67)
+
+
+### 課題6
+
+Q1
+
+以下のクエリ実行において、a,bに対するインデックスは使用されますか？
+
+```sql
+SELECT a, b
+FROM table_name
+WHERE 3*a + 5 = b
+```
+
+
+<details><summary>解答</summary>
+
+使われない。
+テーブルへの参照を左辺に寄せて、定数を右辺に寄せる。
+そして左辺の関数インデックスを作成すれば、インデックスが使用されるようになりパフォーマンスの改善が期待できる。
+
+```sql
+CREATE INDEX math ON table_name (3*a - b)
+
+SELECT a, b
+  FROM table_name
+ WHERE 3*a - b = -5
+```
+</details>
+
+
+Q2
+
+```sql
+CREATE INDEX last_name_idx on employees ("last_name");
+
+SELECT first_name, last_name, phone_number
+  FROM employees
+ WHERE UPPER(last_name) = UPPER('yamada');
+```
+
+上記のクエリの実行計画を確認したところ、以下の通りemployeesテーブルに対してテーブルフルスキャンが行われていた。
+
+
+```sql
+----------------------------------------------------
+| Id | Operation         | Name      | Rows | Cost |
+----------------------------------------------------
+|  0 | SELECT STATEMENT  |           |   10 |  477 |
+|* 1 |  TABLE ACCESS FULL| EMPLOYEES |   10 |  477 |
+----------------------------------------------------
+```
+
+なぜ、last_name_idxが使用されず、テーブルフルスキャンが発生したでしょうか？
+
+
+<details><summary>解答</summary>
+
+本来の検索語をカバーする インデックスを作成していないため。
+関数のパラメータではなく、関数の結果に対してインデックスを作成しないといけない。
+ここでは、以下のように`UPPER(LAST_NAME)`に対してインデックスを作成する必要がある。
+
+```sql
+CREATE INDEX emp_up_name ON employees (UPPER(last_name))
+```
+
+実行計画
+```sql
+--------------------------------------------------------------
+|Id |Operation                   | Name        | Rows | Cost |
+--------------------------------------------------------------
+| 0 |SELECT STATEMENT            |             |  100 |   41 |
+| 1 | TABLE ACCESS BY INDEX ROWID| EMPLOYEES   |  100 |   41 |
+|*2 |  INDEX RANGE SCAN          | EMP_UP_NAME |   40 |    1 |
+--------------------------------------------------------------
+```
+</details>
+
