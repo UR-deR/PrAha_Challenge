@@ -458,6 +458,11 @@ ERROR 1317 (70100): Query execution was interrupted
 としたい。
 SQLのJOINとWHEREのセマンティクスに則っていて人間目線で読みやすいと思うので。
 
+**チームセッションにて**
+
+結合したテーブルが大きくなってしまうのを防ぐために、JOIN ONで絞り込みをした方が良いという意見もあった
+→同意できる。
+
 
 参考  
 [SQLにおける結合条件の違いを把握しよう！ON句とWHERE句に指定する場合の違いとは？](https://style.potepan.com/articles/26226.html)
