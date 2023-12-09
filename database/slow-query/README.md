@@ -337,3 +337,245 @@ possible_keys: PRIMARY
 ```
 
 salaries テーブルにおいて、`Using temporary; Using filesort`が発生している。一旦対応は見送り。index で解決する問題ではないため。`tmp_table_size`と`max_heap_table_size`の値を増やせば解消できそう。
+
+### 課題4
+
+**LIMIT 1なのに遅い件**
+
+例として、以下のクエリを取り上げる。
+point_historiesテーブルには数百万行のレコードがあるとする。
+
+
+```sql
+SELECT * FROM point_histories WHERE user_name = "山田太郎" ORDER BY issued_at DESC LIMIT 1; 
+```
+
+このクエリは、ポイント付与日時を降順にソートして、山田太郎さんのポイント付与履歴を1件のみを返す。
+このクエリを実行する際に、`issued_at`カラムに対してインデックスを貼っていない場合、このクエリを実行するたびに、テーブルをフルスキャンして数百万行のレコードをソートし、最初の1行のみを返すことになる。
+
+`LIMIT 1`の有無に関わらず、テーブルフルスキャン＋ソートが発生するため、クエリの実行時間は遅くなってしまう。
+
+対処案としては、issued_atカラムにインデックスを貼ることが考えられる。
+クエリを実行したらインデックスの順番通りに1行だけ読み込んで返すようになるため、テーブルフルスキャン＋ソートを回避することができる。
+
+**WHEREで絞るか、結合条件で絞るか**
+
+
+EXPLAINしてみる。
+
+```sql
+--WHEREで絞る
+mysql> explain SELECT * FROM employees e JOIN salaries s ON e.emp_no = s.emp_no WHERE gender = "M" AND birth_date > "1960-01-01"\G
+*************************** 1. row ***************************
+           id: 1
+  select_type: SIMPLE
+        table: s
+   partitions: NULL
+         type: ALL
+possible_keys: PRIMARY
+          key: NULL
+      key_len: NULL
+          ref: NULL
+         rows: 1
+     filtered: 100.00
+        Extra: NULL
+*************************** 2. row ***************************
+           id: 1
+  select_type: SIMPLE
+        table: e
+   partitions: NULL
+         type: eq_ref
+possible_keys: PRIMARY
+          key: PRIMARY
+      key_len: 4
+          ref: employees.s.emp_no
+         rows: 1
+     filtered: 16.66
+        Extra: Using where
+2 rows in set, 1 warning (0.00 sec)
+
+--JOINで絞る
+mysql> explain SELECT * FROM employees e JOIN salaries s ON e.emp_no = s.emp_no AND gender = "M" AND birth_date > "1960-01-01" \G
+*************************** 1. row ***************************
+           id: 1
+  select_type: SIMPLE
+        table: s
+   partitions: NULL
+         type: ALL
+possible_keys: PRIMARY
+          key: NULL
+      key_len: NULL
+          ref: NULL
+         rows: 1
+     filtered: 100.00
+        Extra: NULL
+*************************** 2. row ***************************
+           id: 1
+  select_type: SIMPLE
+        table: e
+   partitions: NULL
+         type: eq_ref
+possible_keys: PRIMARY
+          key: PRIMARY
+      key_len: 4
+          ref: employees.s.emp_no
+         rows: 1
+     filtered: 16.66
+        Extra: Using where
+2 rows in set, 1 warning (0.00 sec)
+```
+
+わかったこと
+- 実行計画に違いは無い
+- 得られる結果に違いは無い
+
+**LEFT OUTER JOINに変えてみる**
+
+```sql
+mysql> SELECT * FROM employees e LEFT OUTER JOIN salaries s ON e.emp_no = s.emp_no AND gender = "M" AND birth_date > "1960-01-01";
+^C^C -- query aborted
+ERROR 1317 (70100): Query execution was interrupted
+```
+
+あまりにも遅すぎて実行できなかった。。。
+が、外部結合なので、得られる結果は内部結合の結果とは異なる。
+ただし、外部結合であったとしても、WHERE句でgenderと生年月日を絞り込むと、内部結合と同じ結果が得られる。
+
+```sql
+mysql> SELECT * FROM employees e LEFT OUTER JOIN salaries s ON e.emp_no = s.emp_no WHERE gender = "M" AND birth_date > "1960-01-01";
+^C^C -- query aborted
+ERROR 1317 (70100): Query execution was interrupted
+```
+（またとしても、遅すぎて実行できず、、、）
+
+
+**個人的な結論**
+
+実行計画、パフォーマンスに違いが無い場合は、
+- ON句に結合条件
+- WHERE句に絞り込み条件
+
+としたい。
+SQLのJOINとWHEREのセマンティクスに則っていて人間目線で読みやすいと思うので。
+
+**チームセッションにて**
+
+結合したテーブルが大きくなってしまうのを防ぐために、JOIN ONで絞り込みをした方が良いという意見もあった
+→同意できる。
+
+
+参考  
+[SQLにおける結合条件の違いを把握しよう！ON句とWHERE句に指定する場合の違いとは？](https://style.potepan.com/articles/26226.html)
+
+
+### 課題5
+
+それぞれのメリット・デメリットを考えてみる。
+
+**オフセットページネーション**
+
+```sql
+SELECT * FROM employees LIMIT 10 OFFSET 100 
+```
+
+
+メリット
+
+- 特定のページに飛べる
+
+例えば、`GET /list?offset=3&limit=4`のように指定すれば、4~7件目のデータを取得できる。
+
+
+デメリット
+- オフセットが大きくなると、パフォーマンスが劣化する。
+- リクエストのたびに指定された Offset の数だけレコードがスキップされるため、レコードの挿入や削除により、一貫性の無いリストが取得される可能性がある。
+
+**カーソルページネーション**
+
+メリット
+- オフセットを用いないので、オフセットページネーションのデメリットを回避できる。
+
+デメリット
+
+- どのページにどのデータがくるか予想ができない。「Xページ目を表示する」みたいなユースケースに対応できない
+- カーソルの指し示すデータが削除されると、ページングはできなくなる
+
+![Twitterのタイムライン実装におけるCursor実装](https://camo.qiitausercontent.com/1ff4d9c05daa66a668555bf54017fdda27cb1e99/68747470733a2f2f71696974612d696d6167652d73746f72652e73332e616d617a6f6e6177732e636f6d2f302f3132333438302f33643563333337322d316232662d666136362d323930632d3466323234643061653962642e706e67)
+
+
+### 課題6
+
+Q1
+
+以下のクエリ実行において、a,bに対するインデックスは使用されますか？
+
+```sql
+SELECT a, b
+FROM table_name
+WHERE 3*a + 5 = b
+```
+
+
+<details><summary>解答</summary>
+
+使われない。
+テーブルへの参照を左辺に寄せて、定数を右辺に寄せる。
+そして左辺の関数インデックスを作成すれば、インデックスが使用されるようになりパフォーマンスの改善が期待できる。
+
+```sql
+CREATE INDEX math ON table_name (3*a - b)
+
+SELECT a, b
+  FROM table_name
+ WHERE 3*a - b = -5
+```
+</details>
+
+
+Q2
+
+```sql
+CREATE INDEX last_name_idx on employees ("last_name");
+
+SELECT first_name, last_name, phone_number
+  FROM employees
+ WHERE UPPER(last_name) = UPPER('yamada');
+```
+
+上記のクエリの実行計画を確認したところ、以下の通りemployeesテーブルに対してテーブルフルスキャンが行われていた。
+
+
+```sql
+----------------------------------------------------
+| Id | Operation         | Name      | Rows | Cost |
+----------------------------------------------------
+|  0 | SELECT STATEMENT  |           |   10 |  477 |
+|* 1 |  TABLE ACCESS FULL| EMPLOYEES |   10 |  477 |
+----------------------------------------------------
+```
+
+なぜ、last_name_idxが使用されず、テーブルフルスキャンが発生したでしょうか？
+
+
+<details><summary>解答</summary>
+
+本来の検索語をカバーする インデックスを作成していないため。
+関数のパラメータではなく、関数の結果に対してインデックスを作成しないといけない。
+ここでは、以下のように`UPPER(LAST_NAME)`に対してインデックスを作成する必要がある。
+
+```sql
+CREATE INDEX emp_up_name ON employees (UPPER(last_name))
+```
+
+実行計画
+```sql
+--------------------------------------------------------------
+|Id |Operation                   | Name        | Rows | Cost |
+--------------------------------------------------------------
+| 0 |SELECT STATEMENT            |             |  100 |   41 |
+| 1 | TABLE ACCESS BY INDEX ROWID| EMPLOYEES   |  100 |   41 |
+|*2 |  INDEX RANGE SCAN          | EMP_UP_NAME |   40 |    1 |
+--------------------------------------------------------------
+```
+</details>
+
