@@ -52,3 +52,105 @@ WHERE condition;
    - **マテリアライズドビュー:** 頻繁にアクセスされる複雑なクエリや集計など、処理に時間のかかる操作を最適化するのに役立つ。
 
 参考：[Difference between View and Materialized View](https://www.scaler.com/topics/difference-between-view-and-materialized-view/)
+
+### 課題 2
+
+**マネージャーの在籍期間の報酬の合計**
+
+```sql
+SELECT dm.dept_no,
+       dm.emp_no,
+       e.first_name,
+       e.last_name,
+       SUM(s.salary) AS total_salary
+FROM dept_manager dm
+JOIN employees e ON dm.emp_no = e.emp_no
+JOIN salaries s ON dm.emp_no = s.emp_no
+WHERE s.from_date <= dm.to_date AND dm.from_date <= s.to_date
+GROUP BY dm.dept_no, dm.emp_no;
+```
+
+VIEW を作成
+
+```sql
+CREATE VIEW dept_manager_total_salary
+AS
+SELECT dm.dept_no, dm.emp_no, e.first_name, e.last_name, SUM(s.salary) AS total_salary
+FROM dept_manager dm
+JOIN employees e ON dm.emp_no = e.emp_no
+JOIN salaries s ON dm.emp_no = s.emp_no
+WHERE s.from_date <= dm.to_date AND dm.from_date <= s.to_date
+GROUP BY dm.dept_no, dm.emp_no;
+```
+
+VIEW に対してクエリを投げてみる。
+
+```sql
+mysql> select * from dept_manager_total_salary;
++---------+--------+-------------+--------------+--------------+
+| dept_no | emp_no | first_name  | last_name    | total_salary |
++---------+--------+-------------+--------------+--------------+
+| d001    | 110022 | Margareta   | Markovitch   |       535265 |
+| d001    | 110039 | Vishwani    | Minakawa     |      1120103 |
+| d002    | 110085 | Ebru        | Alpin        |       313717 |
+| d002    | 110114 | Isamu       | Legleitner   |      1016628 |
+| d003    | 110183 | Shirish     | Ossenbruggen |       434294 |
+| d003    | 110228 | Karsten     | Sigstam      |       690217 |
+| d004    | 110303 | Krassimir   | Wegerle      |       172223 |
+| d004    | 110344 | Rosine      | Cools        |       291131 |
+| d004    | 110386 | Shem        | Kieras       |       256246 |
+| d004    | 110420 | Oscar       | Ghazalie     |       349492 |
+| d005    | 110511 | DeForest    | Hagimont     |       422015 |
+| d005    | 110567 | Leon        | DasSarma     |       678391 |
+| d006    | 110725 | Peternela   | Onuegbe      |       339242 |
+| d006    | 110765 | Rutger      | Hofmeyr      |       125470 |
+| d006    | 110800 | Sanjoy      | Quadeer      |       202746 |
+| d006    | 110854 | Dung        | Pesch        |       586006 |
+| d007    | 111035 | Przemyslawa | Kaelbling    |       533289 |
+| d007    | 111133 | Hauke       | Zhang        |      1102560 |
+| d008    | 111400 | Arie        | Staelin      |       545504 |
+| d008    | 111534 | Hilary      | Kambil       |       836471 |
+| d009    | 111692 | Tonny       | Butterworth  |       175348 |
+| d009    | 111784 | Marjo       | Giarratana   |       221609 |
+| d009    | 111877 | Xiaobin     | Spinelli     |       231613 |
+| d009    | 111939 | Yuchang     | Weedman      |       436188 |
++---------+--------+-------------+--------------+--------------+
+24 rows in set (2.40 sec)
+```
+
+（参考）VIEW 作成前: `24 rows in set (2.50 sec)`  
+→ パフォーマンス面における変化は無いと考えられる。
+
+---
+
+**実行計画**
+
+ビューの仮装テーブルを参照するようになるため、実行計画に変化が生じる。
+
+```sql
+mysql> explain SELECT dm.dept_no, dm.emp_no, e.first_name, e.last_name, SUM(s.salary) AS total_salary
+    -> FROM dept_manager dm
+    -> JOIN employees e ON dm.emp_no = e.emp_no
+    -> JOIN salaries s ON dm.emp_no = s.emp_no
+    -> WHERE s.from_date <= dm.to_date AND dm.from_date <= s.to_date
+    -> GROUP BY dm.dept_no, dm.emp_no;
++----+-------------+-------+------------+--------+---------------+---------+---------+--------------------+------+----------+---------------------------------+
+| id | select_type | table | partitions | type   | possible_keys | key     | key_len | ref                | rows | filtered | Extra                           |
++----+-------------+-------+------------+--------+---------------+---------+---------+--------------------+------+----------+---------------------------------+
+|  1 | SIMPLE      | s     | NULL       | ALL    | PRIMARY       | NULL    | NULL    | NULL               |    1 |   100.00 | Using temporary; Using filesort |
+|  1 | SIMPLE      | dm    | NULL       | ref    | emp_no        | emp_no  | 4       | employees.s.emp_no |    1 |    11.11 | Using where                     |
+|  1 | SIMPLE      | e     | NULL       | eq_ref | PRIMARY       | PRIMARY | 4       | employees.s.emp_no |    1 |   100.00 | NULL                            |
++----+-------------+-------+------------+--------+---------------+---------+---------+--------------------+------+----------+---------------------------------+
+3 rows in set, 1 warning (0.00 sec)
+
+mysql> explain select * from dept_manager_total_salary;
++----+-------------+------------+------------+--------+---------------+---------+---------+--------------------+------+----------+---------------------------------+
+| id | select_type | table      | partitions | type   | possible_keys | key     | key_len | ref                | rows | filtered | Extra                           |
++----+-------------+------------+------------+--------+---------------+---------+---------+--------------------+------+----------+---------------------------------+
+|  1 | PRIMARY     | <derived2> | NULL       | ALL    | NULL          | NULL    | NULL    | NULL               |    2 |   100.00 | NULL                            |
+|  2 | DERIVED     | s          | NULL       | ALL    | PRIMARY       | NULL    | NULL    | NULL               |    1 |   100.00 | Using temporary; Using filesort |
+|  2 | DERIVED     | dm         | NULL       | ref    | emp_no        | emp_no  | 4       | employees.s.emp_no |    1 |    11.11 | Using where                     |
+|  2 | DERIVED     | e          | NULL       | eq_ref | PRIMARY       | PRIMARY | 4       | employees.s.emp_no |    1 |   100.00 | NULL                            |
++----+-------------+------------+------------+--------+---------------+---------+---------+--------------------+------+----------+---------------------------------+
+4 rows in set, 1 warning (0.00 sec)
+```
