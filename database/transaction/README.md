@@ -216,164 +216,159 @@ commit;
 
 ### 課題 2
 
-```sql
-CREATE TABLE users (
-    id INT PRIMARY KEY,
-    name VARCHAR(50),
-    balance INT
-);
-
-INSERT INTO users (id, name, balance)
-VALUES
-    (1, 'Alice', 1000),
-    (2, 'Bob', 2000);
-```
-
 **Dirty Read**
 
-セッション 1
-
 ```sql
--- トランザクションを開始
-BEGIN TRANSACTION;
+mysql1> SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+mysql2> SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 
--- Alice の残高を表示
-SELECT balance FROM users WHERE name = 'Alice';
--- （この時点ではAliceの残高は1000と表示される）
+mysql1> select * from demo;
++----+-----+
+| id | num |
++----+-----+
+|  1 |  10 |
+|  2 |  20 |
+|  3 |  30 |
+|  4 |  40 |
++----+-----+
+4 rows in set (0.01 sec)
 
--- 一時的にAliceの残高を更新
-UPDATE users SET balance = 1500 WHERE name = 'Alice';
--- （まだコミットしていないため、データベース内では更新されているが、トランザクション外からは見えない）
+mysql1> begin;
+Query OK, 0 rows affected (0.00 sec)
 
-```
+mysql2> begin;
+Query OK, 0 rows affected (0.00 sec)
 
-セッション 2
+mysql1> insert into demo values(5,50);
+Query OK, 1 row affected (0.01 sec)
 
-```sql
--- トランザクションを開始
-BEGIN TRANSACTION;
-
--- Alice の残高を表示
-SELECT balance FROM users WHERE name = 'Alice';
--- （セッション1での更新がまだコミットされていないため、ここではAliceの残高が1500と表示される）
-
+--Dirty Read発生
+mysql2> select * from demo;
++----+-----+
+| id | num |
++----+-----+
+|  1 |  10 |
+|  2 |  20 |
+|  3 |  30 |
+|  4 |  40 |
+|  5 |  50 |
++----+-----+
+5 rows in set (0.01 sec)
 ```
 
 **Fuzzy Read**
 
-DDL
-
 ```sql
--- テーブルの作成と初期データの挿入
-CREATE TABLE accounts (
-    id INT PRIMARY KEY,
-    account_name VARCHAR(50),
-    balance INT
-);
+mysql1> SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;
+Query OK, 0 rows affected (0.01 sec)
 
-INSERT INTO accounts (id, account_name, balance)
-VALUES
-    (1, 'Alice', 1000),
-    (2, 'Bob', 2000);
-```
+mysql2> SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;
+Query OK, 0 rows affected (0.01 sec)
 
-セッション 1
+mysql1> begin;
+Query OK, 0 rows affected (0.01 sec)
 
-```sql
--- トランザクションを開始
-BEGIN TRANSACTION;
+mysql2> begin;
+Query OK, 0 rows affected (0.01 sec)
 
--- Alice の残高を表示
-SELECT balance FROM accounts WHERE account_name = 'Alice';
--- （この時点ではAliceの残高は1000と表示される）
+mysql1> select * from demo;
++----+-----+
+| id | num |
++----+-----+
+|  1 |  10 |
+|  2 |  20 |
+|  3 |  30 |
+|  4 |  40 |
++----+-----+
+4 rows in set (0.01 sec)
 
--- 少し時間をおいてから、再度Aliceの残高を表示
-SELECT balance FROM accounts WHERE account_name = 'Alice';
--- （再度の読み取り操作の間にセッション2での変更が入るような時間的な余裕を持たせる）
+mysql2> select * from demo;
++----+-----+
+| id | num |
++----+-----+
+|  1 |  10 |
+|  2 |  20 |
+|  3 |  30 |
+|  4 |  40 |
++----+-----+
+4 rows in set (0.01 sec)
 
-```
+mysql1> update demo set num = 41 where id = 4;
+Query OK, 1 row affected (0.02 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
 
-セッション 2
+mysql1> commit;
+Query OK, 0 rows affected (0.02 sec)
 
-```sql
--- トランザクションを開始
-BEGIN TRANSACTION;
+--Fuzzy Read発生
+mysql2> select * from demo where id = 4;
++----+-----+
+| id | num |
++----+-----+
+|  4 |  41 |
++----+-----+
+1 row in set (0.01 sec)
 
--- Alice の残高を更新
-UPDATE accounts SET balance = 1500 WHERE account_name = 'Alice';
--- （まだコミットしていないため、変更はセッション2内でのみ有効）
-
--- セッション2での更新をコミット
-COMMIT;
-
-```
-
-セッション 1
-
-```sql
--- セッション1でトランザクションを終了（コミット）
-COMMIT;
-
--- トランザクション内での2回の読み取り操作の間に、セッション2での更新が入ったため、
--- 2回目の読み取り操作では変更されたデータが反映される可能性がある
 ```
 
 **Phantom Read**
 
-DDL
-
 ```sql
--- テーブルの作成と初期データの挿入
-CREATE TABLE products (
-    id INT PRIMARY KEY,
-    product_name VARCHAR(50),
-    price INT
-);
+mysql1> SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;
+Query OK, 0 rows affected (0.01 sec)
 
-INSERT INTO products (id, product_name, price)
-VALUES
-    (1, 'Item A', 10),
-    (2, 'Item B', 20);
-```
+mysql2> SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;
+Query OK, 0 rows affected (0.01 sec)
 
-セッション 1
+mysql1> begin;
+Query OK, 0 rows affected (0.01 sec)
 
-```sql
--- トランザクションを開始
-BEGIN TRANSACTION;
+mysql2> begin;
+Query OK, 0 rows affected (0.01 sec)
 
--- productsテーブルの価格が10未満の行をカウント
-SELECT COUNT(*) FROM products WHERE price < 10;
--- （この時点では価格が10未満の行は1行と表示される）
+mysql1> select * from demo;
++----+-----+
+| id | num |
++----+-----+
+|  1 |  10 |
+|  2 |  20 |
+|  3 |  30 |
+|  4 |  41 |
++----+-----+
+4 rows in set (0.01 sec)
 
--- 少し時間をおいてから、同じクエリを再度実行
-SELECT COUNT(*) FROM products WHERE price < 10;
--- （再度のクエリ実行の間にセッション2で新しい行が挿入されるような時間的な余裕を持たせる）
+mysql2> select * from demo;
++----+-----+
+| id | num |
++----+-----+
+|  1 |  10 |
+|  2 |  20 |
+|  3 |  30 |
+|  4 |  41 |
++----+-----+
+4 rows in set (0.01 sec)
 
-```
+mysql1> insert into demo values(5,50);
+Query OK, 1 row affected (0.01 sec)
 
-セッション 2
+mysql1> delete from demo where id = 4;
+Query OK, 1 row affected (0.01 sec)
 
-```sql
--- トランザクションを開始
-BEGIN TRANSACTION;
+mysql1> commit;
+Query OK, 0 rows affected (0.03 sec)
 
--- 新しい商品を挿入
-INSERT INTO products (id, product_name, price)
-VALUES (3, 'Item C', 5);
--- （まだコミットしていないため、新しい行はセッション2内でのみ有効）
+--Phantom Read発生
+mysql2> select * from demo;
++----+-----+
+| id | num |
++----+-----+
+|  1 |  10 |
+|  2 |  20 |
+|  3 |  30 |
+|  5 |  50 |
++----+-----+
+4 rows in set (0.01 sec)
 
--- セッション2での変更をコミット
-COMMIT;
-```
-
-セッション 1
-
-```sql
--- セッション1でトランザクションを終了（コミット）
-COMMIT;
-
--- トランザクション内で同じ条件の範囲クエリを2回実行し、その間にセッション2で新しい行が挿入されたため、2回目のクエリ実行結果が最初とは異なる可能性がある
 ```
 
 > 映画チケット販売システム、楽観ロック or 悲観ロック
@@ -383,96 +378,295 @@ COMMIT;
 
 上記 2 点から、楽観ロックで良いと思った。
 
-```js
-class ReservationRepository {
-  async getConnection() {
-    // ...
-  }
+[参考: Optimistic vs. Pessimistic locking](https://stackoverflow.com/questions/129329/optimistic-vs-pessimistic-locking)
 
-  async isAvailable(reservation) {
-    const connection = await this.getConnection();
-    const result = await connection.query('SELECT version FROM reservation WHERE seat_id = ? AND movie_id = ?', [
-      reservation.seatId,
-      reservation.movieId,
-    ]);
-    return result[0].version === reservation.version;
-  }
+映画館の予約システムにおける楽観ロック
 
-  async reserve(reservation) {
-    const connection = await this.getConnection();
-    await connection.query('UPDATE reservation SET version = version + 1 WHERE seat_id = ? AND movie_id = ?', [
-      reservation.seatId,
-      reservation.movieId,
-    ]);
-    //予約の登録処理が続く
-  }
-}
+```mermaid
+sequenceDiagram
+    participant A
+    participant DB
+    participant B
 
-class ReservationService {
-  constructor() {
-    this.reservationRepository = new ReservationRepository();
-  }
+    box Purple A
+    participant A
+    end
 
-  async reserve(reservation) {
-    const connection = await this.reservationRepository.getConnection();
-    try {
-      await connection.beginTransaction();
-      const isAvailable = await this.reservationRepository.isAvailable(reservation);
-      if (!isAvailable) {
-        throw new Error('Reservation is no longer available.');
-      }
-      await this.reservationRepository.reserve(reservation);
+    box Green B
+    participant B
+    end
 
-      await connection.commit();
-    } catch (err) {
-      await connection.rollback();
-      throw err;
-    }
-  }
-}
+    A->>DB:START TRANSACTION
+    A->>DB: SELECT * FROM reservations WHERE seat_id = {seat_id};
+    DB->>A: result(楽観ロック用のバージョンカラムの値を得る)
+    B->>DB: START TRANSACTION
+    B->>DB: SELECT * FROM reservations WHERE seat_id = {seat_id};
+    DB->>B: result(楽観ロック用のバージョンカラムの値を得る)
+
+    A->>DB: UPDATE reservations SET is_available = false, , version = {version + 1} WHERE seat_id = {seat_id} AND version = {version};
+
+    DB->>A: result　(行が更新される)
+    A->>DB: COMMIT
+
+
+    B->>DB: UPDATE reservations SET is_available = false, version = {version + 1} WHERE seat_id = {seat_id} AND version = {version};
+
+
+    DB->>B: result　(0 rows affected)
+    B->>DB: ROLLBACK
 ```
+
+**food for thought**
+
+以下の順番で処理を行うべきだと考える。
+
+1. 自分たちが管理している DB への操作
+1. 外部 API を用いた決済処理
+
+この順番にすることで、外部 API を用いた決済処理が失敗した場合に、自分たちが管理している DB に対してはロールバックが可能なので、完全な決済前の状態を保つことが比較的容易であると考えられる。
+
+Air Table に掲載されている擬似コードだと、
+
+1. 外部 API を用いた決済処理
+1. 自分たちが管理している DB への操作
+
+という順番になっているが、
+
+- 外部 API を用いた決済は成功している
+- 競合により OptimisticLockException が発生して DB への UPDATE 文が失敗した
+
+という状況が生まれうる。
+
+→ 購入は成立すべきではないのに、外部 API によって決済が完了してしまっている。  
+→ 外部 API をもちいた決済なので、決済キャンセルのエンドポイントがない場合ロールバックができない。  
+→ 決済キャンセルのエンドポイントが存在したとしても、決済キャンセルのエンドポイントへのリクエストが失敗する可能性もある。
+
+### 1 Parent With Less Than 5 Children
+
+テーブル
+
+```sql
+mysql> describe parents;
++-------+--------------+------+-----+---------+-------+
+| Field | Type         | Null | Key | Default | Extra |
++-------+--------------+------+-----+---------+-------+
+| id    | int          | NO   | PRI | NULL    |       |
+| name  | varchar(255) | NO   |     | NULL    |       |
++-------+--------------+------+-----+---------+-------+
+2 rows in set (0.20 sec)
+
+mysql> describe children;
++-------+--------------+------+-----+---------+-------+
+| Field | Type         | Null | Key | Default | Extra |
++-------+--------------+------+-----+---------+-------+
+| id    | int          | NO   | PRI | NULL    |       |
+| name  | varchar(255) | NO   |     | NULL    |       |
++-------+--------------+------+-----+---------+-------+
+2 rows in set (0.02 sec)
+
+mysql> describe parent_child_relation;
++-----------+------+------+-----+---------+-------+
+| Field     | Type | Null | Key | Default | Extra |
++-----------+------+------+-----+---------+-------+
+| parent_id | int  | NO   | PRI | NULL    |       |
+| child_id  | int  | NO   | PRI | NULL    |       |
++-----------+------+------+-----+---------+-------+
+2 rows in set (0.02 sec)
+```
+
+```mermaid
+sequenceDiagram
+    participant A as トランザクションA
+    participant DB
+    participant B as トランザクションB
+
+    A->>DB:START TRANSACTION
+    A->>DB: 1.SELECT id FROM parents WHERE parent_id = {parent_id} for update;
+    DB->>A: {parent_id}の排他ロックを取得
+    B->>DB: START TRANSACTION
+    B->>DB: SELECT id FROM parents WHERE parent_id = {parent_id} for update;
+    A->>DB: SELECT COUNT(*) FROM parent_child_relation WHERE parent_id = {parent_id};
+    DB->>A: 特定のparentに紐づく、childの数を取得
+    alt childの数が5未満の場合
+      A->>DB: INSERT INTO children VALUES({new_child_id}, {new_child_name});
+      DB->>A: Query OK, 1 row affected
+      A->>DB: INSERT INTO parent_child_relation VALUES({parent_id}, {new_child_id});
+      DB->>A: Query OK, 1 row affected
+      A->>DB: COMMIT;
+    else childの数が5以上の場合
+      A->>DB: ROLLBACK;
+    end
+    DB->>B: Aがロックを解除するのを待ってから、{parent_id}の排他ロックを取得
+    B->>DB: SELECT COUNT(*) FROM parent_child_relation WHERE parent_id = {parent_id};
+    DB->>B: 特定のparentに紐づく、childの数を取得
+    alt childの数が5未満の場合
+      B->>DB: INSERT INTO children VALUES({new_child_id}, {new_child_name});
+      DB->>B: Query OK, 1 row affected
+      B->>DB: INSERT INTO parent_child_relation VALUES({parent_id}, {new_child_id});
+      DB->>B: Query OK, 1 row affected
+      B->>DB: COMMIT;
+    else childの数が5以上の場合
+      B->>DB: ROLLBACK;
+    end
+```
+
+- 親の行の排他ロックを取得する
+- 排他ロックが取得できた場合のみ、child の生成と parent と child の紐付けを行う
+
+このようにすれば、1parent につき 5 以下の children というルールが守られると考えられる。
+
+※テーブル全体をロックするのも考えたが、一つのトランザクションしかテーブル操作ができないため、パフォーマンスの劣化が予想される。
 
 ### 課題 3
 
 ## クイズ 1
 
-- MySQL8.0 以降では、ロックに関して`NOWAIT`と`SKIP LOCKED`の機能が新たに追加されました。
-  - この 2 つがどんな機能か調べてみましょう。
+- PostgreSQL における「current_timestamp」と「clock_timestamp」の違いは何でしょうか？
 
 <details><summary>想定回答</summary>
 
-- まず、どちらの機能もロックのレベルは、行ロックとなる。
-- `NOWAIT`
+`current_timestamp`はトランザクションの開始日時を表す。(`now`や`current_date`も同様)
 
-  - 通常はロックがかかっている場合は解除されるまで待機するが、これが指定されている場合は、クエリがすぐに実行され、リクエストされた行がロックされている場合はエラーが返る
-  - 処理を待たせたくないアプリケーションの場合に有効。
+```sql
+testdb1=> begin;
+BEGIN
+testdb1=> select current_timestamp;
+current_timestamp
+-------------------------------
+2019-09-22 20:05:26.231047+09 ← 現在日時を表示
+(1 row)
+testdb1=> select current_timestamp; ← 数秒待ってから実行
+2019-09-22 20:05:26.231047+09 ← 数秒待ったのに変わってない！
+(1 row)
+testdb1=> commit; ← トランザクションを終了
+COMMIT;
+testdb1=> select current_timestamp; ← もう一度現在日時を表示
+current_timestamp
+-------------------------------
+2019-09-22 20:07:59.674137+09 ← 変わるようになった
+(1 row)
+```
 
-- `SKIP LOCKED`
-
-  - クエリはすぐに実行され、ロックされた行に関しては結果に含まれない
-  - そのため、このオプションを使用した場合、一貫性のないデータが返却されることになる。公式では、コレは一般的なトランザクション処理では非推奨とされている。
-
-- 参考
-  - [MySQL8.0 15.7.2.4 読取りのロック](https://dev.mysql.com/doc/refman/8.0/ja/innodb-locking-reads.html)
+一方、`clock_timestamp()`を用いることによって、トランザクション内でも本当の現在日時を取得できるようになる。
 
 </details>
 
 ## クイズ 2
 
-- MySQL では、行ロックが解除されるまで InnoDB が待機する時間を定義するシステム変数が存在します。その変数はなんでしょうか？
+```sql
+CREATE TABLE parents (
+    id INT NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE children (
+    id INT NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE parent_child_relation (
+    parent_id INT NOT NULL,
+    child_id INT NOT NULL,
+    PRIMARY KEY (parent_id, child_id),
+    FOREIGN KEY (parent_id) REFERENCES parents(id),
+    FOREIGN KEY (child_id) REFERENCES children(id)
+);
+```
+
+上記のテーブルを想定する。
+以下のようなケースを考える。
+
+```mermaid
+sequenceDiagram
+    participant A as トランザクションA
+    participant DB
+    participant B as トランザクションB
+
+    A->>DB:START TRANSACTION
+    A->>DB: 1.SELECT id FROM parents WHERE parent_id = 4 for update;
+    DB->>A: 1 row in set (x.xx sec)
+    B->>DB: START TRANSACTION
+    B->>DB: INSERT INTO children VALUES(20, 'Child20');
+    DB->>B: Query OK, 1 row affected
+    B->>DB: INSERT INTO parent_child_relation VALUES(4, 20);
+    DB->>B: ERROR 1205 (HY000): Lock wait timeout exceeded
+```
+
+なぜトランザクション B が`parent_child_relation`テーブルにインサートした時にエラーが発生したのでしょうか？
+（DBMS は MySQL を想定）
 
 <details><summary>想定回答</summary>
 
-- `innodb_lock_wait_timeout`
-  - この変数で指定されている秒数待機し、ロックが解除されない場合は以下のエラーを発行する
+トランザクション B が`parent_child_relation`テーブルに新たな行を INSERT する。
+
+その新たな行は、`parents`テーブルの id を外部キーとして参照しているため、参照先である `parents` テーブルの id = 4 の行の共有ロックを取得しようとする。
+
+しかし、`parents`テーブルの id = 4 の行はトランザクション A が排他ロックを取得しているため、トランザクション B はロックの解除待ちになる。
+
+トランザクション A はロックの解除をしていないため、トランザクション B でタイムアウトエラーが発生する。
+
+参考
+[外部キー制約の親子テーブルにおいて共有ロックからの deadlock](https://kawabatas.hatenablog.com/entry/2020/06/21/160615)
+
+</details>
+
+### クイズ 3
+
+なぜデッドロックになるのでしょうか？
 
 ```sql
-ERROR 1205 (HY000): Lock wait timeout exceeded; try restarting transaction
+ mysql> CREATE TABLE demo (
+    id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+    num bigint(20) unsigned NOT NULL,
+    PRIMARY KEY(id)
+ );
+
+
+ mysql> INSERT INTO demo (id, num) VALUES (1, 10), (2, 20), (3, 30), (4, 40);
+
+ mysql> select * from demo;
++----+-----+
+| id | num |
++----+-----+
+|  1 |  10 |
+|  2 |  20 |
+|  3 |  30 |
+|  4 |  40 |
++----+-----+
+4 rows in set (0.01 sec)
+
+  -- トランザクションA
+ mysql> BEGIN;
+ mysql> DELETE FROM demo WHERE id= 8;
+
+  -- トランザクションB
+ mysql> BEGIN;
+ mysql> DELETE FROM demo WHERE id = 9;
+
+  -- トランザクションA
+ mysql> INSERT INTO demo VALUES (8, 80);
+(待たされる。トランザクションBがERRORになった後→) Query OK, 1 row affected (4.46 sec)
+
+  -- トランザクションB
+ mysql> INSERT INTO demo VALUES (9, 90);
+ ERROR 1213 (40001): Deadlock found when trying to get lock; try restarting transaction
+
 ```
 
-- また、この変数は行ロックの場合に有効であり、テーブルロックには適用されない。
+<details><summary>想定回答</summary>
 
-- 参考
-  - [MySQL8.0 15.14 InnoDB の起動オプションおよびシステム変数](https://dev.mysql.com/doc/refman/8.0/ja/innodb-parameters.html#sysvar_innodb_lock_wait_timeout)
+- トランザクション A の`DELETE FROM demo WHERE id= 8`によって、id が`4~∞`に対してギャップロックが取得される。
+- トランザクション B の`DELETE FROM demo WHERE id= 9`によって、id が`4~∞`に対してギャップロックが取得される。
+
+`INSERT INTO demo VALUES (8, 80)`によって、トランザクション A は id = 8 のレコードロックを取得しに行くが、トランザクション B によってギャップロックが取得されているため、ロックの解除待ちになる。  
+`INSERT INTO demo VALUES (9, 90)`によって、トランザクション B は id = 9 のレコードロックを取得しに行くが、トランザクション A によってギャップロックが取得されているため、ロックの解除待ちになる。  
+→ デッドロック発生
+
+参考
+
+- [ネクストキーロックとは](https://softwarenote.info/p1067/)
+- [mysql のネクストキーロックと挿入インテンションギャップロックのデッドロックを確認する](https://zudoh.com/?p=356)
 
 </details>
