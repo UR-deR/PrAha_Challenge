@@ -388,13 +388,7 @@ sequenceDiagram
     participant DB
     participant B
 
-    box Purple A
-    participant A
-    end
 
-    box Green B
-    participant B
-    end
 
     A->>DB:START TRANSACTION
     A->>DB: SELECT * FROM reservations WHERE seat_id = {seat_id};
