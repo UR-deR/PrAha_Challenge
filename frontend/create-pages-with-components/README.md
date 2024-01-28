@@ -35,3 +35,48 @@ Template はコンポーネントをレイアウトに配置し、デザイン�
 Template は骨格のみを提供するが、Page は動的なコンテンツを流し込むことで、最終的な成果物を完成させる。
 
 [Atomic Design Methodology](https://atomicdesign.bradfrost.com/chapter-2/)
+
+---
+
+**Function Component vs Class Component**
+
+> Function Component
+
+JavaScript の関数を宣言する時の記法でコンポーネントを定義する。
+戻り値として JSX を返すことで、DOM 要素を render することができる。　　
+引数で props を受け取ることが可能。
+
+```js
+function Button(props) {
+  return (
+    <button onClick={props.onClick} type={props.type}>
+      {props.children}
+    </button>
+  );
+}
+```
+
+> Class Component
+
+JavaScript の Class を宣言する時の記法でコンポーネントを定義し、`React.Component`クラスを継承する必要がある。
+render メソッドの戻り値として JSX を返すことで、DOM 要素を render することができる。
+
+```js
+class Button extends React.Component {
+  render() {
+    return (
+      <button onClick={this.props.onClick} type={this.props.type}>
+        {this.props.chlidren}
+      </button>
+    );
+  }
+}
+```
+
+> どっちを使うべきか
+
+- コード量が少ない
+- コンテナ・コンポーネントとプレゼンテーショナル・コンポーネントの分離が容易 → テスト書きやすい
+- [React のドキュメントで Class コンポーネントの使用が推奨されていない](https://react.dev/reference/react/Component#alternatives:~:text=what%20componentDidMount%20does.-,Pitfall,-We%20recommend%20defining)
+
+より、関数コンポーネントを採用すべきである。
