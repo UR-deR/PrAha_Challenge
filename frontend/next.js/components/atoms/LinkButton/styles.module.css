@@ -17,7 +17,7 @@
 .outlined:hover {
   background-color: #6c757d;
   color: #fff;
-  border: 0px;
+  border: 1px solid inherit;
 }
 
 /* text */
