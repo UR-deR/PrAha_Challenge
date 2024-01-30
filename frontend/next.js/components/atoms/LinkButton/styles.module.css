@@ -1,0 +1,40 @@
+/* outlined */
+.outlined {
+  border: 1px solid #6c757d;
+  border-radius: 0.25rem;
+  padding: 6px 12px;
+  font-weight: 400;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out,
+    box-shadow 0.15s ease-in-out;
+}
+
+.outlined:visited {
+  color: #6c757d;
+}
+
+.outlined:hover {
+  background-color: #6c757d;
+  color: #fff;
+  border: 0px;
+}
+
+/* text */
+.text {
+  border: 0px;
+  padding: 6px 12px;
+  font-weight: 400;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out,
+    box-shadow 0.15s ease-in-out;
+}
+
+.text:visited {
+  color: #6c757d;
+}
+
+.text:hover {
+  color: rgba(255, 255, 255, 0.75);
+}
