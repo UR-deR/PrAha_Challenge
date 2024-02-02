@@ -3,6 +3,7 @@ import { Header } from '@/components/organisms/Header';
 import { Card } from '@/components/atoms/Card';
 import { Heading } from '@/components/atoms/Heading';
 import styles from '@/styles/Home.module.scss';
+import { BasicTable } from '@/components/molecules/BasicTable';
 
 export default function Home() {
   return (
@@ -139,6 +140,9 @@ const Description: React.FC = () => (
       <a href="https://hotel.testplanisphere.dev/ja/about.html" className={styles.moreDetail}>
         より詳しい解説はこちら（研修を作る方向け）
       </a>
+    </section>
+    <section className={styles.userListSection}>
+      <BasicTable />
     </section>
   </Card>
 );

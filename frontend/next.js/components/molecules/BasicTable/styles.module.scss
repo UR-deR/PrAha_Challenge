@@ -1,0 +1,35 @@
+/* outlined */
+.table {
+  border-collapse: collapse;
+  width: 100%;
+  > caption {
+    caption-side: bottom;
+    text-align: left;
+    color: #6c757d;
+    padding: 0.75rem 0;
+  }
+
+  > thead {
+    & th {
+      border-bottom: 2px solid #dee2e6;
+      text-align: left;
+    }
+  }
+
+  & th {
+    border-top: 1px solid #dee2e6;
+    padding: 0.75rem;
+    text-align: left;
+  }
+
+  & td {
+    border-top: 1px solid #dee2e6;
+    padding: 0.75rem;
+    text-align: left;
+    > code {
+      color: #e83e8c;
+      font-size: 14px;
+      word-wrap: break-word;
+    }
+  }
+}
