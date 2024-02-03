@@ -1,14 +1,14 @@
-import { Card } from '../components/atoms/Card';
+import { Paper } from '../components/atoms/Paper';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
-  title: 'Example/Card',
-  component: Card,
+  title: 'Example/Paper',
+  component: Paper,
   parameters: {
     layout: 'centered',
   },
   tags: ['autodocs'],
-} satisfies Meta<typeof Card>;
+} satisfies Meta<typeof Paper>;
 
 export default meta;
 
