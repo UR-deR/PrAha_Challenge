@@ -76,3 +76,39 @@
 .userListSection {
   padding: 1rem 0;
 }
+
+.sampleCodeSection {
+  > h3 {
+    font-size: 28px;
+    margin: 24px 0;
+  }
+  > h3 + p {
+    margin-bottom: 16px;
+  }
+
+  > h3 + p + div {
+    display: flex;
+    gap: 30px;
+    justify-content: space-between;
+  }
+}
+
+.sampleCodeItemBody {
+  & h5 {
+    font-size: 20px;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+  }
+  & dt {
+    font-weight: 500;
+    font-size: 12.8px;
+  }
+  & dd {
+    margin-bottom: 0.5rem;
+    font-size: 12.8px;
+  }
+
+  & a:last-of-type {
+    font-size: 16px;
+  }
+}
