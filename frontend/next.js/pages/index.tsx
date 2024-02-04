@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import React from 'react';
 import { Header } from '@/components/organisms/Header';
 import { Paper } from '@/components/atoms/Paper';
 import { Heading } from '@/components/atoms/Heading';
@@ -26,7 +27,7 @@ export default function Home() {
 const About: React.FC = () => {
   return (
     <Paper>
-      <section className={styles.firstPaper}>
+      <section className={styles.about}>
         <Heading level={2} fontWeight={500}>
           このサイトはテスト自動化の学習用の練習サイトです。
         </Heading>
@@ -145,7 +146,24 @@ const Description: React.FC = () => (
       </a>
     </section>
     <section className={styles.userListSection}>
-      <BasicTable />
+      <BasicTable
+        heads={['#', 'メールアドレス', 'パスワード', '会員ランク']}
+        rows={registeredUsers.map((user, index) => {
+          return (
+            <React.Fragment key={index}>
+              <th>{index + 1}</th>
+              <td>
+                <code>{user.email}</code>
+              </td>
+
+              <td>
+                <code>{user.password}</code>
+              </td>
+              <td>{user.rank}</td>
+            </React.Fragment>
+          );
+        })}
+      />
     </section>
   </Paper>
 );
@@ -158,8 +176,7 @@ const SampleCode: React.FC = () => (
       </Heading>
       <p>このサイトをテスト対象とした自動テストスクリプトです。学習の参考としてお使いください。</p>
       <div className={styles.sampleCodeList}>
-        {
-   sampleCodes.map(({ header, body }, index) => (
+        {sampleCodes.map(({ header, body }, index) => (
           <Card
             key={index}
             header={header}
@@ -201,6 +218,29 @@ const MainContent: React.FC = () => {
     </main>
   );
 };
+
+const registeredUsers = [
+  {
+    email: 'ichiro@example.com',
+    password: 'password',
+    rank: 'プレミアム会員',
+  },
+  {
+    email: 'sakura@example.com',
+    password: 'pass1234',
+    rank: '一般会員',
+  },
+  {
+    email: 'jun@example.com',
+    password: 'pa55w0rd!',
+    rank: 'プレミアム会員',
+  },
+  {
+    email: 'yoshiki@example.com',
+    password: 'pass-pass',
+    rank: '一般会員',
+  },
+] as const;
 
 const sampleCodes = [
   {
