@@ -93,3 +93,39 @@ class Button extends React.Component {
 
 - [position: abosolute](https://developer.mozilla.org/en-US/docs/Web/CSS/position#absolute)
 - [Is it bad to use 'position: absolute' for almost everything?](https://www.reddit.com/r/Frontend/comments/s7blr6/is_it_bad_to_use_position_absolute_for_almost/)
+
+### 課題 3
+
+- チーム開発をする際に、チーム全体で Atom, Molecule, Organism, Template, Page の 5 階層についての理解が揃っていないと、コンポーネントの分割粒度がバラバラになってしまう。
+- 階層の境界を区別しにくい。そもそも 5 階層に区別する必要が本当にあるのか？
+
+例: Molecules vs Organisms
+
+> Molecules are relatively simple groups of UI elements functioning together as a unit.  
+> Organisms are relatively complex UI components composed of groups of molecules and/or atoms and/or other organisms.
+
+---
+
+1. Organism を pages 内の各 page コンポーネントと同階層に配置している。Organisms はページについての知識を持つので、pages 配下にあっても違和感がないと思った。また、関係ない page から呼び出されることが防げることが期待できそう。
+1. Atom と Molecule を一まとめにして、common と称した。コンポーネントが「分解可能か否か」はページを組み立てる上で重要ではないと思った。common ディレクトリのコンポーネントは特定の画面やコンテキストに依存しない、別プロジェクトでも使いまわせるコンポーネントを定義
+
+こうすることで、不必要にコンポーネントの層を増やさなくても良くなるため、コンポーネントの層の区別に迷うことがなくなると思われる。
+
+```
+.
+├── pages
+│   └── News
+│       ├── NewsCard.tsx
+│       ├── NewsList.tsx
+│       ├── NewsSearchForm.tsx
+│       ├── index.tsx
+│       └── style.css
+├── templates
+│   └── AuthenticatedTemplate
+│       ├── index.tsx
+│       └── style.css
+└── common
+    └── Button
+        ├── index.tsx
+        └── style.css
+```
