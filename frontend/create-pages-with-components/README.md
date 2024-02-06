@@ -82,3 +82,14 @@ class Button extends React.Component {
 より、関数コンポーネントを採用すべきである。
 
 [Functional vs Class-Components in React](https://djoech.medium.com/functional-vs-class-components-in-react-231e3fbd7108)
+
+## 課題 2
+
+- ページレイアウト内に要素に対するスペースが設けられないためページをズームしてテキストの大きさを拡大したりすると、その他の要素に覆い被さってしまい、UI が崩れてしまう恐れがある。
+- 新たに要素を追加したり削除したりする際に、全ての要素の配置を個々に調整しなおす必要性が生まれる。
+- レスポンシブ対応の際に、ブレイクポイントごとに全ての要素を配置し直す必要があり非常に煩雑。
+
+参考
+
+- [position: abosolute](https://developer.mozilla.org/en-US/docs/Web/CSS/position#absolute)
+- [Is it bad to use 'position: absolute' for almost everything?](https://www.reddit.com/r/Frontend/comments/s7blr6/is_it_bad_to_use_position_absolute_for_almost/)
