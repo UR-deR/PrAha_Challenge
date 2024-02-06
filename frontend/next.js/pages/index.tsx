@@ -1,12 +1,11 @@
 import Head from 'next/head';
 import React from 'react';
-import { Header } from '@/components/organisms/Header';
 import { Paper } from '@/components/atoms/Paper';
 import { Heading } from '@/components/atoms/Heading';
 import styles from '@/styles/Home.module.scss';
 import { BasicTable } from '@/components/molecules/BasicTable';
 import { Card } from '@/components/molecules/Card';
-import { Footer } from '@/components/organisms/Footer';
+import { BasicTemplate } from '@/components/templates/BasicTemplate';
 
 export default function Home() {
   return (
@@ -17,9 +16,13 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Header />
-      <MainContent />
-      <Footer />
+      <BasicTemplate>
+        <div className={styles.pageWrapper}>
+          <About />
+          <Description />
+          <SampleCode />
+        </div>
+      </BasicTemplate>
     </>
   );
 }
@@ -208,16 +211,6 @@ const SampleCode: React.FC = () => (
     </section>
   </Paper>
 );
-
-const MainContent: React.FC = () => {
-  return (
-    <main className={styles.main}>
-      <About />
-      <Description />
-      <SampleCode />
-    </main>
-  );
-};
 
 const registeredUsers = [
   {
