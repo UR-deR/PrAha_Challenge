@@ -11,6 +11,21 @@
   > nav {
     background-color: #343a40;
     padding: 24px 16px;
+    @media (max-width: 768px) {
+      padding: 8px;
+    }
+  }
+}
+
+.mobileH1TextLinkWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  > a {
+    display: inline-block;
+    > h1 {
+      color: #fff;
+    }
   }
 }
 
