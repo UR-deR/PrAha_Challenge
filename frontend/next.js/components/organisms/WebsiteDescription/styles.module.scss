@@ -1,0 +1,60 @@
+.overallDescription {
+  > h3 {
+    font-size: 28px;
+    margin: 1.5rem 0;
+  }
+}
+
+.caution {
+  > h4 {
+    font-size: 24px;
+    margin: 1.5rem 0;
+  }
+  > ul {
+    padding-left: 40px;
+    font-size: 16px;
+    line-height: 24px;
+    > li {
+      > ul {
+        padding-left: 40px;
+      }
+    }
+  }
+}
+
+.constituteSection {
+  > h4 {
+    margin: 24px 0;
+    font-size: 24px;
+  }
+  > hr {
+    margin: 16px 0;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+}
+
+.constituteDetails {
+  display: flex;
+  gap: 30px;
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+
+  > div {
+    flex: 1;
+    > h5 {
+      font-size: 20px;
+      margin: 8px 0;
+      line-height: 1;
+    }
+  }
+}
+
+.moreDetail {
+  display: inline-block;
+  margin: 16px 0;
+}
+
+.userListSection {
+  padding: 1rem 0;
+}
