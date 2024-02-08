@@ -3,22 +3,24 @@
     font-size: 28px;
     margin: 24px 0;
   }
-  > h3 + p {
+  > p {
     margin-bottom: 16px;
   }
+}
 
-  > h3 + p + div {
-    display: flex;
-    gap: 30px;
-    justify-content: space-between;
-    flex-wrap: wrap;
+.sampleCodeList {
+  display: flex;
+  gap: 24px;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  > div {
+    @media screen and (max-width: 768px) {
+      width: 478px;
+    }
   }
 }
 
 .sampleCodeItemBody {
-  @media (max-width: 767px) {
-    width: 476px;
-  }
   & h5 {
     font-size: 20px;
     margin-bottom: 0.75rem;
