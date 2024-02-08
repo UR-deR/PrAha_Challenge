@@ -2,7 +2,7 @@ import { Header } from '.';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
-  title: 'Example/Header',
+  title: 'Organisms/Header',
   component: Header,
   parameters: {
     layout: 'centered',

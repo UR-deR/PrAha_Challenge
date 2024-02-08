@@ -2,7 +2,7 @@ import { HamburgerMenu } from '@/components/molecules/HamburgerMenu';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
-  title: 'Example/HamburegerMenu',
+  title: 'Molecules/HamburegerMenu',
   component: HamburgerMenu,
   parameters: {
     layout: 'centered',

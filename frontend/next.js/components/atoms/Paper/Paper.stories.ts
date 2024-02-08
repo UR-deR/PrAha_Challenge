@@ -2,7 +2,7 @@ import { Paper } from '.';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
-  title: 'Example/Paper',
+  title: 'Atoms/Paper',
   component: Paper,
   parameters: {
     layout: 'centered',

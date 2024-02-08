@@ -1,8 +1,8 @@
-import { Card } from '../components/molecules/Card';
+import { Card } from './index';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
-  title: 'Example/Card',
+  title: 'Molecules/Card',
   component: Card,
   parameters: {
     layout: 'centered',

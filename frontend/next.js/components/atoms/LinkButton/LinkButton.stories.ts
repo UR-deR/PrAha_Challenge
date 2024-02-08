@@ -2,7 +2,7 @@ import { LinkButton } from '.';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
-  title: 'Example/LinkButton',
+  title: 'Atoms/LinkButton',
   component: LinkButton,
   parameters: {
     layout: 'centered',
