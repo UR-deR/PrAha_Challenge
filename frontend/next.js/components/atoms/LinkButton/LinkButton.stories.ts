@@ -1,4 +1,4 @@
-import { LinkButton } from '../components/atoms/LinkButton';
+import { LinkButton } from '.';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {

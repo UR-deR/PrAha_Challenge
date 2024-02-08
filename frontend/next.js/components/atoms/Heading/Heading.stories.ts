@@ -1,4 +1,4 @@
-import { Heading } from '../components/atoms/Heading';
+import { Heading } from '.';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
