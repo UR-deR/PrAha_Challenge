@@ -1,4 +1,4 @@
-import { HamburgerMenu } from '@/components/molecules/HamburgerMenu';
+import { HamburgerMenu } from './index';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {

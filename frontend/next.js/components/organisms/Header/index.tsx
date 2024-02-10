@@ -1,8 +1,8 @@
 import styles from './styles.module.scss';
 import { Heading } from '../../atoms/Heading';
 import { LinkButton } from '../../atoms/LinkButton';
-import { useMediaQuery } from '@/components/utils/mediaQuery';
-import { HamburgerMenu } from '@/components/molecules/HamburgerMenu';
+import { useMediaQuery } from '../../utils/mediaQuery';
+import { HamburgerMenu } from '../../molecules/HamburgerMenu';
 
 export const Header: React.FC = () => {
   const { isMobile } = useMediaQuery();
