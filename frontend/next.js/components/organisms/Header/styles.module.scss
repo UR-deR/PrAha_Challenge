@@ -34,19 +34,25 @@
   margin: 48px 0;
 }
 
+.navigationItem {
+  display: inline-flex;
+  list-style: none;
+  padding: 0 24px;
+  > a {
+    font-size: 16px;
+    padding: 8px;
+  }
+
+  @media (max-width: 768px) {
+    padding: 0;
+  }
+}
+
+//TODO: リファクタリング。共通化など
 .ul {
   display: flex;
   justify-content: center;
   padding: 0;
-  > li {
-    display: inline-flex;
-    list-style: none;
-    padding: 0 24px;
-    > a {
-      font-size: 16px;
-      padding: 8px;
-    }
-  }
 
   > li:first-child {
     list-style: none;
@@ -63,4 +69,36 @@
       color: rgba(255, 255, 255, 0.75);
     }
   }
+}
+
+.openHamburgerMenu {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0;
+
+  > li:first-child {
+    list-style: none;
+    > a {
+      color: white;
+    }
+  }
+  /* Atomと二十でスタイル書いてしまっている。Atomでは書かなくて良いかも */
+  > li:not(:first-child) {
+    > a {
+      color: rgba(255, 255, 255, 0.5);
+    }
+    > a:hover {
+      color: rgba(255, 255, 255, 0.75);
+    }
+  }
+
+  height: 164px;
+  overflow: hidden;
+  transition: height 0.35s ease;
+}
+
+.closedHamburgerMenu {
+  height: 0px;
+  transition: height 0.35s ease;
 }
