@@ -1,8 +1,12 @@
 import styles from './styles.module.scss';
 
-export const HamburgerMenu: React.FC = () => {
+type Props = {
+  onClick: () => void;
+};
+
+export const HamburgerMenu: React.FC<Props> = (props) => {
   return (
-    <button className={styles.hambergerMenu}>
+    <button className={styles.hambergerMenu} onClick={props.onClick}>
       <div></div>
       <div></div>
       <div></div>

@@ -3,9 +3,13 @@ import { Heading } from '../../atoms/Heading';
 import { LinkButton } from '../../atoms/LinkButton';
 import { useMediaQuery } from '../../utils/mediaQuery';
 import { HamburgerMenu } from '../../molecules/HamburgerMenu';
+import { useState } from 'react';
 
 export const Header: React.FC = () => {
   const { isMobile } = useMediaQuery();
+  const [isHamburgerMenuOpen, setIsHamburgerMenuOpen] = useState(false);
+  console.log(isHamburgerMenuOpen);
+
   return (
     <header className={styles.header}>
       {isMobile ? null : H1Element}
@@ -13,7 +17,11 @@ export const Header: React.FC = () => {
         {isMobile ? (
           <div className={styles.mobileH1TextLinkWrapper}>
             <a href="http://localhost:3000/">{H1Element}</a>
-            <HamburgerMenu />
+            <HamburgerMenu
+              onClick={() => {
+                setIsHamburgerMenuOpen((isHamburgerMenuOpen) => !isHamburgerMenuOpen);
+              }}
+            />
           </div>
         ) : (
           <div>
