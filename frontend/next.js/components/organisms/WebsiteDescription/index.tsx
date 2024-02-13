@@ -104,6 +104,7 @@ export const WebsiteDescription: React.FC = () => {
       </section>
       <section className={styles.userListSection}>
         <BasicTable
+          caption="登録済みユーザ一"
           heads={['#', 'メールアドレス', 'パスワード', '会員ランク']}
           rows={registeredUsers.map((user, index) => {
             return (

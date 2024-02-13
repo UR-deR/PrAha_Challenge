@@ -1,6 +1,7 @@
 import styles from './styles.module.scss';
 
 type Props = {
+  caption: string;
   heads: string[];
   rows: React.ReactNode[];
 };
@@ -8,7 +9,7 @@ type Props = {
 export const BasicTable: React.FC<Props> = (props) => {
   return (
     <table className={styles.table}>
-      <caption>登録済みユーザー</caption>
+      <caption>{props.caption}</caption>
       <thead>
         <tr>
           {props.heads.map((head, index) => {
