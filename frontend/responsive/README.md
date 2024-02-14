@@ -15,3 +15,40 @@
 **デメリット**
 
 - 新たなデバイスが増えるたびに、デバイス判定処理に手を加える必要性が生じる。
+
+> css のメディアクエリ
+
+**メリット**
+
+- デバイス関係なく、ビューポートに応じてスタイルを切り替えることができるので、管理が楽。デバイスごとの対応は不要。
+
+**デメリット**
+
+- CSS の概念なので、JavaScript 上での分岐のために用いることができない。
+
+→JavaScript の[Window.matchMedia](https://developer.mozilla.org/ja/docs/Web/API/Window/matchMedia)を用いれば、`isSmartPhone`ような boolean の変数を定義することができるため、JavaScript や JSX 上で参照することができる。
+
+```ts
+import { useEffect, useState } from 'react';
+
+export const useMediaQuery = () => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(max-width: 768px)');
+    setIsMobile(mediaQuery.matches);
+
+    const listener = () => {
+      setIsMobile(mediaQuery.matches);
+    };
+
+    mediaQuery.addEventListener('change', listener);
+
+    return () => {
+      mediaQuery.removeEventListener('change', listener);
+    };
+  }, []);
+
+  return { isMobile } as const;
+};
+```
