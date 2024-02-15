@@ -52,3 +52,14 @@ export const useMediaQuery = () => {
   return { isMobile } as const;
 };
 ```
+
+> PC と SP で URL を分けてしまう
+
+**メリット**
+
+- css の記述が多少楽になる。
+
+**デメリット**
+
+- PC と SP で 2 重でソースコードを管理しないといけない
+- URL をシェアするときに、相手が PC ユーザーなのに SP の URL をシェアしてしまう。逆も然り。
