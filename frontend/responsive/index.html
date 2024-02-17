@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .h1 {
+        color: green;
+      }
+      @media (min-width: 768px) {
+        .h1 {
+          color: blue;
+        }
+      }
+      @media (min-width: 1024px) {
+        .h1 {
+          color: yellow;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1 class="h1">
+      Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eum fugiat ducimus debitis natus necessitatibus eligendi
+      ea reprehenderit. Iusto tempore aperiam consequatur facilis, beatae quo quia dolore, recusandae voluptate dolorum
+      distinctio!
+    </h1>
+    <script>
+      window.addEventListener('resize', () => {
+        const isSmartPhone = window.matchMedia('(max-width: 767px)').matches;
+        const isTablet = window.matchMedia('(min-width: 768px) and (max-width: 1023px)').matches;
+        const isDesktop = window.matchMedia('(min-width: 1024px)').matches;
+        console.log(isSmartPhone, isTablet, isDesktop);
+      });
+    </script>
+  </body>
+</html>
