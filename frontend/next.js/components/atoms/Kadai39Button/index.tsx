@@ -1,7 +1,7 @@
 import styles from './styles.module.scss';
 
 type Props = {
-  children: React.ReactNode;
+  children: string;
   color: 'red' | 'blue' | 'green';
   size: 'small' | 'medium' | 'large';
   disabled: boolean;
