@@ -17,21 +17,21 @@
     "sass": "^1.70.0"
   },
   "devDependencies": {
-    "@storybook/addon-essentials": "^7.6.10",
-    "@storybook/addon-interactions": "^7.6.10",
-    "@storybook/addon-links": "^7.6.10",
+    "@storybook/addon-essentials": "^7.6.17",
+    "@storybook/addon-interactions": "^7.6.17",
+    "@storybook/addon-links": "^7.6.17",
     "@storybook/addon-onboarding": "^1.0.11",
-    "@storybook/blocks": "^7.6.10",
-    "@storybook/nextjs": "^7.6.10",
-    "@storybook/react": "^7.6.10",
-    "@storybook/test": "^7.6.10",
+    "@storybook/blocks": "^7.6.17",
+    "@storybook/nextjs": "^7.6.17",
+    "@storybook/react": "^7.6.17",
+    "@storybook/test": "^7.6.17",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "14.1.0",
     "eslint-plugin-storybook": "^0.6.15",
-    "storybook": "^7.6.10",
+    "storybook": "^7.6.17",
     "typescript": "^5"
   }
 }
