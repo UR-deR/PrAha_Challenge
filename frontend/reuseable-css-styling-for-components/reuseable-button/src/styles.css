@@ -1,9 +1,12 @@
 .reusable-button {
   color: red;
-  margin-top: 50px;
 }
 
 .App {
   font-family: sans-serif;
   text-align: center;
+}
+
+.btn-wrapper {
+  margin-top: 50px;
 }
