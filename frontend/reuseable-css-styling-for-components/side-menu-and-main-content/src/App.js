@@ -1,8 +1,8 @@
-import "./styles.css";
+import './styles.css';
 
 function Sidemenu() {
   return (
-    <div className="sideMenu">
+    <div>
       <ul>
         <li>menu1</li>
         <li>menu2</li>
@@ -14,7 +14,7 @@ function Sidemenu() {
 
 function MainContent() {
   return (
-    <div className="mainContent">
+    <div>
       <p>僕はメインコンテンツだよ</p>
     </div>
   );
