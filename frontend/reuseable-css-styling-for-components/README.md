@@ -7,3 +7,18 @@
 汎用性が求められるコンポーネントなのに、ページのレイアウトに依存したスタイルを帯びてしまっている。
 
 [→ 修正した](https://github.com/UR-deR/PrAha_Challenge/commit/e0d5d411dcdc94d987fda1ecff2c9c70d909c13c)
+
+### 課題 2
+
+Sidemenu、MainContent はそれぞれ flex という css のプロパティを持っている。これは親コンポーネントが display: flex を指定している場合のみ有効である。
+
+Sidemenu や MainContent は Molecule や Organism に相当するコンポーネントであるが、これらのコンポーネントが Atomic Design における上位のレイヤーのコンポーネントに依存してしまっているので、依存の向き先としてルール違反である。
+
+親コンポーネントが `display: flex`のケースにおいてしか利用できないので、再利用性が低いコンポーネントとなってしまっている。
+
+- 子コンポーネントは親コンポーネントに依存しないようにする
+- 親コンポーネントが配置の指定を担う
+
+上記のようにすれば、子コンポーネントの再利用性を向上させることが期待できる。
+
+[→ 修正した](https://github.com/UR-deR/PrAha_Challenge/commit/5db3fb19d2d57ff02627656785b44810174d0ead)
