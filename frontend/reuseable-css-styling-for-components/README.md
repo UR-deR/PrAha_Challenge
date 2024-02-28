@@ -22,3 +22,7 @@ Sidemenu や MainContent は Molecule や Organism に相当するコンポー�
 上記のようにすれば、子コンポーネントの再利用性を向上させることが期待できる。
 
 [→ 修正した](https://github.com/UR-deR/PrAha_Challenge/commit/5db3fb19d2d57ff02627656785b44810174d0ead)
+
+### 課題 3
+
+`MenuItem`コンポーネントは li 要素なので、親要素は`ul`or`ol`である必要がある。しかし、MenuItem の親要素を`ul`や`ol`以外（例えば div など）にしたとしても、コンパイル時に検知することができない。MenuItem コンポーネントは親要素に依存したコンポーネントである。
