@@ -1,15 +1,22 @@
-import "./styles.css";
+import './styles.css';
+import React from 'react';
 
-function MenuItem({ label }) {
-  return <li>{label}</li>;
+// tsの場合、elementとして指定できるものを制限する
+// type Props = {
+//   label: string,
+//   element: 'span' | 'li',
+// };
+
+function MenuItem({ label, element }) {
+  return React.createElement(element, null, label);
 }
 
 function Menu() {
   return (
     <ul>
-      <MenuItem label="menu1" />
-      <MenuItem label="menu2" />
-      <MenuItem label="menu3" />
+      <MenuItem label="menu1" element="li" />
+      <MenuItem label="menu2" element="li" />
+      <MenuItem label="menu3" element="li" />
     </ul>
   );
 }
