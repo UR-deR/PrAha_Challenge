@@ -25,4 +25,12 @@ Sidemenu や MainContent は Molecule や Organism に相当するコンポー�
 
 ### 課題 3
 
-`MenuItem`コンポーネントは li 要素なので、親要素は`ul`or`ol`である必要がある。しかし、MenuItem の親要素を`ul`や`ol`以外（例えば div など）にしたとしても、コンパイル時に検知することができない。MenuItem コンポーネントは親要素に依存したコンポーネントである。
+`MenuItem`コンポーネントは li 要素なので、親要素は`ul`or`ol`である必要がある。しかし、MenuItem の親要素を`ul`や`ol`以外（例えば div など）にしたとしても、コンパイル時に検知することができない。MenuItem コンポーネントを呼び出す側は、「MenuItem コンポーネントは li 要素である」と意識しながら呼び出さないといけない。呼び出し側が、汎用コンポーネントの内部事情を意識しないといけない状況は、好ましくなさそう。
+
+[→ 修正した](https://github.com/UR-deR/PrAha_Challenge/commit/f149a5e2c5b5cc7f1849806d8390168ae4198d66)
+
+呼び出し側から MenuItem の root node の html 要素を指定できるようにすれば、MenuItem コンポーネントの呼び出しが安全になると考えた。
+
+参考：
+
+mui の[ListItem](https://mui.com/material-ui/api/list-item/)コンポーネントも、呼び出し側で root node の要素を指定できるようにしている。
