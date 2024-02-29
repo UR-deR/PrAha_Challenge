@@ -34,3 +34,13 @@ Sidemenu や MainContent は Molecule や Organism に相当するコンポー�
 参考：
 
 mui の[ListItem](https://mui.com/material-ui/api/list-item/)コンポーネントも、呼び出し側で root node の要素を指定できるようにしている。
+
+### 課題 4
+
+Props として渡しても良い値の確認手段が、css ファイルを確認するしか無いので、誤った値を props として渡してしまう可能性が高いと思った。コンポーネントの利用者目線になると、props で渡す値の確認のために css ファイルを覗きに行かないといけないのがめんどくさい。
+
+css ファイルのリファクタリングをした時の影響範囲も大きくなってしまう。
+
+また、もしもコンポーネントのスタイリングの方法が変更し、css modules ではなく emotion や Tailwind CSS などの別の方法に変わったときに影響範囲が大きくなると思われる。
+
+[→ 修正した](https://github.com/UR-deR/PrAha_Challenge/commit/b17a94796878baf8003d3aea83a444a90c3ca5ca)
