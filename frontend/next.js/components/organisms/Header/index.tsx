@@ -8,7 +8,6 @@ import { useState } from 'react';
 export const Header: React.FC = () => {
   const { isMobile } = useMediaQuery();
   const [isHamburgerMenuOpen, setIsHamburgerMenuOpen] = useState(false);
-  console.log(isHamburgerMenuOpen);
 
   return (
     <header className={styles.header}>
