@@ -5,8 +5,11 @@ import { BasicTemplate } from '@/components/templates/BasicTemplate';
 import { About } from '@/components/organisms/About';
 import { WebsiteDescription } from '@/components/organisms/WebsiteDescription';
 import { SampleCode } from '@/components/organisms/SampleCode';
+import { ConstModal, StateModal } from '../components/atoms/HogeModal';
 
 export default function Home() {
+  const [hoge, setHoge] = React.useState(true);
+  const [fuga, setFuga] = React.useState(true);
   return (
     <>
       <Head>
@@ -17,6 +20,10 @@ export default function Home() {
       </Head>
       <BasicTemplate>
         <div className={styles.pageWrapper}>
+          <button onClick={() => setHoge(!hoge)}>change Hoge</button>
+          <button onClick={() => setFuga(!fuga)}>change Fuga</button>
+          <StateModal hoge={hoge} fuga />
+          <ConstModal hoge fuga={fuga} />
           <About />
           <WebsiteDescription />
           <SampleCode />

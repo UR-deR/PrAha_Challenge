@@ -49,3 +49,71 @@ function Example() {
   );
 }
 ```
+
+**Q3**
+
+以下のようなコンポーネントについて考える。
+
+```tsx
+import { useState, FC } from 'react';
+
+type Props = {
+  hoge: boolean;
+  fuga: boolean;
+};
+
+export const StateModal: FC<Props> = ({ hoge, fuga }) => {
+  const [open] = useState(hoge && fuga);
+  return (
+    <div
+      style={{
+        color: 'red',
+      }}
+    >
+      {open ? 'open' : 'close'}
+    </div>
+  );
+};
+
+export const ConstModal: FC<Props> = ({ hoge, fuga }) => {
+  const open = hoge && fuga;
+  return (
+    <div
+      style={{
+        color: 'green',
+      }}
+    >
+      {open ? 'open' : 'close'}
+    </div>
+  );
+};
+```
+
+`StateModal`と`ConstModal`は`open`という値の定義方法が異なる。
+
+```tsx
+import React from 'react';
+
+export default function Home() {
+  const [hoge, setHoge] = React.useState(true);
+  const [fuga, setFuga] = React.useState(true);
+  return (
+    <>
+      <button onClick={() => setHoge(!hoge)}>change Hoge</button>
+      <button onClick={() => setFuga(!fuga)}>change Fuga</button>
+      <StateModal hoge={hoge} fuga />
+      <ConstModal hoge fuga={fuga} />
+    </>
+  );
+}
+```
+
+上記のようにコンポーネントから呼び出されると仮定する。
+`change Hoge`ボタンと`change Fuga`ボタンをクリックしたときに、
+
+- StateModal
+- ConstModal
+
+はそれぞれどのような文字を表示するでしょうか？
+
+ref: [setState を使わない useState の意義](https://www.sunapro.com/use-state-without-set-state/)
