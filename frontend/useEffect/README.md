@@ -18,3 +18,9 @@ cleanup 処理が無いとメモリリークなどの問題を引き起こす可
 React18 と React17 以前では、`useEffect`の挙動にどのような違いがあるでしょうか？  
 (※[StrictMode](https://react.dev/reference/react/StrictMode) であるとする。)
 またこの挙動の違いには、どのような背景があるでしょうか？
+
+### Q2
+
+[コードサンプル](https://gist.github.com/UR-deR/6e36bf2e4e18a321b20deefc52dbbdee#file-abort-fetch-for-cleanup-tsx-L29)
+
+コードサンプルの L29~L31 の処理はなぜ必要でしょうか？
