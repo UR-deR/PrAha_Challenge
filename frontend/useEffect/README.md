@@ -21,6 +21,6 @@ React18 と React17 以前では、`useEffect`の挙動にどのような違い�
 
 ### Q2
 
-[コードサンプル](https://gist.github.com/UR-deR/6e36bf2e4e18a321b20deefc52dbbdee#file-abort-fetch-for-cleanup-tsx-L29)
+[コードサンプル](https://gist.github.com/UR-deR/6e36bf2e4e18a321b20deefc52dbbdee)
 
-コードサンプルの L29~L31 の処理はなぜ必要でしょうか？
+上記のコードサンプルをローカル環境で動かしても、Post 一覧が表示されない。なぜでしょうか？
