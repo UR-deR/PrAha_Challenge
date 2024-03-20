@@ -24,3 +24,39 @@ React18 と React17 以前では、`useEffect`の挙動にどのような違い�
 [コードサンプル](https://gist.github.com/UR-deR/6e36bf2e4e18a321b20deefc52dbbdee)
 
 上記のコードサンプルをローカル環境で動かしても、Post 一覧が表示されない。なぜでしょうか？
+
+### Q3
+
+あるプロフィールページがあり、コメントを入力するための input 要素が存在する。
+ある user のプロフィールページから、別のユーザーのプロフィールページに遷移した時に、input の value がリセットされなかったため、以下のような useEffect のコードブロックを書いた。
+
+```tsx
+export default function ProfilePage({ userId }) {
+  return (
+    <div>
+      <Profile userId={userId} />
+    </div>
+  );
+}
+
+function Profile({ userId }) {
+  const [comment, setComment] = useState('');
+
+  //これがあると、別のユーザーのプロフィールページに遷移した時にinputのvalueがリセットされる。
+  useEffect(() => {
+    setComment('');
+  }, [userId]);
+
+  return (
+    <div>
+      <input type="text" name="comment" value={comment} onChange={(event) => setComment(event.target.value)} />
+    </div>
+  );
+}
+```
+
+しかし、この`useEffect`のコードブロックを付け足す方法は、レンダリング回数の観点で望ましいとは言えない。(ProfilePage とその子コンポーネントは、まず古い値でレンダリングし、それから再度レンダリングするので非効率的だから)
+
+> ある user のプロフィールページから、別のユーザーのプロフィールページに遷移した時に、input の value がリセットされなかった
+
+という問題を`useEffect`を使わずに解決するにはどのようにしたらよいでしょうか？
