@@ -53,3 +53,7 @@ cli.parse();
 uuid: 97.69187450408936ms
 uuid-js: 1637.917917251587ms
 ```
+
+## 課題 2
+
+回答: [あるコンポーネントが 1000 回レンダリングされるまでに要した時間を測定する](https://github.com/UR-deR/PrAha_Challenge/commit/7f90632767b5359544987eb435e18e6e9a01ba23)
