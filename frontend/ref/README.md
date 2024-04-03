@@ -57,3 +57,9 @@ uuid-js: 1637.917917251587ms
 ## 課題 2
 
 回答: [あるコンポーネントが 1000 回レンダリングされるまでに要した時間を測定する](https://github.com/UR-deR/PrAha_Challenge/commit/7f90632767b5359544987eb435e18e6e9a01ba23)
+
+### 課題 3
+
+[input の focus](https://github.com/UR-deR/PrAha_Challenge/commit/68088bc46ad98c7452192e9fe11077dd74d61119)のように DOM ノード を扱うケースなどで用いることがある。
+
+参考: [React useRef() Hook Explained in 3 Steps](https://dmitripavlutin.com/react-useref/#google_vignette)
