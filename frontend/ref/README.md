@@ -58,6 +58,9 @@ uuid-js: 1637.917917251587ms
 
 回答: [あるコンポーネントが 1000 回レンダリングされるまでに要した時間を測定する](https://github.com/UR-deR/PrAha_Challenge/commit/7f90632767b5359544987eb435e18e6e9a01ba23)
 
+<img width="735" alt="スクリーンショット 2024-04-04 21 07 16" src="https://github.com/UR-deR/PrAha_Challenge/assets/76472239/bdf5c094-ae0a-4df9-8889-8b0fedc41028">
+
+
 ### 課題 3
 
 [input の focus](https://github.com/UR-deR/PrAha_Challenge/commit/68088bc46ad98c7452192e9fe11077dd74d61119)のように DOM ノード を扱うケースなどで用いることがある。
