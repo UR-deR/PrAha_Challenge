@@ -56,5 +56,6 @@ export const Primary: Story = {
         </React.Fragment>
       );
     }),
+    caption: '登録ユーザー一覧',
   },
 };
