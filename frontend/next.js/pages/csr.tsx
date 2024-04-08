@@ -1,12 +1,5 @@
 import { useEffect, useState } from 'react';
-
-const fetchGitHubRepository = async (username: string, reponame: string) => {
-  const response = await fetch(`https://api.github.com/repos/${username}/${reponame}`);
-  const json = await response.json();
-  return {
-    repository: json,
-  };
-};
+import { fetchGitHubRepository } from '../utils/fetchGitHubRepository';
 
 export default function Csr() {
   const [data, setData] = useState({
@@ -30,7 +23,8 @@ export default function Csr() {
         height: '100vh',
       }}
     >
-      <p>ここにReactのGitHubレポジトリに付いたスターの数を表示してみよう</p>
+      <h1>CSR</h1>
+      <p>ここにGitHubレポジトリに付いたスターの数を表示してみよう</p>
       <p>{data.subscribers} subscribers</p>
       <p>{data.stars} stars</p>
     </div>
