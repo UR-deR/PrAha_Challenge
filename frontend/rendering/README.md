@@ -16,12 +16,6 @@ refs
 
 ## 課題 2
 
-CSR:
-
-SSR:
-
-SSG:
-
 **SSR と SSG の Build 成果物の違い**
 
 ```bash
