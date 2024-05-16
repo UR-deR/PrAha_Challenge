@@ -10,7 +10,7 @@ const useGithubRepository = (username: string, repository: string) => {
 };
 
 export default function GithubStarsWithReactQuery() {
-  const { data, isLoading } = useGithubRepository('UR-deR', 'PrAha_Challenge');
+  const { data, isLoading } = useGithubRepository('UR-deR', 'PrAha_Challenge')
 
   if (isLoading || !data) {
     return <div>Loading...</div>;
