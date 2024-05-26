@@ -1,4 +1,5 @@
-import { Suspense, startTransition, useEffect, useState } from 'react';
+import { useSuspenseQuery } from '@tanstack/react-query';
+import { Suspense, useState, startTransition } from 'react';
 
 type Tab = 'TODO' | 'POST';
 
@@ -19,23 +20,15 @@ type Post = {
 const fetchItem = async (tab: Tab): Promise<Todo[] | Post[]> => {
   const pathname = tab === 'TODO' ? 'todos' : 'posts';
   const response = await fetch(`https://jsonplaceholder.typicode.com/${pathname}`);
+
+  // wait for 2 seconds to simulate a slow network
+  await new Promise((resolve) => setTimeout(resolve, 2000));
+
   return response.json();
 };
 
 export default function Tabs() {
   const [tab, setTab] = useState<Tab>('TODO');
-
-  const onClickTodoButton = () => {
-    startTransition(() => {
-      setTab('TODO');
-    });
-  };
-
-  const onClickPostButton = () => {
-    startTransition(() => {
-      setTab('POST');
-    });
-  };
 
   return (
     <div
@@ -46,7 +39,9 @@ export default function Tabs() {
     >
       <button
         onClick={() => {
-          onClickTodoButton();
+          startTransition(() => {
+            setTab('TODO');
+          });
         }}
       >
         TODO
@@ -54,34 +49,29 @@ export default function Tabs() {
       &nbsp;
       <button
         onClick={() => {
-          onClickPostButton();
+          startTransition(() => {
+            setTab('POST');
+          });
         }}
       >
         POST
       </button>
-      <Suspense fallback={<div>Loading...</div>}>
-        <h1>{tab === 'TODO' ? 'TODO' : 'POST'}</h1>
-        {tab === 'TODO' ? <Todos /> : <Posts />}
-      </Suspense>
+      <Suspense fallback={<div>Loading...</div>}>{tab === 'TODO' ? <Todos /> : <Posts />}</Suspense>
     </div>
   );
 }
 
 const Todos = () => {
-  const fetchTodos = async (): Promise<Todo[]> => {
-    return fetchItem('TODO') as Promise<Todo[]>;
-  };
-
-  const [todos, setTodos] = useState<Todo[]>([]);
-
-  useEffect(() => {
-    fetchTodos().then((todos) => {
-      setTodos(todos);
-    });
-  }, []);
+  const { data: todos } = useSuspenseQuery({
+    queryKey: ['todos'],
+    queryFn: () => {
+      return fetchItem('TODO') as Promise<Todo[]>;
+    },
+  });
 
   return (
     <div>
+      <h1>TODO</h1>
       {todos.map((todo) => {
         return (
           <div key={todo.id}>
@@ -94,20 +84,16 @@ const Todos = () => {
 };
 
 const Posts = () => {
-  const fetchPosts = async (): Promise<Post[]> => {
-    return fetchItem('POST') as Promise<Post[]>;
-  };
-
-  const [posts, setPosts] = useState<Post[]>([]);
-
-  useEffect(() => {
-    fetchPosts().then((posts) => {
-      setPosts(posts);
-    });
-  }, []);
+  const { data: posts } = useSuspenseQuery({
+    queryKey: ['posts'],
+    queryFn: () => {
+      return fetchItem('POST') as Promise<Post[]>;
+    },
+  });
 
   return (
     <div>
+      <h1>POST</h1>
       {posts.map((post) => {
         return (
           <div key={post.id}>
