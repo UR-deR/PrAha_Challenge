@@ -88,4 +88,19 @@ User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15
 ```http
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:121.0) Gecko/20100101 Firefox/121.0
 ```
+### 4. Accept
 
+リクエストヘッダの`Accept`は、エージェントが処理することを望むメディアリソースの MIME タイプを羅列する。これはカンマ区切りの MIME タイプのリストで、それぞれの MIME タイプは、別の MIME タイプとの相対的な優先度を示す引数である品質係数と結びつけられている。
+
+```http
+Accept: <MIME_type>/<MIME_subtype>
+Accept: <MIME_type>/*
+Accept: */*
+
+// Multiple types, weighted with the quality value syntax:
+Accept: text/html, application/xhtml+xml, application/xml;q=0.9, image/webp, */*;q=0.8
+```
+
+```http
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
+```
