@@ -63,3 +63,29 @@ Content-Type: multipart/form-data; boundary=something
 
 から構成される。  
 
+### 3. User-Agent
+
+リクエストヘッダの`User-Agent`は、サーバーやネットワークなどに、リクエストしているユーザーエージェントのアプリケーション、オペレーティングシステム、ベンダー、バージョンを識別させるためのものである。
+
+```http
+User-Agent: <product> / <product-version> <comment>
+```
+
+**Google Chrome**
+
+```http
+Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36
+```
+
+**Safari**
+
+```http
+Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Safari/605.1.15
+```
+
+**Firefox**
+
+```http
+Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:121.0) Gecko/20100101 Firefox/121.0
+```
+
