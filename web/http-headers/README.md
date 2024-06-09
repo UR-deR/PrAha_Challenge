@@ -2,7 +2,7 @@
 
 ##　課題 1
 
-1. Host
+### 1. Host
 
 リクエストヘッダの`Host`は、リクエスト送信先のサーバーのホストとポート番号を指定するものである。
 
@@ -44,4 +44,22 @@ HostヘッダはHTTP/1.1におけるHTTPリクエストにおいては必ず指�
 <img width="1440" alt="スクリーンショット 2024-06-09 18 26 39" src="https://github.com/UR-deR/PrAha_Challenge/assets/76472239/f233e510-683d-4eec-bcc6-10da73845365">
 
 
+
+### 2. Content-type
+
+リクエストヘッダの`Content-type`は、リクエスト送信時におけるあらゆるエンコーディングが行われる前のリソースのmedia typeを指定するためのものである。
+
+レスポンスヘッダの`Content-type`は、返されたコンテンツの実際のコンテンツの種別を指し示す。
+
+```http
+Content-Type: text/html; charset=utf-8
+Content-Type: multipart/form-data; boundary=something
+```
+
+上記の例の通り、Content-typeは
+- media-type
+- charset
+- boundary
+
+から構成される。  
 
