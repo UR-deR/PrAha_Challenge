@@ -34,8 +34,14 @@ HostヘッダはHTTP/1.1におけるHTTPリクエストにおいては必ず指�
 [MDN](https://developer.mozilla.org/ja/)や[X](https://x.com/home)などではHTTP/2が用いられていたので、Hostは指定されていなかった。
 
 
+<img width="1436" alt="スクリーンショット 2024-06-09 18 29 47" src="https://github.com/UR-deR/PrAha_Challenge/assets/76472239/fdd64ed5-4e80-45f6-a98a-cd486274b18c">
 
 
-阿部寛のwebサイトではHTTP/1.1が利用されており、以下のリクエストヘッダは[トップページ](http://abehiroshi.la.coocan.jp/)のHTMLを取得するリクエストのものである。
+
+
+阿部寛のwebサイトではHTTP/1.1が利用されており、以下のリクエストヘッダは[トップページ](http://abehiroshi.la.coocan.jp/)のHTMLを取得するリクエストのものである。Hostヘッダが指定されていた。（ポート番号の指定が無いかつhttpなので、ポート番号は暗に443が指定される）
+
+<img width="1440" alt="スクリーンショット 2024-06-09 18 26 39" src="https://github.com/UR-deR/PrAha_Challenge/assets/76472239/f233e510-683d-4eec-bcc6-10da73845365">
+
 
 
