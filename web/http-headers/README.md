@@ -112,3 +112,18 @@ Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/w
 ```http
 referer: https://developer.mozilla.org/ja/docs/Web/HTTP/Headers/Proxy-Authorization
 ```
+
+### 6. Accept-Encoding
+
+リクエストヘッダの`Accept-Encoding`は、クライアントが理解することができるコンテンツのエンコーディングを示す。
+
+```http
+Accept-Encoding: gzip, deflate, br, zstd
+```
+
+サーバーサイドは、リクエストヘッダの`Accept-Encoding`の中の値のうちの一つを選択して、レスポンスヘッダの`Content-Encoding`の値として返す。
+
+```http
+Content-Encoding:br
+```
+
