@@ -149,3 +149,12 @@ APIキー: 特定のAPIキーを提供する。
 ```http
 Authorization: ApiKey {api_key}
 ```
+
+### 8. Location
+
+レスポンスヘッダの`Location`はリダイレクト先のURLを示す。
+3xx (リダイレクト) または 201 (created) ステータスレスポンスを返すときのみ意味を成す。
+
+```http
+Location: /index.html
+```
