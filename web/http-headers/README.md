@@ -180,3 +180,6 @@ Location: /index.html
 
 などの問題が考えられる。
 
+### 遷移先が同一オリジンの場合はrefererの情報全部送り、別オリジンの時はURLのオリジン情報だけをrefererとして送信したい
+
+`Referrer-Policy`ヘッダの値として、[strict-origin-when-cross-origin](https://developer.mozilla.org/ja/docs/Web/HTTP/Headers/Referrer-Policy#strict-origin-when-cross-origin)を指定する。（そもそも、`strict-origin-when-cross-origin`は既定値である）
