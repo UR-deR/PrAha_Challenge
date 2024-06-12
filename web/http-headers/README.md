@@ -127,3 +127,25 @@ Accept-Encoding: gzip, deflate, br, zstd
 Content-Encoding:br
 ```
 
+### 7. Authorization
+
+リクエストヘッダの`Authorization`は、HTTPリクエストにおいてクライアントがサーバーに対して自身の認証情報を提供するためのヘッダである。
+このヘッダを使用することで、サーバーはクライアントが誰であるかを確認し、適切なリソースへのアクセスを許可または拒否をする。
+
+Basic認証: ユーザー名とパスワードをBase64でエンコードして提供する。
+
+```http
+Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+```
+
+Bearerトークン: OAuthなどの認証フレームワークで使用されるトークンを提供する。
+
+```http
+Authorization: Bearer {token}
+```
+
+APIキー: 特定のAPIキーを提供する。
+
+```http
+Authorization: ApiKey {api_key}
+```
