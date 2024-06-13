@@ -211,5 +211,16 @@ User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:121.0) Gecko/201001
 Twitterフォロー
 
 
+
+<img width="650" alt="スクリーンショット 2024-06-13 20 47 04" src="https://github.com/UR-deR/PrAha_Challenge/assets/76472239/7c98c8e9-52d7-436e-992b-80c7ee675c35">
+
+
+
 Twitterアンフォロー
+
+
+
+<img width="702" alt="スクリーンショット 2024-06-13 20 48 09" src="https://github.com/UR-deR/PrAha_Challenge/assets/76472239/db7d39a8-7bd1-49de-bb08-e5a39afb9f33">
+
+
 
