@@ -223,4 +223,7 @@ Twitterアンフォロー
 <img width="702" alt="スクリーンショット 2024-06-13 20 48 09" src="https://github.com/UR-deR/PrAha_Challenge/assets/76472239/db7d39a8-7bd1-49de-bb08-e5a39afb9f33">
 
 
+**参考**
 
+- [What is the difference between POST and PUT in HTTP?](https://stackoverflow.com/questions/630453/what-is-the-difference-between-post-and-put-in-http)
+- [Shopify REST API](https://shopify.dev/docs/api/admin-rest/2024-04/resources/customer)
