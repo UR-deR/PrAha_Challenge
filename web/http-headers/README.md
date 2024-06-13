@@ -183,3 +183,26 @@ Location: /index.html
 ### 遷移先が同一オリジンの場合はrefererの情報全部送り、別オリジンの時はURLのオリジン情報だけをrefererとして送信したい
 
 `Referrer-Policy`ヘッダの値として、[strict-origin-when-cross-origin](https://developer.mozilla.org/ja/docs/Web/HTTP/Headers/Referrer-Policy#strict-origin-when-cross-origin)を指定する。（そもそも、`strict-origin-when-cross-origin`は既定値である）
+
+### 課題2
+
+問1
+
+```http
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:121.0) Gecko/20100101 Firefox/121.0
+```
+
+どのwebブラウザからhttpリクエストを送信する時にも、User-Agentに`Mozilla/5.0`のような文字列が含まれる。
+なぜこのような仕様になっているのでしょうか？
+
+
+問2
+
+レスポンスのステータスコードが201であり、レスポンスヘッダに`Location`ヘッダの値がセットされている時、一般的にLocationヘッダには何のURLが指定されているでしょうか？
+
+
+問3
+
+ユーザーがウェブサイトやサービスからログアウトした場合、ローカル(cookie, storage, cache, etc)に保存されているデータを削除したい場合がある。
+サイトからのログアウトが正常に完了したことを確認するページ (https://example.com/logout など)を送信する際にどのヘッダーを追加することで、これを実現することができるでしょうか？
+
