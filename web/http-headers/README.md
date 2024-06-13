@@ -206,3 +206,10 @@ User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:121.0) Gecko/201001
 ユーザーがウェブサイトやサービスからログアウトした場合、ローカル(cookie, storage, cache, etc)に保存されているデータを削除したい場合がある。
 サイトからのログアウトが正常に完了したことを確認するページ (https://example.com/logout など)を送信する際にどのヘッダーを追加することで、これを実現することができるでしょうか？
 
+### 課題3
+
+Twitterフォロー
+
+
+Twitterアンフォロー
+
