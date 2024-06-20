@@ -223,14 +223,19 @@ Twitterアンフォロー
 <img width="702" alt="スクリーンショット 2024-06-13 20 48 09" src="https://github.com/UR-deR/PrAha_Challenge/assets/76472239/db7d39a8-7bd1-49de-bb08-e5a39afb9f33">
 
 
-**参考**
-
-- [What is the difference between POST and PUT in HTTP?](https://stackoverflow.com/questions/630453/what-is-the-difference-between-post-and-put-in-http)
-- [Shopify REST API](https://shopify.dev/docs/api/admin-rest/2024-04/resources/customer)
-
 Shopify オーダーキャンセル
 
 - [POST Cancel an order](https://shopify.dev/docs/api/admin-rest/2024-04/resources/order#post-orders-order-id-cancel)
 
 Amazon　Wishlistから削除
+
+<img width="892" alt="スクリーンショット 2024-06-20 20 33 11" src="https://github.com/UR-deR/PrAha_Challenge/assets/76472239/58de3275-1b21-4142-b1fd-8496cbd1a086">
+
+
+
+**参考**
+
+- [What is the difference between POST and PUT in HTTP?](https://stackoverflow.com/questions/630453/what-is-the-difference-between-post-and-put-in-http)
+- [Shopify REST API](https://shopify.dev/docs/api/admin-rest/2024-04/resources/customer)
+
 
