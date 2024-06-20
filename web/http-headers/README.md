@@ -227,3 +227,10 @@ Twitterアンフォロー
 
 - [What is the difference between POST and PUT in HTTP?](https://stackoverflow.com/questions/630453/what-is-the-difference-between-post-and-put-in-http)
 - [Shopify REST API](https://shopify.dev/docs/api/admin-rest/2024-04/resources/customer)
+
+Shopify オーダーキャンセル
+
+- [POST Cancel an order](https://shopify.dev/docs/api/admin-rest/2024-04/resources/order#post-orders-order-id-cancel)
+
+Amazon　Wishlistから削除
+
