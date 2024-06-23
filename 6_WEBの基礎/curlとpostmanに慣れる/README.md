@@ -259,3 +259,30 @@ curl --data @data.json https://httpbin.org/post
 </details>
 
 </summery>
+
+**問題3**
+
+<summery>
+
+値の中に@、%、=、スペースなどの特殊文字がある場合は、手動でURLエンコードする必要がある。　　
+
+
+つまり、引数 "email "に "test@example.com "という値を入力したい場合は、次のようにする：
+
+```shell
+curl --data "email=test%40example.com" https://httpbin.org/post
+```
+
+手動でURLエンコードしなくても済む方法はあるでしょうか？
+
+<details>
+
+`--data-urlencode`オプションを用いる。
+
+```shell
+curl --data-urlencode "email=test@example.com" --data-urlencode "name=atatus" https://httpbin.org/post
+```
+
+</details>
+
+</summery>
