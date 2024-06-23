@@ -232,3 +232,30 @@ Note: Unnecessary use of -X or --request, GET is already inferred.
 </details>
 
 </summery>
+
+**問題2**
+
+`--data`オプションを用いてPOSTリクエストする際に、`--data`オプションの値が長すぎてターミナルに収まらない場合に、どのような対処方法があるか。
+
+
+<summery>
+
+送信されたリクエストヘッダや接続プロシージャなど、リクエストに関するより多くの情報を見たい場合、どのようなオプションを指定すべきでしょうか？
+
+<details>
+
+`@`を用いて、`.txt`ファイルにペイロードを記述する。
+
+```shell
+curl --data @params.txt example.com
+```
+
+`.json`ファイルを用いてjsonデータを送信することも可能
+
+```shell
+curl --data @data.json https://httpbin.org/post
+```
+
+</details>
+
+</summery>
