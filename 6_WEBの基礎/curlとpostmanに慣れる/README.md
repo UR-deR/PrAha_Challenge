@@ -135,10 +135,6 @@ curl -X POST "https://httpbin.org/post" \
 }
 ```
 
-TODO
-- curlに関するクイズ
-- postmanに関するクイズ
-
 ## 問題2
 ### Curlクイズ
 
@@ -282,6 +278,63 @@ curl --data "email=test%40example.com" https://httpbin.org/post
 ```shell
 curl --data-urlencode "email=test@example.com" --data-urlencode "name=atatus" https://httpbin.org/post
 ```
+
+</details>
+
+</summery>
+
+
+### postman クイズ
+
+**問題1**
+
+<summery>
+
+アクセストークンを用いてリクエストする必要のあるAPIがあるとする。
+各エンドポイントごとに、リクエストヘッダのAuthorizationヘッダの値にアクセストークンの値をセットするのは面倒である。
+この面倒を解消するために、postmanにはどのような機能が備わっているでしょうか？
+
+
+<details>
+
+変数を利用することができる。
+
+変数を定義し、各エンドポイントのリクエストヘッダは変数を参照することが可能である。
+
+[Store and reuse values using variables](https://learning.postman.com/docs/sending-requests/variables/variables/)
+
+</details>
+
+</summery>
+
+**問題2**
+
+<summery>
+
+コマンドラインからPostman Collectionを実行・テストするためにはどうしたら良いでしょうか？
+
+<details>
+
+Newman Cliを用いる。
+
+[Run and test collections from the command line using Newman CLI](https://learning.postman.com/docs/collections/using-newman-cli/command-line-integration-with-newman/)
+
+</details>
+
+</summery>
+
+**問題3**
+
+<summery>
+
+Postmanを用いてAPIのヘルスチェックとパフォーマンスを継続的にチェックするにはどうしたら良いでしょうか？
+
+
+<details>
+
+Postman Monitorを用いる。
+
+[Monitor health and performance of your APIs in Postman](https://learning.postman.com/docs/monitoring-your-api/intro-monitors/)
 
 </details>
 
