@@ -30,6 +30,10 @@ curl -X GET "https://httpbin.org/get" \
 }
 ```
 
+<img width="1332" alt="スクリーンショット 2024-07-07 18 16 17" src="https://github.com/UR-deR/PrAha_Challenge/assets/76472239/e34fa846-e80d-4b42-9467-22419b0b70cc">
+
+
+
 ## 問題2
 
 リクエスト
@@ -63,6 +67,8 @@ curl -X POST "https://httpbin.org/post" \
   "url": "https://httpbin.org/post"
 }
 ```
+
+<img width="1472" alt="スクリーンショット 2024-07-07 18 15 52" src="https://github.com/UR-deR/PrAha_Challenge/assets/76472239/ee47884d-ab47-4053-a582-1d6704d333e2">
 
 ## 問題3
 
@@ -101,6 +107,10 @@ curl -X POST "https://httpbin.org/post" \
 }
 ```
 
+<img width="1330" alt="スクリーンショット 2024-07-07 18 17 11" src="https://github.com/UR-deR/PrAha_Challenge/assets/76472239/5a4f831d-bd6c-40f3-9e78-e5a3ed61c7ed">
+
+
+
 ## 課題4
 
 リクエスト
@@ -134,6 +144,8 @@ curl -X POST "https://httpbin.org/post" \
   "url": "https://httpbin.org/post"
 }
 ```
+
+<img width="1328" alt="スクリーンショット 2024-07-07 18 18 45" src="https://github.com/UR-deR/PrAha_Challenge/assets/76472239/c7fe8b64-64ea-49a9-a6c4-dbed77c5a191">
 
 ## 問題2
 ### Curlクイズ
