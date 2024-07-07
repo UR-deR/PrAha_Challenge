@@ -288,7 +288,7 @@ curl --data "email=test%40example.com" https://httpbin.org/post
 `--data-urlencode`オプションを用いる。
 
 ```shell
-curl --data-urlencode "email=test@example.com" --data-urlencode "name=atatus" https://httpbin.org/post
+curl --data-urlencode "email=test@example.com" https://httpbin.org/post
 ```
 
 </details>
