@@ -5,11 +5,8 @@
 リクエスト
 
 ```sh
-curl -X GET "https://httpbin.org/get" \
+curl -X GET "https://httpbin.org/headers" \
 -H "accept: application/json" \
--H "Accept: */*" \
--H "Host: httpbin.org" \
--H "User-Agent: curl/7.54.0" \
 -H "X-Test: hello"
 ```
 
