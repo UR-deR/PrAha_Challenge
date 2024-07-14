@@ -4,6 +4,27 @@
 
 [nodejs-express-playground/app.ts](https://github.com/UR-deR/nodejs-express-playground/blob/main/app.ts)にて実装。
 
+```shell
+❯ curl localhost:3000 -H "Content-Type: application/json"
+{"text":"Hello World!"}
+
+❯ curl localhost:3000 -d '{"name": "hoge"}' -H "Content-Type: application/json"
+{"name":"hoge"}
+
+❯ curl --dump-header - localhost:3000 -d '{"name": "hoge"}'
+
+HTTP/1.1 400 Bad Request
+X-Powered-By: Express
+Content-Type: text/html; charset=utf-8
+Content-Length: 11
+ETag: W/"b-EFiDB1U+dmqzx9Mo2UjcZ1SJPO8"
+Date: Sun, 14 Jul 2024 00:59:44 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+Bad Request
+```
+
 
 ## 課題2
 
