@@ -115,3 +115,35 @@ Set-Cookie: sessionId=abc123; SameSite=None; Secure
 
 - クライアントサイドでデータを永続的に保存するケース
 - 大容量のデータ(クッキーだと毎回大容量のデータ送信になるため、レイテンシーに影響が出る)
+
+##　課題2
+
+### クイズ1
+
+<summery>
+ブラウザに保存容量を超えた量のクッキーが保存されているとする。通常、保存容量を超えるとブラウザはクッキーをある規則にそって削除する。ブラウザの保存容量が超えた際に、とあるクッキーが削除されないようにするにはどうすれば良いか？
+<details>
+CookieのPriority属性にHighを指定する。
+
+参考: [CookieのPriority属性の仕様](https://asnokaze.hatenablog.com/entry/2019/12/19/013022)
+</details>
+</summery>
+
+### クイズ2
+
+<summery>
+HttpOnly属性がtrueのCookieの値を書き換えて、書き換えた後のcookieを用いてリクエストするにはどうすれば良いでしょうか？
+<details>
+ブラウザのdeveloper toolから該当のクッキーの値を書き換えて、リクエストする。HttpOnly属性がtrueであっても、手動での参照や更新は防げない。
+</details>
+</summery>
+
+### クイズ3
+
+<summery>
+ブラウザで生成するクッキーと、サーバーで生成するクッキーの違いにはどのようなものがあるでしょうか？
+
+<details>
+ブラウザで生成するクッキーにはHttpOnlyを指定することができないので、JavaScriptからの参照・更新が可能となる。サーバーで生成するクッキーはHttpOnlyをセットした場合には、ブラウザのJavaScriptからクッキーを参照・更新することができない。
+</details>
+</summery>
