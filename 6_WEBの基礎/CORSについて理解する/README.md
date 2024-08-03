@@ -27,15 +27,21 @@ CORSヘッダーの一つに`Access-Control-Allow-Origin`があり、このヘ�
 - 許可されたクライアントサイドオリジン: `http://localhost:8081`
 
 **ケース1: Simple Requestの時はPreflightが行われない**
+<img width="1572" alt="simple-request-from-allowd-origin" src="https://github.com/user-attachments/assets/0977bd2b-fe5b-4c44-8214-dfd7ed472ca9">
+
+
 
 
 
 **ケース2: Simple Requestに該当しない場合はPreflightが送信される**
 
+<img width="1564" alt="options-preflight-request-from-allowed-origin" src="https://github.com/user-attachments/assets/31a5ed45-1999-4d8a-a755-6cd3e159a0a0">
+<img width="784" alt="post-request-from-allowed-origin" src="https://github.com/user-attachments/assets/16de37b5-492b-4eac-93df-758def5c4441">
 
 
 **ケース3: 許可されていないオリジンからのリクエストの場合、CORSエラーレスポンスが返される**
 
+<img width="436" alt="non-allowed-origin" src="https://github.com/user-attachments/assets/2268ff8d-48d8-49a7-8f14-b7e587b4979d">
 
 
 ## 課題4
