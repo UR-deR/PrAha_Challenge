@@ -88,6 +88,33 @@ aタグによるリクエストは、リソースの共有ではなく、ドキ�
 
 [withCredentials](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/withCredentials)プロパティを`true`にすることで、Cookieが送信されるようになる。
 
+## 課題2
+
+### Q1
+
+<details><summary>「aタグ要素のクリックによる別オリジンへのリクエスト」と「window.fetchによる別オリジンへのリクエスト」のそれぞれに関して、リクエストヘッダー`Sec-Fetch-Mode`にはどの値がセットされるか？</summary>
+aタグ要素のクリックによる別オリジンへのリクエスト→ navigate
+
+window.fetchによる別オリジンへのリクエスト→ cors
+参考: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Sec-Fetch-Mode
+</details>
+
+### Q2
+
+<details><summary>「localhost:8000」から「localhost:3000」にwindow.fetchを用いてリクエストした時、リクエストヘッダのSec-Fetch-Siteの値がcross-siteではなくsame-siteなのはなぜか？</summary>
+ポート番号が異なるものの、schemeとhostが同じなのでsame-siteと言えるから。
+
+※ポート番号が異なるため、same-originではない。
+参考: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Sec-Fetch-Site
+</details>
+
+### Q3
+
+<details><summary>リクエストヘッダのmodeの値としてno-corsを指定する。window.fetchを用いてContent-Typeにapplication/jsonを指定してGETリクエストをする。この時、CORSエラーは発生する？発生しない？</summary>
+CORSエラーは発生する。
+modeをno-corsにすることは、リクエストがsimple requestでなければならないことを意味する。Content-Typeにapplication/jsonを指定すると、simple requestではなくなるためCORSエラーが発生する。
+</details>
+
 
 
 ## 課題3
