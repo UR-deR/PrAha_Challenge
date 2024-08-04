@@ -78,6 +78,12 @@ aタグによるリクエストは、リソースの共有ではなく、ドキ�
 と言える。
 よって、CORS制約が適用されない。
 
+**実演**
+
+<img width="1203" alt="スクリーンショット 2024-08-04 16 02 26" src="https://github.com/user-attachments/assets/5041c9ee-507f-4f09-beeb-4b0356346879">
+
+
+
 ### XHRによるCross-OriginリクエストにおけるCookieの送信について
 
 [withCredentials](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/withCredentials)プロパティを`true`にすることで、Cookieが送信されるようになる。
