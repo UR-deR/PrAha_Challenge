@@ -81,11 +81,20 @@ HTTP通信において、ブラウザがキャッシュを制御するために�
 
 **GitHub**
 
+<img width="545" alt="スクリーンショット 2024-08-18 19 45 49" src="https://github.com/user-attachments/assets/27230cf9-62c1-4d78-b09a-6629b4301a8d">
+
+
 
 
 **デジタル庁**
 
+<img width="685" alt="スクリーンショット 2024-08-18 19 50 28" src="https://github.com/user-attachments/assets/d3566408-03ac-4b38-b7d8-50ae7970fba3">
+
+
+
 **Google**
+
+<img width="679" alt="スクリーンショット 2024-08-18 19 52 30" src="https://github.com/user-attachments/assets/69cbc8c3-93d8-4078-82a1-3488a5804914">
 
 
 ### 課題2
@@ -96,7 +105,9 @@ https://github.com/UR-deR/nodejs-express-playground/commit/02e4fa8892da1f6818999
 
 **初回リクエスト**
 <img width="1727" alt="スクリーンショット 2024-08-18 18 27 33" src="https://github.com/user-attachments/assets/0839d7d1-3aa3-4ff3-a28c-86397b65dd31">
-**2回目のりクエスト**
+
+
+**2回目のリクエスト**
 <img width="1740" alt="スクリーンショット 2024-08-18 18 27 46" src="https://github.com/user-attachments/assets/7b06ab57-4abe-4034-b8e3-4245537bac60">
 
 ### 課題3
