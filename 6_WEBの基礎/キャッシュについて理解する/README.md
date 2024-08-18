@@ -78,3 +78,10 @@ HTTP通信において、ブラウザがキャッシュを制御するために�
 
 
 ### ブラウザのキャッシュがWEBサービスに用いられている実例
+
+
+### 課題2
+
+https://github.com/UR-deR/nodejs-express-playground/commit/02e4fa8892da1f68189999d77a1b10979f37fa2b
+
+にて実装した。
