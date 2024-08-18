@@ -85,3 +85,8 @@ HTTP通信において、ブラウザがキャッシュを制御するために�
 https://github.com/UR-deR/nodejs-express-playground/commit/02e4fa8892da1f68189999d77a1b10979f37fa2b
 
 にて実装した。
+
+**初回リクエスト**
+<img width="1727" alt="スクリーンショット 2024-08-18 18 27 33" src="https://github.com/user-attachments/assets/0839d7d1-3aa3-4ff3-a28c-86397b65dd31">
+**2回目のりクエスト**
+<img width="1740" alt="スクリーンショット 2024-08-18 18 27 46" src="https://github.com/user-attachments/assets/7b06ab57-4abe-4034-b8e3-4245537bac60">
