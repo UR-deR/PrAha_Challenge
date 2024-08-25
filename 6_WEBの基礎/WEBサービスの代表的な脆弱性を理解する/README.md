@@ -74,3 +74,58 @@ CSRFトークンをフォームに埋め込み、リクエストごとに確認�
 **最適化**
 
 使用する正規表現が最適化されているか確認し、可能な限りバックトラッキングを避ける。
+
+## 課題2
+
+### クイズ1
+
+次のうち、CSPヘッダーの`connect-src`ディレクティブの目的として正しいものはどれですか？
+
+1. スクリプトの外部読み込みを制限する 
+2. スクリプトが接続する外部リソースを制限する
+3. 画像の読み込みを制限する
+4. スタイルシートの読み込みを制限する
+
+<summary>
+答え:
+<details>
+「2. スクリプトが接続する外部リソースを制限する」
+
+fetchやXMLHttpRequestなどのAPIを使用して読み込むことができるURLを制限する。
+
+
+参考: [CSP: connect-src - HTTP | MDN](https://developer.mozilla.org/ja/docs/Web/HTTP/Headers/Content-Security-Policy/connect-src)
+</details>
+</summery>
+
+### クイズ2
+
+CSPヘッダーの`script-src`ディレクティブの目的は何か？
+
+<summary>
+答え:
+<details>
+ウェブページにおいてどのソースからスクリプトを読み込むことができるかを制限する。これにより、スクリプトの悪意のある挿入やXSS攻撃を防ぐことができる。
+
+参考: [CSP: script-src - HTTP | MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/script-src)
+</details>
+</summery>
+
+
+### クイズ3
+
+CSPヘッダーの`script-src`ディレクティブに`nonce-abc123`が設定されている場合、読み込みが許可されるスクリプトの条件は何ですか？ 
+
+<summary>
+答え:
+<details>
+ script-srcディレクティブに`nonce-abc123`が設定されている場合、scriptタグにnonce="abc123"が設定されたスクリプトのみが許可されます。
+
+ すべてのインラインスクリプトを許可することは、セキュリティ上のリスクがあると考えられるので、nonce-source でインラインスクリプトを許可するには、ランダムな値を生成して、それをポリシーに含める必要があります。
+
+参考: [CSP: script-src - HTTP | MDN](https://developer.mozilla.org/ja/docs/Web/HTTP/Headers/Content-Security-Policy/script-src)
+</details>
+</summery>
+
+
+
