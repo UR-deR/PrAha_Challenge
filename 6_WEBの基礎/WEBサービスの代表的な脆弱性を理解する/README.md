@@ -146,3 +146,23 @@ CSPヘッダーの`script-src`ディレクティブに`nonce-abc123`が設定さ
 location.href="http://【DVWAのFQDN】/vulnerabilities/csrf/?password_new=【変更後のパスワード】&password_conf=【変更後のパスワード】&Change=Change#";
 </script>
 ```
+
+### DOM Based Cross Site Scripting (XSS)
+
+"English"を選択しSubmitすると、URLが`http://localhost/vulnerabilities/xss_d/?default=English`に変わる。
+次のような実装になっていた。
+
+```js
+if (document.location.href.indexOf("default=") >= 0) {
+    var lang = document.location.href.substring(document.location.href.indexOf("default=")+8);
+    document.write("<option value='" + lang + "'>" + decodeURI(lang) + "</option>");
+    document.write("<option value='' disabled='disabled'>----</option>");
+}
+    
+document.write("<option value='English'>English</option>");
+document.write("<option value='French'>French</option>");
+document.write("<option value='Spanish'>Spanish</option>");
+document.write("<option value='German'>German</option>");
+```
+
+よって、`http://localhost/vulnerabilities/xss_d/?default=<script>alert(1)</script>`のようにすれば、任意のスクリプトを実行できてしまう。
