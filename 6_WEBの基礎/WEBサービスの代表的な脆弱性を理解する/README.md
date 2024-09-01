@@ -166,3 +166,6 @@ document.write("<option value='German'>German</option>");
 ```
 
 よって、`http://localhost/vulnerabilities/xss_d/?default=<script>alert(1)</script>`のようにすれば、任意のスクリプトを実行できてしまう。
+
+<img width="1159" alt="スクリーンショット 2024-09-01 19 43 36" src="https://github.com/user-attachments/assets/c4249a9c-590b-4799-9fb1-55359f9ed7ff">
+
