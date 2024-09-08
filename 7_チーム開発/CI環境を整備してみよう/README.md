@@ -42,6 +42,37 @@
 - [依存関係をキャッシュしてワークフローのスピードを上げる - GitHub Docs](https://docs.github.com/ja/actions/writing-workflows/choosing-what-your-workflow-does/caching-dependencies-to-speed-up-workflows)
 - [npm ciのキャッシュ方式の検討](https://r7kamura.com/articles/2023-12-15-npm-cache)
 
+**GitHub外のイベントをフックにワークフロー**
+
+1. `on`キーワードの値に[workflow_dispatch](https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#workflow_dispatch)を指定する。
+
+```yml
+name: Build and Deploy Blog
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Build blog
+        run: |
+          # ビルドとデプロイの処理をここに記述
+```
+
+2. 外部システムから API を使用してトリガーする。CMSのWebhook機能を用い、更新時に 下記のようなHTTP リクエストを送信する。
+
+```sh
+curl -X POST \
+  -H "Authorization: token YOUR_GITHUB_TOKEN" \
+  -H "Accept: application/vnd.github.v3+json" \
+  https://api.github.com/repos/USERNAME/REPO_NAME/actions/workflows/WORKFLOW_ID/dispatches \
+  -d '{"ref":"main"}'
+```
+
 
 **特定のディレクトリ配下の変更のみをトリガーにする**
 
