@@ -175,4 +175,26 @@ AWSアカウントのユーザーが独自に作成したポリシーで、特�
 
 5. **監査とトラッキングの容易さ**: グループごとに権限を設定することで、監査やトラッキングが容易になる。特定のグループに対するアクセス権を確認することで、組織全体の権限を把握しやすくなる。
 
+### EC2インスタンスからS3にアクセスできるようにする
+**praha-challenge-01**にs3:listBucketのみを許可するポリシーを作成し、IAMロール(EC2S3ReadOnlyAccess)に付与。
+
+EC2インスタンスにIAMロールをアタッチした。
+
+↓
+
+**praha-challenge-01**というS3バケットにはアクセス可能。
+
+**start-aws-wordpress-bucket.sf-dns.xyz**というS3バケットにはアクセス不可能。
+
+```sh
+[ec2-user@ip-172-31-37-82 ~]$ aws s3 ls s3://praha-challenge-01
+
+2024-10-27 13:20:33          0 hoge.txt
+
+[ec2-user@ip-172-31-37-82 ~]$ aws s3 ls s3://start-aws-wordpress-bucket.sf-dns.xyz
+
+An error occurred (AccessDenied) when calling the ListObjectsV2 operation: User: arn:aws:sts::{aws_account_id}:assumed-role/EC2S3ReadOnlyAccess/i-0bd314ed90f8e16fe is not authorized to perform: s3:ListBucket on resource: "arn:aws:s3:::start-aws-wordpress-bucket.sf-dns.xyz" because no identity-based policy allows the s3:ListBucket action
+```
+
+
 ## 課題3
