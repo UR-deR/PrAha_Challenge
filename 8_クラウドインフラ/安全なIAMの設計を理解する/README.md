@@ -200,4 +200,82 @@ EC2インスタンスにIAMロールをアタッチした。
 An error occurred (AccessDenied) when calling the ListObjectsV2 operation: User: arn:aws:sts::{aws_account_id}:assumed-role/EC2S3ReadOnlyAccess/i-0bd314ed90f8e16fe is not authorized to perform: s3:ListBucket on resource: "arn:aws:s3:::start-aws-wordpress-bucket.sf-dns.xyz" because no identity-based policy allows the s3:ListBucket action
 ```
 
+### ポリシーを直接付与する? or ロールをアタッチする?
+
+「IAMロールをアタッチする」べきだと考える。
+
+**IAMロールをアタッチする利点**
+
+1. **セキュリティの向上**  
+   - IAMロールは一時的な認証情報を生成し、EC2インスタンス上で安全にアクセス権限を管理できるため、アクセスキーやシークレットキーを使わずに済む。直接ポリシーをアタッチすると、インスタンスに固定されたアクセスキーが必要になるため、セキュリティリスクが高まる。
+
+2. **権限の分離**  
+   - IAMロールはEC2インスタンス専用の役割として権限を付与するため、インスタンス上の操作をEC2の他のリソースやユーザーから分離できる。ポリシーを直接アタッチすると、必要以上の権限が他のリソースやユーザーに影響する可能性がある。
+
+3. **管理の容易さ**  
+   - IAMロールは再利用可能で、複数のインスタンスに対して一貫した権限設定ができる。また、インスタンスごとにポリシーを設定するよりも、ロールの管理を一元化できるため、管理が簡単になる。
+
+4. **ポリシーの柔軟な更新**  
+   - ロールにアタッチされたポリシーを更新すると、ロールを利用しているすべてのEC2インスタンスに即座に反映される。直接ポリシーをアタッチすると、更新のたびに個別のインスタンス設定を確認・変更する必要がある。
+
+### Identity based　vs Resource based
+
+**Identity based**
+
+アイデンティティベースのポリシーとは、IAMユーザー、IAMユーザーグループ、IAMロールに付与するIAMポリシーのこと。
+
+IAMポリシーはSid、Effect、Action、Resource、Conditionの5つの要素で記述される。
+
+例: EC2インスタンスのリソースタグ"Environment"が"production"の場合、EC2インスタンスへの全ての操作が拒否される。
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [{
+    "Sid": "EC2ControlDeny",
+    "Effect": "Deny",
+    "Action": "ec2:*",
+    "Resource": "*",
+    "Condition": {
+      "StringEquals": {
+        "ec2:ResourceTag/Environment": "production"
+      }
+    }
+  }]
+}
+```
+
+**Resource based**
+
+リソースベースのポリシーとはAWSリソースに付与するポリシーのこと。
+
+リソースベースのポリシーでは、インラインポリシーのみ設定できる。つまり、AWS側で用意されるポリシーの雛形はなく、用途に合わせて記述する必要がある。
+
+
+例: S3バケット(test-bucket)にリソースベースのIAMポリシーを付与しており、バケットに対して”123456789123”AWSアカウントの”user”ユーザーがアップロードできる権限を付与
+
+```json
+{
+  "Version": "2012-10-17",
+    "Statement": [{
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::123456789123:user/user"
+      },
+      "Action": [
+        "s3:PutObject",
+        "s3:PutObjectAcl"
+      ],
+      "Resource": "arn:aws:s3:::test-bucket/*",
+  }]
+}
+```
+
+**使い分け**
+
+- AWSアカウント内のユーザーやロールに権限を付与する場合 → Identity basedポリシー
+- 他のアカウントや外部のプリンシパルにリソースへのアクセスを許可する場合 → Resource basedポリシー
+
+アクセスする主体（Identity）に権限を与えるか、リソース側で受け入れルールを設定するかを吟味する。
+
 ## 課題3
