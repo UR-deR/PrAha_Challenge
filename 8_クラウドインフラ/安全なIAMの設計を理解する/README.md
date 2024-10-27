@@ -180,6 +180,10 @@ AWSアカウントのユーザーが独自に作成したポリシーで、特�
 
 EC2インスタンスにIAMロールをアタッチした。
 
+<img width="489" alt="スクリーンショット 2024-10-27 22 47 14" src="https://github.com/user-attachments/assets/30e59838-23ff-4051-af50-6928f7ef300d">
+
+<img width="1131" alt="スクリーンショット 2024-10-27 22 47 49" src="https://github.com/user-attachments/assets/59d383ca-5265-42f3-843d-b0bf019fb86b">
+
 ↓
 
 **praha-challenge-01**というS3バケットにはアクセス可能。
@@ -195,6 +199,5 @@ EC2インスタンスにIAMロールをアタッチした。
 
 An error occurred (AccessDenied) when calling the ListObjectsV2 operation: User: arn:aws:sts::{aws_account_id}:assumed-role/EC2S3ReadOnlyAccess/i-0bd314ed90f8e16fe is not authorized to perform: s3:ListBucket on resource: "arn:aws:s3:::start-aws-wordpress-bucket.sf-dns.xyz" because no identity-based policy allows the s3:ListBucket action
 ```
-
 
 ## 課題3
