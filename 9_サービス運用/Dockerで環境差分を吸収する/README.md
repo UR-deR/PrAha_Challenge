@@ -254,3 +254,7 @@ services:
       MYSQL_DATABASE: app_db
 ```
 → docker compose up を実行するだけで、Node.jsアプリとMySQLが自動的に起動・連携 する。
+
+### .dockerignore
+`.dockerignore` は、Dockerのビルドコンテキストに含めたくないファイルやディレクトリを指定するためのファイル。  
+例えば、ホスタ端末に依存するファイルや、IDEの設定ファイルなど。
