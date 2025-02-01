@@ -42,3 +42,107 @@ docker build -t my-app:latest .
 - `-t my-app:latest` は、作成するイメージの名前（`my-app`）とタグ（`latest`）を指定
 - タグを省略すると、デフォルトで `latest` になる。
 - `.` は、Dockerfile があるディレクトリを指定（カレントディレクトリ）
+
+### Dockerコンテナ
+
+イメージが実行状態となったインスタンスのこと。  
+コンテナに対する生成、開始、停止、移動、削除は Docker API や CLI を使って行われる。
+
+**生成**
+
+```sh
+docker create --name コンテナ名 イメージ名
+
+docker create --name my-container my-app:latest
+```
+
+**開始**
+
+```sh
+docker start コンテナ名
+
+docker start my-container
+```
+
+**停止**
+
+```sh
+docker stop コンテナ名
+
+docker stop my-container
+```
+
+**移動（rename）**
+
+```sh
+docker rename 旧コンテナ名 新コンテナ名
+
+docker rename my-container renamed-container
+```
+
+**削除**
+
+`-f`で起動中のコンテナを強制削除できる。
+
+```sh
+docker rm コンテナ名
+
+docker rm my-container
+
+docker rm -f my-container
+```
+
+**Docker runコマンド**
+
+```sh
+docker run -i -t ubuntu /bin/bash
+```
+
+このコマンドを実行すると、
+
+1. ubuntu イメージを元に新しいコンテナを作成する。
+1. そのコンテナ内で /bin/bash（Bashシェル）を実行する。
+1. ターミナル上でコンテナのシェルに入ることができる（対話モード）。
+1. Ctrl + D または exit を入力するまで、コンテナは実行され続ける。
+
+`-i`: 標準入力を開いたままにし、コンテナ内で対話的な操作ができるようにする。
+`-t`: 疑似端末（TTY）を割り当て、コンテナ内のシェルをターミナルとして使用できるようにする。
+
+コンテナは、複数のネットワークへの接続が可能。
+
+1. ネットワークを作成
+```sh
+docker network create network1
+docker network create network2
+```
+
+2. コンテナを作成するときに、1つ目のネットワークを指定する。  
+例: `my-container` を `network1` に接続して起動
+
+```sh
+docker run -dit --name my-container --network network1 alpine
+```
+
+3. すでに起動しているコンテナを、追加のネットワークに接続する。  
+例: `my-container` を `network2` にも接続
+
+```sh
+docker network connect network2 my-container
+```
+
+bridge ネットワークに接続されているコンテナ同士は、デフォルトで通信可能。  
+異なるネットワークに属するコンテナ間は直接通信できないが、コンテナを複数のネットワークに接続することで間接的に通信できる。
+
+現時点の状態にもとづいた新たなイメージを生成することもできる。    
+通常、Dockerイメージからコンテナを作成し、コンテナ内でアプリケーションを実行したり、設定を変更したりする。  
+しかし、そのコンテナに対して変更を加えた後、それを新しいイメージとして保存できる。(コンテナ内でアプリケーションの設定を変更したり、新しいパッケージをインストールしたりなど)
+
+```sh
+docker commit コンテナ名 新しいイメージ名:タグ
+
+docker commit my-container my-new-image:latest
+```
+
+※ ただし、この方法はDockerfileによるビルドではなく手動での変更を反映する手法なので、運用管理の観点からはDockerfileの使用が推奨される。
+
+
