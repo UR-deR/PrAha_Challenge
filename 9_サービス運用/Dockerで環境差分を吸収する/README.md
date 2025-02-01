@@ -233,4 +233,24 @@ JDKやMavenは最終イメージでは不要。
     - Dockerイメージを作成すれば、どこでも同じ環境をデプロイ可能。
     - GitHub Actions で `docker build` & `docker push` することで、自動デプロイ可能。
 
+### docker composeはどのような場面で役立つか
 
+docker compose を使うと、1つのYAMLファイルで複数のコンテナを定義し、一括で起動・停止できる。  
+
+**例: Node.js + MySQL の構成**
+
+```yaml
+services:
+  app:
+    image: node:20-alpine
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mysql
+  mysql:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: app_db
+```
+→ docker compose up を実行するだけで、Node.jsアプリとMySQLが自動的に起動・連携 する。
