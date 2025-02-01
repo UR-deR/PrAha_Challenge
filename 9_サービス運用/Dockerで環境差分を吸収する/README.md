@@ -145,4 +145,25 @@ docker commit my-container my-new-image:latest
 
 ※ ただし、この方法はDockerfileによるビルドではなく手動での変更を反映する手法なので、運用管理の観点からはDockerfileの使用が推奨される。
 
+### ベースイメージ
+
+Dockerコンテナを構築する際の出発点となるイメージのこと。  
+Dockerfileの FROM 指定で最初に指定するイメージを指す。  
+
+ベースイメージには、大きく分けて2種類がある。  
+1. ディストリビューション系ベースイメージ  
+OS（Linuxディストリビューション）を基にしたイメージ。  
+これらのイメージは、基本的なパッケージマネージャー（apt や yum）が利用可能で、カスタマイズしやすい。
+
+- ubuntu（Ubuntuベース）
+- debian（Debianベース）
+- alpine（軽量Linuxベース）
+- centos（CentOSベース）
+
+2. ミニマルなベースイメージ  
+最小限の環境のみを提供する軽量なイメージ。  
+
+- scratch（完全に空のイメージ, 最小限のバイナリだけで動作するコンテナを作成可能）
+- busybox（軽量なUNIXユーティリティ）
+- alpine（5MB程度の最小Linux）
 
