@@ -258,3 +258,62 @@ services:
 ### .dockerignore
 `.dockerignore` は、Dockerのビルドコンテキストに含めたくないファイルやディレクトリを指定するためのファイル。  
 例えば、ホスタ端末に依存するファイルや、IDEの設定ファイルなど。
+
+### RUNコマンドの分割
+Dockerfileの中で以下のようにRUNコマンドを分割すると、`apt-get update`の結果が次の`RUN`で無効になってしまう。
+
+```
+RUN apt-get update
+RUN apt-get install -y [something]
+```
+`RUN apt-get update` は、そのレイヤーだけで実行され、次のレイヤーには反映されない。  
+そのため、`apt-get install` の段階では、`apt-get update` のキャッシュが失われてしまい、古いパッケージリストを参照する可能性がある。  
+これにより、想定していたバージョンがインストールされない、または 「パッケージが見つからない」エラー になる。
+
+---
+
+RUNコマンドを1つにまとめた場合は、Dockerのレイヤーごとに実行されるため、`apt-get update` と `apt-get install` を同じ RUN コマンド内で実行すると、
+更新されたパッケージリストがそのまま適用される。  
+
+```
+RUN apt-get update && apt-get install -y [something]
+```
+同じレイヤー内で実行されるため、`apt-get update`の結果が`apt-get install`に反映される。  
+これにより、最新のパッケージリストが使用され、想定したバージョンのパッケージが確実にインストールできる。
+
+### ENV
+
+1. ENV と RUN export の違い
+設定方法|スコープ|影響
+------------------
+ENV NAME='hoge'	コンテナ全体（レイヤーをまたぐ）	すべての RUN、CMD、ENTRYPOINT に適用
+RUN export NAME='hoge'	その RUN コマンドの中だけ	RUN が終了すると NAME は消える
+
+| 設定方法 | スコープ|影響
+| --- | --- | --- |
+| ENV NAME='hoge' | コンテナ全体（レイヤーをまたぐ） | すべての RUN、CMD、ENTRYPOINT に適用 |
+| RUN export NAME='hoge' | その RUN コマンドの中だけ | RUN が終了すると NAME は消える |
+
+
+**ENVの動作**
+
+```
+FROM ubuntu:latest
+ENV NAME="hoge"
+
+RUN echo $NAME  # "hoge" と出力される
+CMD echo $NAME  # "hoge" と出力される
+```
+
+**RUN exportの動作**
+
+```
+FROM ubuntu:latest
+
+RUN export NAME="hoge" && echo $NAME  # "hoge" と出力される
+RUN echo $NAME  # 何も出力されない
+CMD echo $NAME  # 何も出力されない
+```
+
+- コンテナ全体で環境変数を使いたい	→ `ENV NAME="hoge"`
+- 1つの RUN 内だけで変数を使いたい	→ `RUN export NAME="hoge" && echo $NAME`
