@@ -201,3 +201,22 @@ Dockerfile内で、`COPY`や`ADD`で使用できるのは、ビルドコンテ�
 `docker build` 実行時、ビルドコンテキスト内のすべてのファイルがDockerデーモンに送信されるため、不要なファイルが多いとビルドが遅くなる。  
 `.dockerignore`を使うと、不要なファイルを除外でき、ビルド時間を短縮できる。
 
+### マルチステージビルド
+
+Dockerfileの中で複数の段階（ステージ）を使ってイメージを構築する手法。  
+構築時の依存関係と、実行時の依存関係を分離できる。    
+アプリケーションが実行に必要なもの「だけ」送るので、イメージ全体の容量を削減できる。    
+不要なツールが含まれると、イメージサイズが大きくなり、セキュリティリスクも増える。  
+→ マルチステージビルドによって、不要なツールを含まないようにできる。
+
+```
+# syntax=docker/dockerfile:1
+FROM maven AS build
+WORKDIR /app
+COPY . .
+RUN mvn package
+
+FROM tomcat
+COPY --from=build /app/target/file.war /usr/local/tomcat/webapps
+```
+JDKやMavenは最終イメージでは不要。
