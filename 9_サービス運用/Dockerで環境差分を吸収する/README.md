@@ -220,3 +220,17 @@ FROM tomcat
 COPY --from=build /app/target/file.war /usr/local/tomcat/webapps
 ```
 JDKやMavenは最終イメージでは不要。
+
+### Dockerfileを用いた環境構築のコード化の利点
+
+1. 環境の統一性（開発・本番環境の差異をなくす）
+    - Dockerfileを使えば、開発環境・テスト環境・本番環境を同じ構成で再現できる。
+1. 再現性の確保    
+    - コード一つで誰でも同じ環境を構築できるため、新規開発者のセットアップが容易。
+    - 「動作する環境が人によって違う」問題を解決できる。
+    - OSやミドルウェアの設定ミスを防ぎ、一貫した環境を保証できる。
+1. デプロイが容易
+    - Dockerイメージを作成すれば、どこでも同じ環境をデプロイ可能。
+    - GitHub Actions で `docker build` & `docker push` することで、自動デプロイ可能。
+
+
