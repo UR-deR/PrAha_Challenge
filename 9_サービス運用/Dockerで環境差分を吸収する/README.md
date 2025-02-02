@@ -317,3 +317,82 @@ CMD echo $NAME  # 何も出力されない
 
 - コンテナ全体で環境変数を使いたい	→ `ENV NAME="hoge"`
 - 1つの RUN 内だけで変数を使いたい	→ `RUN export NAME="hoge" && echo $NAME`
+
+
+## 課題2
+
+### compose無し
+
+PostgreSQLコンテナを作成して起動
+
+```sh
+docker run -d --name database \
+  -e POSTGRES_USER=postgres \
+  -e POSTGRES_PASSWORD=password \
+  -e POSTGRES_DB=database \
+  -p 5433:5432 \
+  -v database-data:/var/lib/postgresql/data \
+  postgres:15.3
+```
+
+アプリケーションのDockerイメージをビルド
+
+```sh
+docker build -t my-app .
+```
+
+アプリケーションコンテナを作成
+
+```sh
+docker create --name app \
+  --link database:database \
+  -p 3000:3000 \
+  my-app
+```
+
+コンテナを起動します。
+
+```sh
+docker start database && docker start app
+```
+
+### composeあり
+
+以下の通りファイルを編集
+[docker対応 by UR-deR · Pull Request #3 · UR-deR/praha-challenge-ddd-template](https://github.com/UR-deR/praha-challenge-ddd-template/pull/3/commits/0b77454d2ecfdd9c4af1dd2303df9850bdbe082f)
+
+`docker compose up`によってコンテナが起動
+
+```sh
+❯ docker compose up
+[+] Running 3/2
+ ✔ Network praha-challenge-ddd-template_default  Created              0.0s 
+ ✔ Container database                            Created              0.1s 
+ ✔ Container app                                 C...                 0.0s 
+Attaching to app, database
+database  | 
+database  | PostgreSQL Database directory appears to contain a database; Skipping initialization
+database  | 
+database  | 2025-02-02 10:48:32.735 UTC [1] LOG:  starting PostgreSQL 15.3 (Debian 15.3-1.pgdg120+1) on aarch64-unknown-linux-gnu, compiled by gcc (Debian 12.2.0-14) 12.2.0, 64-bit
+database  | 2025-02-02 10:48:32.736 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+database  | 2025-02-02 10:48:32.736 UTC [1] LOG:  listening on IPv6 address "::", port 5432
+database  | 2025-02-02 10:48:32.742 UTC [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+database  | 2025-02-02 10:48:32.758 UTC [29] LOG:  database system was shut down at 2024-09-08 23:18:24 UTC
+database  | 2025-02-02 10:48:32.783 UTC [1] LOG:  database system is ready to accept connections
+app       |  WARN  Unsupported engine: wanted: {"node":"20.17.0"} (current: {"node":"v20.18.2","pnpm":"9.15.4"})
+app       | 
+app       | > praha-challenge-ddd-template@1.0.0 dev /app
+app       | > vite-node --watch src/index.ts
+app       | 
+app       | Server is running on port 3000
+
+database  | 2025-02-02 10:53:32.774 UTC [27] LOG:  checkpoint starting: time
+database  | 2025-02-02 10:53:32.788 UTC [27] LOG:  checkpoint complete: wrote 3 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.005 s, sync=0.002 s, total=0.015 s; sync files=2, longest=0.001 s, average=0.001 s; distance=0 kB, estimate=0 kB
+```
+
+```sh
+❯ docker compose ps
+NAME       IMAGE                              COMMAND                   SERVICE    CREATED          STATUS                    PORTS
+app        praha-challenge-ddd-template-app   "docker-entrypoint.s…"   app        10 minutes ago   Up 9 minutes              0.0.0.0:3000->3000/tcp
+database   postgres:15.3                      "docker-entrypoint.s…"   database   10 minutes ago   Up 10 minutes (healthy)   0.0.0.0:5433->5432/tcp
+```
