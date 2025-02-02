@@ -1,0 +1,21 @@
+{
+  "name": "my-cli-app",
+  "version": "1.0.0",
+  "description": "A simple CLI application that greets the user.",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node --env-file=.env ./src/index.js",
+    "list-issues": "node --env-file=.env ./src/list-issues.js",
+    "comment-on-issue": "node --env-file=.env ./src/comment-on-issue.js"
+  },
+  "keywords": [
+    "cli",
+    "greeting"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@octokit/auth-app": "^7.1.4"
+  }
+}
