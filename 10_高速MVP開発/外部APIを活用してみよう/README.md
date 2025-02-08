@@ -38,6 +38,8 @@ GitHub Appsは `org-a` にインストールされれば `org-a` のリソース
 
 ## 課題2
 
+`GITHUB_PRIVATE_KEY`などの秘匿情報はGithubのSecretsや、AWS Secrets Managerなどの秘匿情報管理サービスで管理する。ビルドのタイミングで、秘匿情報を`.env`ファイルに注入することを想定。(= トークンをソースコード内に直接持たせない)
+
 ### issueの一覧を取得する。
 
 ```sh
