@@ -1,10 +1,10 @@
-import type { InferResponseType } from 'hono'
-import qs from 'qs'
-import { UserListCard } from '~/features/users/components/user-list-card'
-import { GET_USER_LIST_CACHE_KEY } from '~/features/users/constants/cache-key'
-import { userSearchParams } from '~/features/users/types/search-params/user-search-params'
-import { fetcher } from '~/lib/fetcher'
-import { client } from '~/lib/rpc'
+import type { InferResponseType } from "hono"
+import qs from "qs"
+import { UserListCard } from "~/features/users/components/user-list-card"
+import { GET_USER_LIST_CACHE_KEY } from "~/features/users/constants/cache-key"
+import { userSearchParams } from "~/features/users/types/search-params/user-search-params"
+import { fetcher } from "~/lib/fetcher"
+import { client } from "~/lib/rpc"
 
 const getUsers = async (query: string) => {
 	const url = client.api.users.$url()
@@ -17,7 +17,7 @@ const getUsers = async (query: string) => {
 	await new Promise((resolve) => setTimeout(resolve, 3000))
 
 	const res = await fetcher<ResType>(requestUrl, {
-		cache: 'force-cache',
+		cache: "force-cache",
 		next: { tags: [GET_USER_LIST_CACHE_KEY] },
 	})
 

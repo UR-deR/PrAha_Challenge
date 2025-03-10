@@ -1,28 +1,28 @@
-'use client'
+"use client"
 
-import { getFormProps, getInputProps } from '@conform-to/react'
-import { getZodConstraint, parseWithZod } from '@conform-to/zod'
-import { Loader2, Search } from 'lucide-react'
-import { parseAsString, useQueryStates } from 'nuqs'
-import { useActionState } from 'react'
-import { tv } from 'tailwind-variants'
-import { Button } from '~/components/ui/button'
-import { Input } from '~/components/ui/input'
-import { userSearchAction } from '~/features/users/actions/user-search-action'
+import { getFormProps, getInputProps } from "@conform-to/react"
+import { getZodConstraint, parseWithZod } from "@conform-to/zod"
+import { Loader2, Search } from "lucide-react"
+import { parseAsString, useQueryStates } from "nuqs"
+import { useActionState } from "react"
+import { tv } from "tailwind-variants"
+import { Button } from "~/components/ui/button"
+import { Input } from "~/components/ui/input"
+import { userSearchAction } from "~/features/users/actions/user-search-action"
 import {
 	type UserSearchSchemaType,
 	userSearchSchema,
-} from '~/features/users/types/schema/user-search-schema'
-import { useSafeForm } from '~/hooks/use-safe-form'
+} from "~/features/users/types/schema/user-search-schema"
+import { useSafeForm } from "~/hooks/use-safe-form"
 
 const userSearchFormStyle = tv({
 	slots: {
-		searchForm: 'flex items-center justify-center gap-2 w-full',
-		searchInputWrapper: 'relative',
-		searchInput: 'w-[200px] md:w-[500px]',
-		errMessage: 'mt-1 text-sm text-red-500 absolute left-2',
-		searchButton: 'w-[100px] md:w-[200px]',
-		loader: 'animate-spin',
+		searchForm: "flex items-center justify-center gap-2 w-full",
+		searchInputWrapper: "relative",
+		searchInput: "w-[200px] md:w-[500px]",
+		errMessage: "mt-1 text-sm text-red-500 absolute left-2",
+		searchButton: "w-[100px] md:w-[200px]",
+		loader: "animate-spin",
 	},
 })
 
@@ -38,10 +38,10 @@ export const UserSearchForm = () => {
 
 	const [queryParams, setQueryParams] = useQueryStates(
 		{
-			query: parseAsString.withDefault(''),
+			query: parseAsString.withDefault(""),
 		},
 		{
-			history: 'push',
+			history: "push",
 		},
 	)
 
@@ -50,8 +50,8 @@ export const UserSearchForm = () => {
 		FormData
 	>(async (prev, formData) => {
 		const result = await userSearchAction(prev, formData)
-		if (result.status === 'success') {
-			setQueryParams({ query: formData.get('query') as string })
+		if (result.status === "success") {
+			setQueryParams({ query: formData.get("query") as string })
 			return result
 		}
 
@@ -74,7 +74,7 @@ export const UserSearchForm = () => {
 		<form {...getFormProps(form)} action={action} className={searchForm()}>
 			<div className={searchInputWrapper()}>
 				<Input
-					{...getInputProps(fields.query, { type: 'text' })}
+					{...getInputProps(fields.query, { type: "text" })}
 					// action実行時にkeyがないとコンポーネントを識別できないというエラーがでるためkeyを設定
 					key={fields.query.id}
 					type="text"
@@ -83,7 +83,7 @@ export const UserSearchForm = () => {
 					defaultValue={
 						lastResult?.initialValue?.query
 							? lastResult.initialValue.query.toString()
-							: ''
+							: ""
 					}
 					onChange={(e) => {
 						setQueryParams({ query: e.target.value })

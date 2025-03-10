@@ -1,22 +1,22 @@
-import { Separator } from '@radix-ui/react-separator'
-import type { InferResponseType } from 'hono'
-import { tv } from 'tailwind-variants'
-import type { client } from '~/lib/rpc'
+import { Separator } from "@radix-ui/react-separator"
+import type { InferResponseType } from "hono"
+import { tv } from "tailwind-variants"
+import type { client } from "~/lib/rpc"
 
 const userPostStyle = tv({
-	base: 'border rounded-md p-2',
+	base: "border rounded-md p-2",
 	slots: {
-		title: 'font-bold text-lg',
-		separator: '',
+		title: "font-bold text-lg",
+		separator: "",
 	},
-	compoundSlots: [{ slots: ['base', 'separator'], class: 'my-2' }],
+	compoundSlots: [{ slots: ["base", "separator"], class: "my-2" }],
 })
 
 type UserPostProps = Record<
-	'post',
+	"post",
 	InferResponseType<
-		(typeof client.api.users)[':userId']['posts']['$get']
-	>['posts'][number]
+		(typeof client.api.users)[":userId"]["posts"]["$get"]
+	>["posts"][number]
 >
 
 export const UserPost = ({ post }: UserPostProps) => {

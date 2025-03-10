@@ -1,15 +1,15 @@
-import { Hono } from 'hono'
-import { filter, pipe } from 'remeda'
-import type { Post } from '~/features/users/types/post'
-import type { User } from '~/features/users/types/user'
-import { fetcher } from '~/lib/fetcher'
+import { Hono } from "hono"
+import { filter, pipe } from "remeda"
+import type { Post } from "~/features/users/types/post"
+import type { User } from "~/features/users/types/user"
+import { fetcher } from "~/lib/fetcher"
 
 const app = new Hono()
-	.get('/', async (c) => {
+	.get("/", async (c) => {
 		const { query } = c.req.query()
 
 		const res = await fetcher<User[]>(
-			'https://jsonplaceholder.typicode.com/users',
+			"https://jsonplaceholder.typicode.com/users",
 		)
 
 		const filteredUsers = pipe(
@@ -24,7 +24,7 @@ const app = new Hono()
 
 		return c.json({ userList: filteredUsers }, 200)
 	})
-	.get('/:userId', async (c) => {
+	.get("/:userId", async (c) => {
 		const { userId } = c.req.param()
 
 		const res = await fetcher<User>(
@@ -35,11 +35,11 @@ const app = new Hono()
 			email: res.email,
 			name: res.name,
 			username: res.username,
-		} as const satisfies Pick<User, 'email' | 'name' | 'username'>
+		} as const satisfies Pick<User, "email" | "name" | "username">
 
 		return c.json({ user }, 200)
 	})
-	.get('/:userId/posts', async (c) => {
+	.get("/:userId/posts", async (c) => {
 		const { userId } = c.req.param()
 		const { query } = c.req.query()
 

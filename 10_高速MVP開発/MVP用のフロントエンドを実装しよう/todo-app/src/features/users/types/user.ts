@@ -1,9 +1,9 @@
 type Address = Record<
-	'street' | 'suite' | 'city' | 'zipcode' | 'geo',
-	string | Record<'lat' | 'lng', string>
+	"street" | "suite" | "city" | "zipcode" | "geo",
+	string | Record<"lat" | "lng", string>
 >
 
-type Company = Record<'name' | 'catchPhrase' | 'bs', string>
+type Company = Record<"name" | "catchPhrase" | "bs", string>
 
 export type User = {
 	id: number

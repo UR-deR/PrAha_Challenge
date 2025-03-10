@@ -1,17 +1,17 @@
-import type { InferResponseType } from 'hono'
-import qs from 'qs'
-import { UserPost } from '~/features/users/components/user-post'
-import { userSearchParams } from '~/features/users/types/search-params/user-search-params'
-import { fetcher } from '~/lib/fetcher'
-import { client } from '~/lib/rpc'
+import type { InferResponseType } from "hono"
+import qs from "qs"
+import { UserPost } from "~/features/users/components/user-post"
+import { userSearchParams } from "~/features/users/types/search-params/user-search-params"
+import { fetcher } from "~/lib/fetcher"
+import { client } from "~/lib/rpc"
 
-type UserPostProps = Record<'userId', string>
+type UserPostProps = Record<"userId", string>
 
 const getUserPosts = async (userId: string, query: string) => {
 	type ResType = InferResponseType<
-		(typeof client.api.users)[':userId']['posts']['$get']
+		(typeof client.api.users)[":userId"]["posts"]["$get"]
 	>
-	const url = client.api.users[':userId'].posts.$url({
+	const url = client.api.users[":userId"].posts.$url({
 		param: { userId },
 	})
 
@@ -19,7 +19,7 @@ const getUserPosts = async (userId: string, query: string) => {
 	const requestUrl = `${url}?${params}`
 
 	const posts = await fetcher<ResType>(requestUrl, {
-		cache: 'force-cache',
+		cache: "force-cache",
 	})
 
 	return posts

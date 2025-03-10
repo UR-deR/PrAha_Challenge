@@ -1,40 +1,40 @@
-import type { SearchParams } from 'nuqs/server'
-import { Suspense } from 'react'
-import { tv } from 'tailwind-variants'
-import { UserCardSkelton } from '~/features/users/components/user-card-skelton'
-import { UserList } from '~/features/users/components/user-list'
-import { UserSearchForm } from '~/features/users/components/user-search-form'
-import { userSearchParams } from '~/features/users/types/search-params/user-search-params'
+import type { SearchParams } from "nuqs/server"
+import { Suspense } from "react"
+import { tv } from "tailwind-variants"
+import { UserCardSkelton } from "~/features/users/components/user-card-skelton"
+import { UserList } from "~/features/users/components/user-list"
+import { UserSearchForm } from "~/features/users/components/user-search-form"
+import { userSearchParams } from "~/features/users/types/search-params/user-search-params"
 
 const userListPageStyle = tv(
 	{
 		slots: {
-			base: 'flex flex-col justify-center items-center',
-			searchFormSection: 'mt-4 mb-2',
-			userListBase: 'flex my-4',
-			userListSection: 'grid grid-cols-1  gap-4 mx-auto',
+			base: "flex flex-col justify-center items-center",
+			searchFormSection: "mt-4 mb-2",
+			userListBase: "flex my-4",
+			userListSection: "grid grid-cols-1  gap-4 mx-auto",
 		},
 		compoundSlots: [
 			{
-				slots: ['base', 'searchFormSection', 'userListBase'],
-				class: 'w-full',
+				slots: ["base", "searchFormSection", "userListBase"],
+				class: "w-full",
 			},
 		],
 		variants: {
 			size: {
 				md: {
-					userListSection: 'grid-cols-2',
+					userListSection: "grid-cols-2",
 				},
 				lg: {
-					userListSection: 'grid-cols-3',
+					userListSection: "grid-cols-3",
 				},
 				xl: {
-					userListSection: 'grid-cols-4',
+					userListSection: "grid-cols-4",
 				},
 			},
 		},
 	},
-	{ responsiveVariants: ['md', 'lg', 'xl'] },
+	{ responsiveVariants: ["md", "lg", "xl"] },
 )
 
 type UserListPageProps = {
@@ -55,9 +55,9 @@ const UserListPage = async ({ searchParams }: UserListPageProps) => {
 				<section
 					className={userListSection({
 						size: {
-							md: 'md',
-							lg: 'lg',
-							xl: 'xl',
+							md: "md",
+							lg: "lg",
+							xl: "xl",
 						},
 					})}
 				>

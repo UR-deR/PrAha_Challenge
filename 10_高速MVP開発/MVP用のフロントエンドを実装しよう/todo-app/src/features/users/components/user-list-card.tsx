@@ -1,31 +1,31 @@
-import { Separator } from '@radix-ui/react-separator'
-import type { InferResponseType } from 'hono'
-import { Check } from 'lucide-react'
-import Link from 'next/link'
-import { tv } from 'tailwind-variants'
-import { Button } from '~/components/ui/button'
+import { Separator } from "@radix-ui/react-separator"
+import type { InferResponseType } from "hono"
+import { Check } from "lucide-react"
+import Link from "next/link"
+import { tv } from "tailwind-variants"
+import { Button } from "~/components/ui/button"
 import {
 	Card,
 	CardContent,
 	CardFooter,
 	CardHeader,
 	CardTitle,
-} from '~/components/ui/card'
-import type { client } from '~/lib/rpc'
+} from "~/components/ui/card"
+import type { client } from "~/lib/rpc"
 
 const userListCardStyle = tv({
-	base: 'w-[350px]',
+	base: "w-[350px]",
 	slots: {
-		content: 'space-y-2',
-		footer: 'flex items-center',
-		link: 'w-full',
+		content: "space-y-2",
+		footer: "flex items-center",
+		link: "w-full",
 	},
-	compoundSlots: [{ slots: ['content', 'footer'], class: 'mt-2' }],
+	compoundSlots: [{ slots: ["content", "footer"], class: "mt-2" }],
 })
 
 type UserListCardProps = Record<
-	'user',
-	InferResponseType<typeof client.api.users.$get>['userList'][number]
+	"user",
+	InferResponseType<typeof client.api.users.$get>["userList"][number]
 >
 
 export const UserListCard = ({ user }: UserListCardProps) => {

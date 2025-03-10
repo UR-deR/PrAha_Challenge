@@ -1,41 +1,41 @@
-import { Separator } from '@radix-ui/react-separator'
-import type { InferResponseType } from 'hono'
-import type { SearchParams } from 'nuqs'
-import { Suspense, cache } from 'react'
-import { tv } from 'tailwind-variants'
-import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card'
-import { Skeleton } from '~/components/ui/skeleton'
-import { UserPostSkelton } from '~/features/users/components/user-post-skelton'
-import { UserPostsContainer } from '~/features/users/components/user-posts-container'
-import { UserPostsSearchForm } from '~/features/users/components/user-posts-search-form'
-import { GET_USER_CACHE_KEY } from '~/features/users/constants/cache-key'
-import { userSearchParams } from '~/features/users/types/search-params/user-search-params'
-import { fetcher } from '~/lib/fetcher'
-import { client } from '~/lib/rpc'
+import { Separator } from "@radix-ui/react-separator"
+import type { InferResponseType } from "hono"
+import type { SearchParams } from "nuqs"
+import { Suspense, cache } from "react"
+import { tv } from "tailwind-variants"
+import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card"
+import { Skeleton } from "~/components/ui/skeleton"
+import { UserPostSkelton } from "~/features/users/components/user-post-skelton"
+import { UserPostsContainer } from "~/features/users/components/user-posts-container"
+import { UserPostsSearchForm } from "~/features/users/components/user-posts-search-form"
+import { GET_USER_CACHE_KEY } from "~/features/users/constants/cache-key"
+import { userSearchParams } from "~/features/users/types/search-params/user-search-params"
+import { fetcher } from "~/lib/fetcher"
+import { client } from "~/lib/rpc"
 
 const userDetailPageStyle = tv({
 	slots: {
-		base: '',
-		card: 'w-[350px]',
-		skelton: 'h-4 w-[300px]',
-		cardContent: 'space-y-2',
-		cardContentItem: 'items-center gap-1',
-		userPostsWrapper: 'mt-4 flex-col justify-center gap-2',
+		base: "",
+		card: "w-[350px]",
+		skelton: "h-4 w-[300px]",
+		cardContent: "space-y-2",
+		cardContentItem: "items-center gap-1",
+		userPostsWrapper: "mt-4 flex-col justify-center gap-2",
 	},
 	compoundSlots: [
-		{ slots: ['base', 'cardContent'], class: 'mt-2' },
-		{ slots: ['cardContentItem', 'userPostsWrapper'], class: 'flex' },
+		{ slots: ["base", "cardContent"], class: "mt-2" },
+		{ slots: ["cardContentItem", "userPostsWrapper"], class: "flex" },
 	],
 })
 
 const getUser = cache(async (userId: string) => {
-	type ResType = InferResponseType<(typeof client.api.users)[':userId']['$get']>
-	const url = client.api.users[':userId'].$url({
+	type ResType = InferResponseType<(typeof client.api.users)[":userId"]["$get"]>
+	const url = client.api.users[":userId"].$url({
 		param: { userId },
 	})
 
 	const res = await fetcher<ResType>(url, {
-		cache: 'force-cache',
+		cache: "force-cache",
 		next: { tags: [`${GET_USER_CACHE_KEY}/${userId}`] },
 	})
 
@@ -43,7 +43,7 @@ const getUser = cache(async (userId: string) => {
 })
 
 type UserDetailPageProps = {
-	params: Promise<Record<'userId', string>>
+	params: Promise<Record<"userId", string>>
 	searchParams: Promise<SearchParams>
 }
 
