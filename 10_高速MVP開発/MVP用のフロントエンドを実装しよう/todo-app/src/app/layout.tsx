@@ -10,6 +10,8 @@ import {
 	SignedOut,
 	UserButton,
 } from "@clerk/nextjs"
+import { jaJP } from "@clerk/localizations"
+
 const geistSans = Geist({
 	variable: "--font-geist-sans",
 	subsets: ["latin"],
@@ -27,7 +29,7 @@ export const metadata: Metadata = {
 
 const RootLayout = ({ children }: { children: ReactNode }) => {
 	return (
-		<ClerkProvider>
+		<ClerkProvider localization={jaJP}>
 			<html lang="ja">
 				<body
 					className={`${geistSans.variable} ${geistMono.variable} antialiased`}

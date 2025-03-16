@@ -12,6 +12,7 @@
     "check:biome": "biome check --apply ./src"
   },
   "dependencies": {
+    "@clerk/localizations": "^3.12.0",
     "@clerk/nextjs": "^6.12.4",
     "@conform-to/react": "^1.2.2",
     "@conform-to/zod": "^1.2.2",
