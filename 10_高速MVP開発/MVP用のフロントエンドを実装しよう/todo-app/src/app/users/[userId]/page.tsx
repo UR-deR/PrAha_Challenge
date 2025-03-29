@@ -71,7 +71,7 @@ const UserDetailPage = async ({
 				<CardHeader>
 					<Suspense fallback={<Skeleton className={skelton()} />}>
 						<CardTitle>
-							{userPromise.then(({ user }) => user.username)}
+							{userPromise.then(({ user }) => user?.username)}
 						</CardTitle>
 					</Suspense>
 				</CardHeader>
@@ -80,13 +80,13 @@ const UserDetailPage = async ({
 					<div className={cardContentItem()}>
 						<p>name:</p>
 						<Suspense fallback={<Skeleton className={skelton()} />}>
-							<p>{userPromise.then(({ user }) => user.name)}</p>
+							<p>{userPromise.then(({ user }) => user?.name)}</p>
 						</Suspense>
 					</div>
 					<div className={cardContentItem()}>
 						<p>email:</p>
 						<Suspense fallback={<Skeleton className={skelton()} />}>
-							<p>{userPromise.then(({ user }) => user.email)}</p>
+							<p>{userPromise.then(({ user }) => user?.email)}</p>
 						</Suspense>
 					</div>
 				</CardContent>
