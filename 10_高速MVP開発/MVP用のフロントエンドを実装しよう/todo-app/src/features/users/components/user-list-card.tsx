@@ -40,7 +40,6 @@ export const UserListCard = ({ user }: UserListCardProps) => {
 			<CardContent className={content()}>
 				<p>{user.name}</p>
 				<p>{user.email}</p>
-				<p>{user.phone}</p>
 			</CardContent>
 			<CardFooter className={footer()}>
 				<Link href={`/users/${user.id}`} className={link()}>

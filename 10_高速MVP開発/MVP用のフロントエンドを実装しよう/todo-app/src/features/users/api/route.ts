@@ -1,12 +1,7 @@
 import { eq } from 'drizzle-orm';
 import { Hono } from 'hono';
-import { filter, pipe } from 'remeda';
-import type { Post } from '~/features/users/types/post';
-import type { User } from '~/features/users/types/user';
 import { getDatabase } from '~/lib/drizzle/get-database';
-import { users } from '~/lib/drizzle/schema';
-import { fetcher } from '~/lib/fetcher';
-// import { fetcher } from '~/lib/fetcher';
+import { posts, users } from '~/lib/drizzle/schema';
 
 const app = new Hono()
   .get('/', async (c) => {
@@ -37,11 +32,11 @@ const app = new Hono()
 	const { userId } = c.req.param()
 	
 	const database = getDatabase();
-	const res = await database.select().from(users).where(
-	eq(users.id, userId),
-	)
+	  const res = await database.select().from(posts).where(
+		eq(posts.userId, userId),
+	  )
 
-		return c.json({ posts: res }, 200)
+	return c.json({ posts: res }, 200)
   });
 
 export default app;
