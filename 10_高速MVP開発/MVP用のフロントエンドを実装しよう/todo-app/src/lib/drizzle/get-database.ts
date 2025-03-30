@@ -8,13 +8,8 @@ export type Database = ReturnType<typeof getDatabase>;
 
 export const getDatabase = memoize(() => {
   const credentials = getCredentials();
-  const client = postgres({
-    host: credentials.DB_HOST,
-    port: credentials.DB_PORT,
-    username: credentials.DB_USER,
-    password: credentials.DB_PASSWORD,
-    database: credentials.DB_NAME,
-  });
+  const connectionString = credentials.URL;  
+  const client = postgres(connectionString, { prepare: false })
 
   return drizzle(client, { schema });
 });

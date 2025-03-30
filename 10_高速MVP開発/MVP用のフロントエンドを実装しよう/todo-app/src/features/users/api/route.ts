@@ -11,63 +11,37 @@ import { fetcher } from '~/lib/fetcher';
 const app = new Hono()
   .get('/', async (c) => {
     const database = getDatabase();
-    try {
-      const result = await database.select().from(users);
-      console.log("ログ");
-      
-      console.log(result);
-      
+	const result = await database.select().from(users);            
     return c.json({ userList: result }, 200);
-    
-    } catch (error) {
-      console.log("エラーログ");
-      
-      console.log(error);
-      
-    }
-    
-    
-
   })
   .get('/:userId', async (c) => {
    		const { userId } = c.req.param()
 
-		const res = await fetcher<User>(
-			`https://jsonplaceholder.typicode.com/users/${userId}`,
-    )
-    
-    console.log("成功ログ");
-    
-    console.log(res);
-    
+	  const database = getDatabase();
+	  const res = await database
+		.select()
+		  .from(users).where(
+			eq(users.id, userId),
+	  )
+	  
+	  const user = {
+		  email: res[0].email,
+		  name: res[0].name,
+		  username: res[0].username,
+	  }
 
-		const user = {
-			email: res.email,
-			name: res.name,
-			username: res.username,
-		} as const satisfies Pick<User, "email" | "name" | "username">
-
-		return c.json({ user }, 200)
+	return c.json({ user }, 200)
    
   })
   .get('/:userId/posts', async (c) => {
-		const { userId } = c.req.param()
-		const { query } = c.req.query()
+	const { userId } = c.req.param()
+	
+	const database = getDatabase();
+	const res = await database.select().from(users).where(
+	eq(users.id, userId),
+	)
 
-		const res = await fetcher<Post[]>(
-			`https://jsonplaceholder.typicode.com/posts?userId=${userId}`,
-		)
-
-		const filteredPosts = pipe(
-			res,
-			filter(
-				(post) =>
-					post.title.toLowerCase().includes(query.toLowerCase()) ||
-					post.body.toLowerCase().includes(query.toLowerCase()),
-			),
-		)
-
-		return c.json({ posts: filteredPosts }, 200)
+		return c.json({ posts: res }, 200)
   });
 
 export default app;

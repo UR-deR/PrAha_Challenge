@@ -8,10 +8,6 @@ export default defineConfig({
   schema: './src/lib/drizzle/schema.ts',
   out: './src/lib/drizzle/migrations',
   dbCredentials: {
-    host: credentials.DB_HOST,
-    port: credentials.DB_PORT,
-    user: credentials.DB_USER,
-    password: credentials.DB_PASSWORD,
-    database: credentials.DB_NAME,
-  },
+    url: credentials.URL,
+  }
 });
